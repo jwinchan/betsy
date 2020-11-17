@@ -34,3 +34,10 @@
 /yarn-error.log
 yarn-debug.log*
 .yarn-integrity
+
+# Ignore auto generated files
+.generators
+.idea/
+
+# Ignore simplecov
+coverage/*
