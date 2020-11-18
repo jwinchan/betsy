@@ -7,4 +7,5 @@ grace:
   provider: github
   uid: 13371337
   email: grace@hooper.net
-  name: graceful_hopps 
+  name: graceful_hopps
+
