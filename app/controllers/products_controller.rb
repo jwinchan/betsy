@@ -26,13 +26,6 @@ class ProductsController < ApplicationController
 
   def edit
     @product = Product.find_by(id: params[:id])
-    driver_id = params[:id]
-
-    begin
-      @product = Product.find(driver_id)
-    rescue ActiveRecord::RecordNotFound
-      @product = nil
-    end
 
     if @product.nil?
       head :not_found
@@ -42,17 +35,12 @@ class ProductsController < ApplicationController
 
   def update
     @product = Product.find_by(id: params[:id])
-    if @product.nil?
-      head :not_found
-      return
-    elsif @product.update(
-        name: params[:product][:name],
-        vin: params[:product][:vin],
-        available: params[:product][:available]
-    )
-      redirect_to driver_path # go to the product details page
+    if @product.update(product_params)
+      flash[:success] = "Product has been successfully updated"
+      redirect_to product_path # go to the product details page
       return
     else # save failed
+    flash[:error] = "Product has not been updated"
     render :edit, status: :bad_request # show the new product form view again
     return
     end
