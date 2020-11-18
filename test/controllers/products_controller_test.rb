@@ -11,14 +11,17 @@ describe ProductsController do
     end
 
     it "responds with success when there are many products saved" do
-      product
-      get products_path
+     product 
+     get products_path
+    
       expect(Product.count).must_equal 1
       must_respond_with :success
     end
-    
+
+   
     it "responds with success when there are no products saved" do
       get products_path
+
       expect(Product.count).must_equal 0
       must_respond_with :success
     end
