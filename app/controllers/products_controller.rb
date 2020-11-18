@@ -56,6 +56,7 @@ class ProductsController < ApplicationController
       return
     elsif session[:user_id] == @product.user_id
       @product.destroy
+      @task.update_attribute(:retired, false)
       flash[:success] = "Successfully destroyed #{ @product.name }"
       # need to clarify which path to redirect
       redirect_to products_path

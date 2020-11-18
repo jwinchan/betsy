@@ -113,6 +113,7 @@ describe ProductsController do
       expect(valid_product.user_id).must_equal valid_user.id
       # Check later, to redirect to the final path
       must_respond_with :redirect
+      # add retired == false
     end
 
     it "cannot destroy product without user login" do
