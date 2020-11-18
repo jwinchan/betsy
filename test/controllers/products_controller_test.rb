@@ -27,61 +27,6 @@ describe ProductsController do
     end
   end
 
-  it "must get show" do
-    get product_path
-    must_respond_with :success
-  end
-
-  it "must get new" do
-    get new_product_path
-    must_respond_with :success
-  end
-
-  it "must get edit" do
-    get edit_product_path
-    must_respond_with :success
-  end
-
-
-  describe "destroy" do
-    it "can destroy product when the user is merchant" do
-      # Arrange
-      valid_user = users(:ada)
-      valid_product = products(:confidence)
-      
-      # Act-Assert
-      expect {
-        delete product_path(valid_product)
-      }.must_differ "Product.count", 1
-      
-      expect(valid_product.user_id).must_equal valid_user.id
-      must_redirect_to user_path(valid_user.id)
-    end
-
-    it "cannot destroy product without user login" do
-
-      # Arrange
-      # Need @current_user
-      valid_product = products(:confidence)
-
-
-      # Act-Assert
-      expect {
-        delete product_path(valid_product)
-      }.wont_change "Product.count"
-
-      # Assert
-      
-      # Check later!
-      must_respond_with :redirect
-    end
-
-    it "cannot delete product when the user is not its seller" do
-      skip
-      # Leave it to user site?
-    end
-  end
-
   describe "new" do
     it "responds with success" do
       # Act
@@ -146,4 +91,73 @@ describe ProductsController do
     end
   end
 
+  it "must get edit" do
+    get edit_product_path
+    must_respond_with :success
+  end
+
+  describe "destroy" do
+    it "can destroy product when the user is merchant" do
+      # Arrange
+      # Need to check session[:user_id]
+      valid_product = products(:confidence)
+      
+      # Act-Assert
+      expect {
+        delete product_path(valid_product)
+      }.must_differ "Product.count", -1
+      
+      expect(valid_product.user_id).must_equal valid_user.id
+      must_respond_with :redirect
+    end
+
+    it "cannot destroy product without user login" do
+      # Arrange
+      # Need to check session[:user_id]
+      valid_product = products(:confidence)
+
+      # Act-Assert
+      expect {
+        delete product_path(valid_product)
+      }.wont_change "Product.count"
+
+      # Assert
+      
+      # Check later!
+      must_respond_with :redirect
+    end
+
+    it "cannot delete product when the user is not its seller" do
+      # Arrange
+      # Need to check session[:user_id]
+      user = User.create(id: 3, provider: "github", uid: 1234509, email: "test@adadevelopersacademy.org", name: "test")
+      invalid_user = users(:ada)
+      invalid_user.id = user.id 
+      valid_product = products(:confidence)
+
+      # Act-Assert
+      expect {
+        delete product_path(valid_product)
+      }.wont_change "Product.count"
+
+      # Assert
+      
+      # Check later!
+      must_respond_with :redirect
+    end
+
+    it "cannot destroy a product if it's invalid" do
+      # Arrange
+      # Need to check session[:user_id]
+      valid_product = products(:confidence)
+      
+      # Act-Assert
+      expect {
+        delete product_path(valid_product)
+      }.must_differ "Product.count", -1
+      
+      expect(valid_product.user_id).must_equal valid_user.id
+      must_respond_with :redirect
+    end
+  end
 end
