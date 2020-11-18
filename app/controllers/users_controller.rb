@@ -13,7 +13,7 @@ class UsersController < ApplicationController
     elsif session[:id] != @user.id  # May need to change to current user
       flash[:error] = "You cannot see other users' information."
       # need to clarify which path to redirect
-      redirect_to user_path(@user)
+      redirect_to root_path
       return
     end
   end

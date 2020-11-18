@@ -6,7 +6,7 @@ describe ProductsController do
   }
   describe "index" do
     it "must get index" do
-      get products_index_url
+      get products_path
       must_respond_with :success
     end
 
@@ -28,20 +28,17 @@ describe ProductsController do
   end
 
   it "must get show" do
-    skip
-    get products_show_url
+    get product_path
     must_respond_with :success
   end
 
   it "must get new" do
-    skip
-    get products_new_url
+    get new_product_path
     must_respond_with :success
   end
 
   it "must get edit" do
-    skip
-    get products_edit_url
+    get edit_product_path
     must_respond_with :success
   end
 
@@ -49,7 +46,6 @@ describe ProductsController do
   describe "destroy" do
     it "can destroy product when the user is merchant" do
       # Arrange
-      skip
       valid_user = users(:ada)
       valid_product = products(:confidence)
       
@@ -63,10 +59,11 @@ describe ProductsController do
     end
 
     it "cannot destroy product without user login" do
-      skip
+
       # Arrange
       # Need @current_user
       valid_product = products(:confidence)
+
 
       # Act-Assert
       expect {
@@ -76,7 +73,7 @@ describe ProductsController do
       # Assert
       
       # Check later!
-      must_redirect_to login_path
+      must_respond_with :redirect
     end
 
     it "cannot delete product when the user is not its seller" do

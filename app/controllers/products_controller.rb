@@ -1,5 +1,5 @@
 class ProductsController < ApplicationController
-  before_action :find_product, only: [:show, :edit, :update]
+  before_action :find_product, only: [:show, :edit, :update, :destroy]
 
   def index
     @products = Product.all
@@ -25,8 +25,6 @@ class ProductsController < ApplicationController
   end
 
   def edit
-    @product = Product.find_by(id: params[:id])
-
     if @product.nil?
       flash[:error] = "Product not found"
       return
@@ -34,7 +32,6 @@ class ProductsController < ApplicationController
   end
 
   def update
-    @product = Product.find_by(id: params[:id])
     if @product.update(product_params)
       flash[:success] = "Product has been successfully updated"
       redirect_to product_path # go to the product details page
@@ -55,18 +52,18 @@ class ProductsController < ApplicationController
     if session[:user_id].nil?
       flash[:error] = "You must be logged in to delete this item"
       # need to clarify which path to redirect
-      redirect_to login_path
+      redirect_to products_path
       return
     elsif session[:user_id] == @product.user_id
       @product.destroy
       flash[:success] = "Successfully destroyed #{ @product.name }"
       # need to clarify which path to redirect
-      redirect_to user_path(session[:user_id])
+      redirect_to products_path
       return
     else
       flash[:error] = "Only the product Seller can delete the product."
       # need to clarify which path to redirect
-      redirect_to root_path
+      redirect_to products_path
       return
     end
   end
