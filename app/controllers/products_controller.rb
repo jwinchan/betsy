@@ -25,6 +25,50 @@ class ProductsController < ApplicationController
   end
 
   def edit
+    @product = Product.find_by(id: params[:id])
+
+    if @product.nil?
+      flash[:error] = "Product not found"
+      return
+    end
+  end
+
+  def update
+    @product = Product.find_by(id: params[:id])
+    if @product.update(product_params)
+      flash[:success] = "Product has been successfully updated"
+      redirect_to product_path # go to the product details page
+      return
+    else # save failed
+    flash[:error] = "Product has not been updated"
+    render :edit, status: :bad_request # show the new product form view again
+    return
+    end
+  end
+
+  def destroy
+    if @product.nil? 
+      render :file => "#{Rails.root}/public/404.html",  layout: false, status: :not_found
+      return
+    end
+    
+    if session[:user_id].nil?
+      flash[:error] = "You must be logged in to delete this item"
+      # need to clarify which path to redirect
+      redirect_to login_path
+      return
+    elsif session[:user_id] == @product.user_id
+      @product.destroy
+      flash[:success] = "Successfully destroyed #{ @product.name }"
+      # need to clarify which path to redirect
+      redirect_to user_path(session[:user_id])
+      return
+    else
+      flash[:error] = "Only the product Seller can delete the product."
+      # need to clarify which path to redirect
+      redirect_to root_path
+      return
+    end
   end
 
   private

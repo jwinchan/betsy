@@ -1,2 +1,50 @@
-<h1>Users#show</h1>
-<p>Find me in app/views/users/show.html.erb</p>
+<article class="work-info">
+    <h2><%= @user.name %></h2>
+    <ul>
+        <li>User ID: <%= @user.id %></li>
+        <li>User email: <%= @user.email %></li>
+    </ul>
+</article>
+
+<article class="user-votes__container">
+    <h3 class="user-votes__header">Your Product</h3>
+    <table class="table">
+        <tr>
+            <th>Product ID</th>
+            <th>Product Name</th>
+            <th>Product Price</th>
+            <th>Stock</th>
+            <th>Description</th>
+            <th>Photo</th>
+        </tr>
+        <% @user.products.each do |product| %>
+            <tr>
+                <th><%= product.id %></th>
+                <th><%= product.name %></th>
+                <th><%= product.price %></th>
+                <th><%= product.stock %></th>
+                <th><%= product.description %></th> 
+                <th><%= product.photo_url %></th>   
+            </tr>
+        <% end %>    
+    </table>
+</article>
+
+<article class="user-votes__container">
+    <h3 class="user-votes__header">Your order</h3>
+    <table class="table">
+        <tr>
+            <th>Order ID</th>
+            <th>Total Price</th>
+            <th>Order date</th>
+        </tr>
+        <% @user.orders.each do |order| %>
+            <tr>
+                <th><%= link_to order.id, order_path(order) %></th>
+                <th><%= order.created_at %></th>
+                <th><%= order.price %></th>  
+            </tr>
+        <% end %>    
+    </table>
+</article>
+
