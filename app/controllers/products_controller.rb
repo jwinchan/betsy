@@ -28,7 +28,7 @@ class ProductsController < ApplicationController
     @product = Product.find_by(id: params[:id])
 
     if @product.nil?
-      head :not_found
+      flash[:error] = "Product not found"
       return
     end
   end
