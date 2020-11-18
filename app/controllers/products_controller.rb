@@ -1,5 +1,5 @@
 class ProductsController < ApplicationController
-  before_action :find_product, only [:show, :edit, :update]
+  before_action :find_product, only: [:show, :edit, :update]
 
   def index
     @products = Product.all
@@ -16,7 +16,7 @@ class ProductsController < ApplicationController
   def create
     @product = Product.new(product_params)
     if @product.save
-      flash[:success = "Product has been successfully added"
+      flash[:success] = "Product has been successfully added"
       redirect_to product_path(@product.id)
     else
       flash[:error] = "Product has not been added"
@@ -43,16 +43,16 @@ class ProductsController < ApplicationController
       @product.destroy
       flash[:success] = "Successfully destroyed #{ @product.name }"
       # need to clarify which path to redirect
-      redirect_to root_path
+      redirect_to user_path(session[:user_id])
       return
     else
-      flash[:error] = "Only the product merchant can delete the product."
+      flash[:error] = "Only the product Seller can delete the product."
       # need to clarify which path to redirect
       redirect_to root_path
       return
     end
   end
-end
+
   private
 
   def find_product
