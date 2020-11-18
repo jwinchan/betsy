@@ -6,6 +6,11 @@ class ProductsController < ApplicationController
   end
 
   def show
+    #review test with group
+    # if @product.nil?
+    #   head :not_found
+    #   return
+    # end
   end
 
   def new

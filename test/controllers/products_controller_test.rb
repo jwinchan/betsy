@@ -24,10 +24,24 @@ describe ProductsController do
     end
   end
 
-  it "must get show" do
-    get products_show_url
-    must_respond_with :success
+  describe "show" do
+    it "must get show" do
+      product
+      get products_show_url(product.id)
+      must_respond_with :success
+    end
+
+    # it 'should respond with 404 with an invalid product id' do
+    #   get products_show_url(-1)
+    #   must_respond_with :not_found
+    # end
   end
+
+
+  # it "must get show" do
+  #   get products_show_url
+  #   must_respond_with :success
+  # end
 
   it "must get new" do
     get products_new_url
