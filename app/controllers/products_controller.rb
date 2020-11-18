@@ -68,6 +68,38 @@ class ProductsController < ApplicationController
     end
   end
 
+  def retired
+    if @product.nil? 
+      render :file => "#{Rails.root}/public/404.html",  layout: false, status: :not_found
+      return
+    end
+
+    if session[:user_id].nil?
+      flash[:error] = "You must be logged in to retire this item"
+      # need to clarify which path to redirect
+      redirect_to products_path
+      return
+    elsif session[:user_id] == @product.user_id
+      if @product.retired
+        @task.update_attribute(:retired, false)
+        # need to clarify which path to redirect
+        redirect_to products_path
+        return
+      else
+        @task.update_attribute(:retired, true)
+        flash[:success] = "Successfully retired #{ @product.name }"
+        # need to clarify which path to redirect
+        redirect_to products_path
+        return
+      end
+    else
+      flash[:error] = "Only the product Seller can delete the product."
+      # need to clarify which path to redirect
+      redirect_to products_path
+      return
+    end
+  end
+
   private
 
   def find_product
