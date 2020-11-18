@@ -10,8 +10,11 @@ class UsersController < ApplicationController
   def edit
     if @user.nil?
       flash[:error] = "User not found"
-      redirect_to users_path
+      redirect_to root_path
       return
+    elsif @user.id != session[:user_id]
+      flash[:error] = "You must log in as this user."
+      redirect_to root_path
     end
   end
 
