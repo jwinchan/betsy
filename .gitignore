@@ -38,6 +38,7 @@ yarn-debug.log*
 # Ignore auto generated files
 .generators
 .idea/
+.env
 
 # Ignore simplecov
 coverage/*

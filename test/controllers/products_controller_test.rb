@@ -25,8 +25,7 @@ describe ProductsController do
       must_respond_with :success
     end
   end
-
-
+  
   describe "show" do
     it "must get show" do
       product = products(:confidence)
@@ -104,10 +103,64 @@ describe ProductsController do
     end
   end
 
-  it "must get edit" do
-    get edit_product_path
+
+
+describe "Edit" do
+  it "must get edit page for existing product" do
+    #Act
+    product = Product.create(name: 'Python', description: 'Gain Python skills')
+    get edit_product_path(product.id)
+
+    # Assert
     must_respond_with :success
   end
+
+  it "will respond with not_found when a product does not exist" do
+    # Act
+    get edit_product_path(-1)
+
+    # Assert
+    must_respond_with :redirect
+  end
+end
+
+  describe "Update" do
+    it "must get update for existing product" do
+      product = products(:confidence)
+
+      updated_product = {
+          product: {
+              name: "Public Speaking",
+              description: "Level 1",
+              price: 45,
+          }
+      }
+      expect {
+        patch product_path(product.id), params: updated_product
+      }.wont_change "Product.count"
+
+      must_redirect_to product_path
+
+      product = Product.find_by(id: product.id)
+      expect(product.name).must_equal updated_product[:product][:name]
+    end
+
+      it "will respond with not found  given an invalid id" do
+        updated_product = {
+            product: {
+                name: "Public Speaking",
+                description: "Level 1",
+                price: 45,
+            }
+        }
+        expect {
+          patch product_path(-1), params: updated_product
+        }.wont_change "Product.count"
+
+        must_respond_with :redirect
+      end
+  end
+ 
 
   describe "destroy" do
     it "can destroy product when the user is the owner" do
