@@ -1,0 +1,8 @@
+confidence:
+  id: 1
+  name: brand new confidence
+  stock: 100 
+  price: 5
+  user_id: 1
+  description: You will have confidence
+  photo_url: https://en.wikipedia.org/wiki/Confidence 

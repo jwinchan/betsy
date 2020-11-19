@@ -80,3 +80,10 @@ end
 group :test do
   gem 'simplecov', require: false
 end
+
+group :development do
+  gem 'dotenv-rails'
+end
+
+gem "omniauth" 
+gem "omniauth-github" 
