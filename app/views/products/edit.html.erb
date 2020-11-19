@@ -1,41 +1,14 @@
-<!--<h1>Products#edit</h1>-->
-<!--<p>Find me in app/views/products/edit.html.erb</p>-->
-
-<h2>Product edit page</h2>
-
-<%= form_with model: @product, class: 'edit-product' do |f| %>
-  <p>Please make changes:</p>
-
-  <div>
-    <%= f.label :name %>
-    <%= f.text_field :name %>
-  </div>
-
-  <div>
-    <%= f.label :stock %>
-    <%= f.text_field :stock %>
-  </div>
-
-  <div>
-    <%= f.label :price %>
-    <%= f.text_field :price %>
-  </div>
-
-  <div>
-    <%= f.label :description %>
-    <%= f.text_field :description %>
-  </div>
-
-  <div>
-    <%= f.label :user_id %>
-    <%= f.text_field :user_id %>
-  </div>
-
-  <div>
-    <%= f.label :photo_url %>
-    <%= f.text_field :photo_url %>
-  </div>
-
-  <%= f.submit "Save Edit", class: "product-button" %>
+<% if @product.errors.any? %>
+  <ul class="errors">
+    <% @product.errors.each do |column, message| %>
+      <li>
+        <strong><%= column.capitalize %></strong> <%= message %>
+      </li>
+    <% end %>
+  </ul>
 <% end %>
 
+<h2>Edit product</h2>
+
+
+<%= render partial: "form", locals: { action_name: "Edit Product"} %>

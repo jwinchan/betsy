@@ -29,20 +29,26 @@ class ProductsController < ApplicationController
 
     if @product.nil?
       flash[:error] = "Product not found"
+      redirect_to products_path
       return
+
     end
   end
 
   def update
-    @product = Product.find_by(id: params[:id])
-    if @product.update(product_params)
+    if @product.nil?
+      flash[:error] = "Product not found"
+      redirect_to products_path
+      return
+
+      elsif @product.update(product_params)
       flash[:success] = "Product has been successfully updated"
       redirect_to product_path # go to the product details page
       return
     else # save failed
-    flash[:error] = "Product has not been updated"
-    render :edit, status: :bad_request # show the new product form view again
-    return
+      flash.now[:error] = "Product has not been updated"
+      render :edit, status: :bad_request # show the new product form view again
+      return
     end
   end
 
