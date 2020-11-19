@@ -26,6 +26,20 @@ describe ProductsController do
     end
   end
 
+
+  describe "show" do
+    it "must get show" do
+      product = products(:confidence)
+      get product_path(product.id)
+      must_respond_with :success
+    end
+
+    it 'should respond with 3xx with an invalid product id' do
+      get product_path(-1)
+      must_respond_with :redirect
+    end
+  end
+
   describe "new" do
     it "responds with success" do
       # Act
