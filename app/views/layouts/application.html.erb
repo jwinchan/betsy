@@ -10,6 +10,23 @@
   </head>
 
   <body>
-    <%= yield %>
+    <header>
+      <nav>
+        <ul>
+          <li><%= link_to "Login with GitHub", github_login_path %></li>
+          <li><%= link_to "Add New Product", new_product_path %></li>
+        </ul>
+      </nav>
+    </header>
+    <main>
+      <section class="flash-msg__section">
+        <% flash.each do |name, message| %>
+          <strong class="<%= name %>">
+            <%= message %>
+          </strong>
+        <% end %>
+      </section>
+      <%= yield %>
+    </main>
   </body>
 </html>

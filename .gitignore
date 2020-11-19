@@ -42,5 +42,4 @@ yarn-debug.log*
 # Ignore simplecov
 coverage/*
 
-# Ignore .evn
 .env
