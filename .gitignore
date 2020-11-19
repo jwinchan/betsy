@@ -7,8 +7,6 @@
 # Ignore bundler config.
 /.bundle
 
-.idea
-
 # Ignore all logfiles and tempfiles.
 /log/*
 /tmp/*
@@ -44,3 +42,5 @@ yarn-debug.log*
 
 # Ignore simplecov
 coverage/*
+
+.env

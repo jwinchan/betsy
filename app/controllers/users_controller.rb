@@ -13,9 +13,30 @@ class UsersController < ApplicationController
     elsif session[:id] != @user.id  # May need to change to current user
       flash[:error] = "You cannot see other users' information."
       # need to clarify which path to redirect
-      redirect_to user_path(@user)
+      redirect_to root_path
       return
     end
+  end
+
+  def create
+    auth_hash = request.env["omniauth.auth"]
+
+    user = User.find_by(uid: auth_hash[:uid], provider: "github")
+    if user
+      flash[:success] = "Logged in as returning user #{user.name}"
+    else
+      user = User.build_from_github(auth_hash)
+
+      if user.save
+        flash[:success] = "Logged in as new user #{user.name}"
+      else
+        flash[:error] = "Could not create new user account: #{user.errors.messages}"
+        return redirect_to root_path
+      end
+    end
+
+    session[:user_id] = user.id
+    return redirect_to root_path
   end
 
   def edit
@@ -43,6 +64,13 @@ class UsersController < ApplicationController
       render :edit, status: :bad_request
       return
     end
+  end
+
+  def destroy
+    session[:user_id] = nil
+    flash[:success] = "Successfully logged out!"
+
+    redirect_to root_path
   end
 
 
