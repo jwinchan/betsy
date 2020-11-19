@@ -15,7 +15,7 @@ CSV.open("db/seed_data/products_seeds.csv", "w", :write_headers => true,
   25.times do
     name = Faker::Name.name
     stock = rand(0..500)
-    price =  rand(100..100000)
+    price =  rand(100..10000)
     description = Faker::Lorem.sentence
     user_id = rand(0..10)
     photo_url = Faker::Avatar.image
