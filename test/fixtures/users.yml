@@ -1,9 +1,11 @@
 ada:
+  id: 1
   provider: github
   uid: 12345
   email: ada@adadevelopersacademy.org
   name: countess_ada
 grace:
+  id: 2
   provider: github
   uid: 13371337
   email: grace@hooper.net
