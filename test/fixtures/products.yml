@@ -1,4 +1,5 @@
 confidence:
+  id: 1
   name: brand new confidence
   stock: 100 
   price: 5

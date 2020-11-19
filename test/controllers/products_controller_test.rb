@@ -1,9 +1,6 @@
 require "test_helper"
 
 describe ProductsController do
-  let (:product) {
-    Product.create name: "sample product"
-  }
   describe "index" do
     it "must get index" do
       get products_path
@@ -11,7 +8,6 @@ describe ProductsController do
     end
 
     it "responds with success when there are many products saved" do
-     product 
      get products_path
     
       expect(Product.count).must_equal 1
@@ -20,6 +16,9 @@ describe ProductsController do
 
    
     it "responds with success when there are no products saved" do
+      #ask team about this test! It's kind of weird...
+      products(:confidence).destroy
+
       get products_path
 
       expect(Product.count).must_equal 0
