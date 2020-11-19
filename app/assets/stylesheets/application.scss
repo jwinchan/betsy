@@ -14,5 +14,110 @@
 
 /* Custom bootstrap variables must be set or imported *before* bootstrap. */
 @import "bootstrap";
+@import "products";
+@import "users";
 
-@import "**/*";
+$primary-font: 'Raleway', sans-serif;
+$primary-grey: #9a8c98;
+$dark-grey: #4a4e69;
+$secondary-color: #c9ada7;
+$gold: #f2e9e4;
+$navy: #22223b;
+
+$default-border: 2px solid;
+
+body, h1, h2, h3, h4, h5 {
+  font-family: $primary-font
+}
+
+h1, h2, h3, h4, h5 {
+  font-weight: bold;
+}
+
+a, h2, h3 {
+  color: $primary-grey;
+}
+
+a:hover {
+  color: $dark-grey;
+  text-decoration: none;
+}
+
+// BOOTSTRAP OVERRIDES
+
+.alert {
+  margin: 0;
+}
+
+.btn-primary {
+  background-color: $primary-grey;
+  color: white;
+  border-color: $primary-grey;
+}
+
+.btn:hover {
+  background-color: $dark-grey;
+  color: white;
+}
+
+.table td {
+  vertical-align: middle;
+}
+
+// ---
+
+.app-header__nav {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.app-header__nav_item {
+  margin-top: 1rem;
+}
+
+.app-header__nav_item .nav-link {
+  color: $dark-grey;
+}
+
+.app-header__site-nav-container .app-header__nav_item {
+  margin-right: 2rem;
+}
+
+.app-header__user-nav-container .nav-item {
+  margin-left: 2rem;
+}
+
+.list-group-item {
+  border: none;
+}
+
+.app-header__header {
+  max-width: 100%;
+  background-color: $secondary-color;
+  margin-bottom: 0.5rem;
+  padding: 2rem 1rem 0.5rem 1rem;
+  h1 {
+    text-align: center;
+    margin: 25px auto 40px auto;
+    a {
+      color: $gold;
+      padding-right: 25px;
+      margin-right: 15px;
+    }
+  }
+  p {
+    margin-bottom: 5px;
+  }
+}
+
+.alert__container {
+  margin: 2rem 0 1rem 0;
+}
+
+
+
+main {
+  padding: 2rem;
+}
+

@@ -3,10 +3,7 @@ class UsersController < ApplicationController
 
   before_action :find_user, only: [:show, :edit, :update]
 
- 
-
   def show
-    @user = User.find_by(id: params[:id])
 
     if @user.nil?
       render :file => "#{Rails.root}/public/404.html",  layout: false, status: :not_found
@@ -78,7 +75,7 @@ class UsersController < ApplicationController
   private
 
   def find_user
-    @user = User.find_by_id(params[:id])
+    @user = User.find_by(id: params[:id])
   end
 
   def user_params

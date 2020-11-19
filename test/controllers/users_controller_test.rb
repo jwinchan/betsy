@@ -5,7 +5,8 @@ describe UsersController do
   describe "show" do
     it "responds with success when showing user its own info" do
       # Arrange
-      skip
+      user = User.create()
+      p session[:user_id]
       # need login_data
 
       # Act
