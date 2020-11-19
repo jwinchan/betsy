@@ -88,6 +88,8 @@ GEM
     coderay (1.1.3)
     concurrent-ruby (1.1.7)
     crass (1.0.6)
+    csv (3.1.8)
+    date (3.0.1)
     debase (0.2.4.1)
       debase-ruby_core_source (>= 0.10.2)
     debase-ruby_core_source (0.10.11)
@@ -99,6 +101,8 @@ GEM
       railties (>= 3.2, < 6.1)
     erubi (1.10.0)
     execjs (2.7.0)
+    faker (2.14.0)
+      i18n (>= 1.6, < 2)
     faraday (1.0.1)
       multipart-post (>= 1.2, < 3)
     ffi (1.13.1)
@@ -298,8 +302,11 @@ DEPENDENCIES
   bootstrap
   byebug
   capybara (>= 2.15)
+  csv
+  date
   debase (>= 0.2.4.1)
   dotenv-rails
+  faker
   guard
   guard-minitest
   jbuilder (~> 2.7)
