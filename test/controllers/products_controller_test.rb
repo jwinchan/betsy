@@ -1,9 +1,6 @@
 require "test_helper"
 
 describe ProductsController do
-  let (:product) {
-    Product.create name: "sample product"
-  }
   describe "index" do
     it "must get index" do
       get products_path
@@ -11,7 +8,6 @@ describe ProductsController do
     end
 
     it "responds with success when there are many products saved" do
-     product 
      get products_path
     
       expect(Product.count).must_equal 1
@@ -20,65 +16,13 @@ describe ProductsController do
 
    
     it "responds with success when there are no products saved" do
+      #ask team about this test! It's kind of weird...
+      products(:confidence).destroy
+
       get products_path
 
       expect(Product.count).must_equal 0
       must_respond_with :success
-    end
-  end
-
-  it "must get show" do
-    get product_path
-    must_respond_with :success
-  end
-
-  it "must get new" do
-    get new_product_path
-    must_respond_with :success
-  end
-
-  it "must get edit" do
-    get edit_product_path
-    must_respond_with :success
-  end
-
-
-  describe "destroy" do
-    it "can destroy product when the user is merchant" do
-      # Arrange
-      valid_user = users(:ada)
-      valid_product = products(:confidence)
-      
-      # Act-Assert
-      expect {
-        delete product_path(valid_product)
-      }.must_differ "Product.count", 1
-      
-      expect(valid_product.user_id).must_equal valid_user.id
-      must_redirect_to user_path(valid_user.id)
-    end
-
-    it "cannot destroy product without user login" do
-
-      # Arrange
-      # Need @current_user
-      valid_product = products(:confidence)
-
-
-      # Act-Assert
-      expect {
-        delete product_path(valid_product)
-      }.wont_change "Product.count"
-
-      # Assert
-      
-      # Check later!
-      must_respond_with :redirect
-    end
-
-    it "cannot delete product when the user is not its seller" do
-      skip
-      # Leave it to user site?
     end
   end
 
@@ -146,4 +90,92 @@ describe ProductsController do
     end
   end
 
+  it "must get edit" do
+    get edit_product_path
+    must_respond_with :success
+  end
+
+  describe "destroy" do
+    it "can destroy product when the user is the owner" do
+      # Arrange
+      # Need to check session[:user_id] == user.id
+      valid_product = products(:confidence)
+      p valid_product.user_id
+      p "#########"
+      p session[:user_id]  # this one is nil now, need log in process
+      
+      # Act-Assert
+      expect {
+        delete product_path(valid_product)
+      }.must_differ "Product.count", -1
+      
+      expect(valid_product.user_id).must_equal valid_user.id
+      # Check later, to redirect to the final path
+      must_respond_with :redirect
+      # add retired == false
+    end
+
+    it "cannot destroy product without user login" do
+      # Arrange
+      valid_product = products(:confidence)
+
+      # Act-Assert
+      expect {
+        delete product_path(valid_product)
+      }.wont_change "Product.count"
+
+      expect(session[:user_id]).must_be_nil
+      must_respond_with :redirect
+    end
+
+    it "cannot delete product when the user is not the owner" do
+      # Arrange
+      # Need to check session[:user_id] != user.id
+      user = User.create(id: 3, provider: "github", uid: 1234509, email: "test@adadevelopersacademy.org", name: "test")
+      invalid_user = users(:ada)
+      invalid_user.id = user.id 
+      valid_product = products(:confidence)
+
+      # Act-Assert
+      expect {
+        delete product_path(valid_product)
+      }.wont_change "Product.count"
+
+      # Check later, to redirect to the final path
+      must_respond_with :redirect
+    end
+
+    it "cannot destroy a product if it's invalid" do
+      # Arrange
+      # Give a user/guest
+      invalid_product = -1
+      
+      # Act-Assert
+      expect {
+        delete product_path(-1)
+      }.wont_change "Product.count"
+      
+      must_respond_with :not_found
+    end
+  end
+
+  describe "retired" do
+    it "can retire a product when the user is the owner" do
+      
+    end
+
+    it "cannot retire a product without user login" do
+      
+    end
+
+    it "cannot retire product when the user is not the owner" do
+      
+    end
+
+    it "cannot retire a product if it's invalid" do
+      patch retired_product_path(-1)
+
+      must_respond_with :not_found
+    end
+  end
 end
