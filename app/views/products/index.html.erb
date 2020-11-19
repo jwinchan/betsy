@@ -1,6 +1,6 @@
 <section>
   <% @products.each do |product| %>
-    <%= image_tag "", alt: "filler" %>
+    <%= image_tag "#{product.photo_url}", alt: "filler" %>
     <%= product.price %>
   <% end %>
 </section>
