@@ -1,6 +1,9 @@
 class OrdersController < ApplicationController
   before_action :order_cart, only: [:create, :destroy]
 
+  def cart
+  end
+
   def show
     # May need different order status, order = true is ordered invoice, order = false is shopping cart, or add cart model & controller
     @order = Order.find_by(id: params[:id])
