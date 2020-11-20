@@ -17,11 +17,24 @@ CSV.open("db/seed_data/products_seeds.csv", "w", :write_headers => true,
     stock = rand(0..500)
     price =  rand(100..10000)
     description = Faker::Lorem.sentence
-    user_id = rand(0..10)
+    user_id = rand(1..10)
     photo_url = Faker::Avatar.image
     retired = %w(true false).sample
 
     csv << [name, stock, price, description, user_id, photo_url, retired]
+  end
+end
+
+CSV.open("db/seed_data/users_seeds.csv", "w", :write_headers => true,
+         :headers => ["name", "description", "uid", "provider", "email"]) do |csv|
+  10.times do
+    name = Faker::Name.name
+    description = Faker::Lorem.sentence
+    uid = "#{rand(10000000..99999999)}"
+    provider = "github"
+    email = Faker::Internet.email
+
+    csv << [name, description, uid, provider, email]
   end
 end
 
