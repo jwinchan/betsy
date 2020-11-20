@@ -1,7 +1,8 @@
 <h1>Shopping Cart</h1>
 <ul>
 <% @cart.orderitems.each do |item| %>
-  <li><%= link_to item.product.name, product_path(item.product.id) %></li>
+  <li><%= link_to item.product.name, product_path(item.product.id) %> |
+  <%= item.quantity %> | $<%= item.price %></li>
 <% end %>
 </ul>
 
