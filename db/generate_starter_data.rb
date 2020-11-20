@@ -25,3 +25,16 @@ CSV.open("db/seed_data/products_seeds.csv", "w", :write_headers => true,
   end
 end
 
+CSV.open("db/seed_data/users_seeds.csv", "w", :write_headers => true,
+         :headers => ["name", "description", "uid", "provider", "email"]) do |csv|
+  10.times do
+    name = Faker::Name.name
+    description = Faker::Lorem.sentence
+    uid = "#{rand(10000000..99999999)}"
+    provider = "github"
+    email = Faker::Internet.email
+
+    csv << [name, description, uid, provider, email]
+  end
+end
+
