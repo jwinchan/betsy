@@ -1,9 +1,15 @@
-<article class="work-info">
-    <h2><%= @user.name %></h2>
-    <ul>
-        <li>User ID: <%= @user.id %></li>
-        <li>User email: <%= @user.email %></li>
-    </ul>
+<article class="user-votes__container">
+    <h3 class="user-votes__header">User: <%= @user.name %></h3>
+    <table class="table">
+        <tr>
+            <th>User ID</th>
+            <th>User Email</th>
+        </tr>
+        <tr>
+            <th><%= @user.id %></th>
+            <th><%= @user.email %></th>
+        </tr>
+    </table>
 </article>
 
 <article class="user-votes__container">
