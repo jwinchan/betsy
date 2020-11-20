@@ -31,20 +31,59 @@
 </article>
 
 <article class="user-votes__container">
-    <h3 class="user-votes__header">Your order</h3>
+    <h3 class="user-votes__header">Your order fulfillments</h3>
+    <h4 class="user-votes__header">Summary</h4>
+    <table class="table">
+        <tr>
+            <th>Order Status</th>
+            <th>Pending</th>
+            <th>Paid</th>
+            <th>Completed</th>
+            <th>Cancelled</th>
+            <th>Total</th>
+        </tr>
+        <tr>
+            <th>Total Revenue</th>
+            <th><%= @user.total_revenue_by_status("pending") %></th>
+            <th><%= @user.total_revenue_by_status("paid") %></th>
+            <th><%= @user.total_revenue_by_status("completed") %></th>
+            <th><%= @user.total_revenue_by_status("cancelled") %></th>
+            <th><%= @user.total_revenue %></th>
+        </tr>
+        <tr>
+            <th>Total Number of Orders</th>
+            <th><%= @user.total_orders_by_status("pending")  %></th>
+            <th><%= @user.total_orders_by_status("paid")  %></th>
+            <th><%= @user.total_orders_by_status("completed")  %></th>
+            <th><%= @user.total_orders_by_status("cancelled")  %></th>
+            <th><%= @user.total_orders %></th> 
+        </tr>  
+    </table>
+    <br/>
+    <h4 class="user-votes__header">Order Fulfillments List</h4>
     <table class="table">
         <tr>
             <th>Order ID</th>
-            <th>Total Price</th>
-            <th>Order date</th>
+            <th>Order Status</th>
+            <th>Order Item</th>
+            <th>Quantity</th>
+            <th>Subtotal Price</th>
+            <th>Order Date</th>
+            <th>Shipped?</th>
         </tr>
-        <% @user.orders.each do |order| %>
+        <% @user.orderitems.each do |orderitem| %>
             <tr>
-                <th><%= link_to order.id, order_path(order) %></th>
-                <th><%= order.created_at %></th>
-                <th><%= order.price %></th>  
+                <th><%= link_to orderitem.order_id, order_path(orderitem.order_id) %></th>
+                <th><%= Order.find_by(id: orderitem.order_id).order_status %></th>
+                <th><%= link_to Product.find_by(id: orderitem.product_id).name, product_path(orderitem.product_id) %></th>
+                <th><%= orderitem.quantity %></th>
+                <th><%= orderitem.price %></th>
+                <th><%= Time.parse("#{Order.find_by(id: orderitem.order_id).created_at}") %></th>
+                <th>Haven't had a shipped column for order item</th>  
             </tr>
         <% end %>    
     </table>
 </article>
+
+
 
