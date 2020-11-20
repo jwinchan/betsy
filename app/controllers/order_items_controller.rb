@@ -1,6 +1,6 @@
 class OrderItemsController < ApplicationController
   def create
-    chosen_product = Product.find(params[:product_id])
+    chosen_product = Product.find_by(id: :product_id)
     if chosen_product.nil?
       flash[:error] = "Product not found"
       redirect_to products_path
@@ -8,17 +8,17 @@ class OrderItemsController < ApplicationController
     end
     
     # current shopping cart
-    current_cart = order_cart 
+    current_cart = order_cart
     if current_cart.products.include?(chosen_product)
       @order_item = current_cart.order_items.find_by(product_id: chosen_product.id)
-      @order_item.quantity += 1
+      @order_item.quantity += 1 #we can add more than one quantity at a time
       # we can access the price from product, may not need "price" in order_item
       @order_item.price *= @order_item.quantity
     else
       @order_item = OrderItem.new
       @order_item.order_id = current_cart
       @order_item.product_id = chosen_product.id
-      @order_item.quantity = 1
+      @order_item.quantity = 1 #here as well, we should read the quantity from the form
       @order_item.price = chosen_product.price
     end
     
