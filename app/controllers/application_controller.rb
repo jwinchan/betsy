@@ -5,11 +5,13 @@ class ApplicationController < ActionController::Base
   before_action :find_user
 
   def order_cart
-    cart = Order.find_by(id: session[:order_id])
-    if cart
-      order_cart = cart
+    @cart = Order.find_by(id: session[:order_id])
+    if @cart
+      order_cart = @cart
+    else
+      order_cart = Order.create
     end
-    order_cart = Order.create
+
     session[:order_id] = order_cart.id
   end
 

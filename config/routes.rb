@@ -6,6 +6,9 @@ Rails.application.routes.draw do
   resources :users, except: [:new, :index]
   resources :products
   resources :orders
+  resources :order_items
+
+  get "/cart", to: "orders#cart", as: "cart"
   
   #login and logout routes
   get "/auth/github", as: "github_login"
