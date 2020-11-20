@@ -50,7 +50,6 @@ describe UsersController do
     it "responds with success when getting the edit page for an existing, valid user" do
       # Arrange
       # Ensure there is an existing user saved
-      skip
       # Act
       get edit_user_path(@user.id)
 
@@ -61,7 +60,6 @@ describe UsersController do
 
     it "responds with redirect when getting the edit page for a non-existing user" do
       # Arrange
-      skip
       # Act
       get edit_user_path(-1)
 

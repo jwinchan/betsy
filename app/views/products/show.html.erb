@@ -6,7 +6,7 @@
     <h1> <%= @product.name %> </h1>
     <p> $<%= @product.price %> </p>
     <%= select_tag(:quantity, options_for_select([[1],[2], [3], [4], [5], [6], [7], [8], [9], [10]])) %>
-    <%= button_to "Add to cart", new_orderitem_path, class: "btn btn-primary"%>
+    <%= button_to "Add to cart", new_order_item_path, class: "btn btn-primary"%>
     <section>
       <p class="font-weight-bolder">Description:</p>
       <p> <%=  @product.description %> </p>
