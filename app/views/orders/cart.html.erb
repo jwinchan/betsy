@@ -1,1 +1,6 @@
 <h1>Shopping Cart</h1>
+<ul>
+<% @cart.orderitems.each do |item| %>
+  <li><%= link_to item.product.name, product_path(item.product.id) %></li>
+<% end %>
+</ul>>
