@@ -5,6 +5,7 @@ Rails.application.routes.draw do
 
   resources :users, except: [:new, :index]
   resources :products
+  resources :orders
   
   #login and logout routes
   get "/auth/github", as: "github_login"
