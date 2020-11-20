@@ -5,7 +5,7 @@
   <div class="d-flex flex-column col-4 product-right">
     <h1> <%= @product.name %> </h1>
     <p> $<%= @product.price %> </p>
-    <%= form_with model: @orderitem, class: 'create-orderitem' do |f| %>
+    <%= form_with model: @orderitem, url: order_items_path, class: 'create-orderitem' do |f| %>
       <div>
       <%= f.label :quantity %>
       <%= f.select :quantity, [1, 2, 3] %>
