@@ -1,5 +1,5 @@
 class ProductsController < ApplicationController
-  before_action :find_product, only: [:show, :edit, :update, :destroy]
+  before_action :find_product, only: [:show, :edit, :update, :destroy, :retired]
 
   def index
     @products = Product.all
@@ -68,10 +68,10 @@ class ProductsController < ApplicationController
       return
     elsif session[:user_id] == @product.user_id
       @product.destroy
-      @task.update_attribute(:retired, false)
+      @product.update_attribute(:retired, false)
       flash[:success] = "Successfully destroyed #{ @product.name }"
       # need to clarify which path to redirect
-      redirect_to products_path
+      redirect_back(fallback_location: root_path)
       return
     else
       flash[:error] = "Only the product Seller can delete the product."
@@ -83,32 +83,29 @@ class ProductsController < ApplicationController
 
   def retired
     if @product.nil? 
-      render :file => "#{Rails.root}/public/404.html",  layout: false, status: :not_found
+      render :file => "#{Rails.root}/public/404.html", layout: false, status: :not_found
       return
     end
 
     if session[:user_id].nil?
       flash[:error] = "You must be logged in to retire this item"
-      # need to clarify which path to redirect
-      redirect_to products_path
+      redirect_to root_path
       return
     elsif session[:user_id] == @product.user_id
       if @product.retired
-        @task.update_attribute(:retired, false)
-        # need to clarify which path to redirect
-        redirect_to products_path
+        @product.update_attribute(:retired, false)
+        flash[:success] = "Successfully unretired #{ @product.name }"
+        redirect_back(fallback_location: root_path)
         return
       else
-        @task.update_attribute(:retired, true)
+        @product.update_attribute(:retired, true)
         flash[:success] = "Successfully retired #{ @product.name }"
-        # need to clarify which path to redirect
-        redirect_to products_path
+        redirect_back(fallback_location: root_path)
         return
       end
     else
       flash[:error] = "Only the product Seller can delete the product."
-      # need to clarify which path to redirect
-      redirect_to products_path
+      redirect_to root_path
       return
     end
   end
