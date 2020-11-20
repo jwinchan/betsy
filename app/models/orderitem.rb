@@ -1,5 +1,5 @@
 class Orderitem < ApplicationRecord
   belongs_to :product
   belongs_to :order
-  belongs_to :user, through: :product
+  has_one :user, through: :product
 end
