@@ -1,6 +1,24 @@
+<section class="popular">
+  <h1 class="">Popular Skills</h1>
+  <div class="d-flex justify-content-around">
+    <% ["Software development", "Sports", "Music", "Acting", "Art", "Writing"].each do |category| %>
+      <section>
+        <div class="circle d-flex justify-content-center align-items-center">placeholder?</div>
+        <div>
+          <p class="d-flex justify-content-center"><%= category %><span> &rarr; </span></p>
+        </div>
+      </section>
+    <% end %>
+  </div>
+</section>
 <section>
-  <% @products.each do |product| %>
-    <%= image_tag "#{product.photo_url}", alt: "filler" %>
-    <%= product.price %>
-  <% end %>
+  <h2>Currently Viewing: <%= "All Products" %></h2>
+  <%= select_tag(:category, options_for_select([["All"],["Software development"], ["Sports"], ["Music"], ["Acting"], ["Art"], ["Writing"]])) %>
+  <div class="d-flex flex-wrap justify-content-between">
+    <% @products.each do |product| %>
+      <%= link_to product_path(product.id) do %>
+        <%= image_tag "#{product.photo_url}", alt: "filler image" %>
+      <% end %>
+    <% end %>
+  </div>
 </section>
