@@ -4,11 +4,12 @@ Rails.application.routes.draw do
   root to: 'products#index'
 
   resources :users, except: [:new, :index]
-  resources :products
+  resources :products do 
+    resources :order_items, only: [:create]
+  end
+
   resources :orders
   resources :order_items
-
-  get "/cart", to: "orders#cart", as: "cart"
   
   #login and logout routes
   get "/auth/github", as: "github_login"
@@ -16,6 +17,7 @@ Rails.application.routes.draw do
   delete "/logout", to: "users#destroy", as: "logout"
 
   # Customized actions
+  get "/cart", to: "orders#cart", as: "cart"
   patch 'products/:id/retired', to: 'products#retired', as: 'retired_product'
   patch 'order_items/:id/shipped', to: 'order_items#shipped', as: 'shipped_order_item'
   patch 'order_items/:id/cancelled', to: 'order_items#cancelled', as: 'cancelled_order_item'

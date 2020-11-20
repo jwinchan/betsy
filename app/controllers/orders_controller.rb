@@ -1,5 +1,4 @@
 class OrdersController < ApplicationController
-  before_action :order_cart, only: [:create, :destroy]
 
   def cart
   end
