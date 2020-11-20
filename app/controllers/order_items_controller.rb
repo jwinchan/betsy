@@ -3,17 +3,6 @@ class OrderItemsController < ApplicationController
   before_action :chosen_product, only: [:create, :update]
 
   def create
-    #DELETE
-    # chosen_product = Product.find_by(id: params[:product_id])
-    # if chosen_product.nil?
-    #   flash[:error] = "Product not found"
-    #   redirect_to products_path
-    #   return
-    # end
-    #DELETE
-    # current shopping cart
-    # current_cart = order_cart # order_card return order_id
-
     @cart = Orderitem.where(order_id: order_cart)
     if @cart.include?(chosen_product)
       @order_item = @cart.order_items.find_by(product_id: chosen_product.id)
@@ -35,14 +24,6 @@ class OrderItemsController < ApplicationController
   end
 
   def update
-    #DELETE
-    # chosen_product = Product.find_by(id: params[:product_id])
-    # if chosen_product.nil?
-    #   flash[:error] = "Product not found"
-    #   redirect_to products_path
-    #   return
-    # end
-
     current_cart = order_cart
     @cart = Orderitem.where(order_id: current_cart)
     @order_item = @cart.order_items.find_by(product_id: chosen_product.id)
@@ -61,8 +42,6 @@ class OrderItemsController < ApplicationController
   end
 
   def shipped
-    # @order_item = Orderitem.find_by(id: params[:id])
-
     if @order_item.nil? 
       render :file => "#{Rails.root}/public/404.html", layout: false, status: :not_found
       return
@@ -91,8 +70,6 @@ class OrderItemsController < ApplicationController
   end
 
   def cancelled
-    # @order_item = Orderitem.find_by(id: params[:id])
-
     if @order_item.nil? 
       render :file => "#{Rails.root}/public/404.html", layout: false, status: :not_found
       return
