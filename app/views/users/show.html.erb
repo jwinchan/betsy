@@ -92,13 +92,29 @@
         <% @user.orderitems.order(id: :asc).each do |order_item| %>
             <tr>
                 <th><%= link_to order_item.order_id, order_path(order_item.order_id) %></th>
-                <th><%= order_item.order_status %></th>
+                <th><%= order_item.order_status.capitalize %></th>
                 <th><%= link_to Product.find_by(id: order_item.product_id).name, product_path(order_item.product_id) %></th>
                 <th><%= order_item.quantity %></th>
                 <th>$ <%= order_item.price %></th>
                 <th><%= Time.parse("#{Order.find_by(id: order_item.order_id).created_at}") %></th>
-                <th><%= button_to "Shipped", shipped_order_item_path(order_item), method: :patch, class: "btn btn-primary", rel: "nofollow" %></th>
-                <th><%= button_to "Cancel", cancelled_order_item_path(order_item), method: :patch, data: {confirm: "Are you sure?"}, class: "btn btn-danger", rel: "nofollow" %></th> 
+                <th>
+                    <% if order_item.shipped %>
+                        Shipped
+                    <% elsif order_item.cancelled %>
+                        Order Cancelled
+                    <% else %>
+                        <%= button_to "Shipped", shipped_order_item_path(order_item), method: :patch, class: "btn btn-primary", rel: "nofollow" %>
+                    <% end %>
+                </th>
+                <th>
+                    <% if order_item.cancelled %>
+                        Cancelled
+                    <% elsif order_item.shipped %>  
+                        Order Completed  
+                    <% else %>
+                        <%= button_to "Cancel", cancelled_order_item_path(order_item), method: :patch, data: {confirm: "Are you sure?"}, class: "btn btn-danger", rel: "nofollow" %>
+                    <% end %>    
+                </th> 
             </tr>
         <% end %>    
     </table>
