@@ -5,14 +5,14 @@
   <div class="d-flex flex-column col-4 product-right">
     <h1> <%= @product.name %> </h1>
     <p> $<%= @product.price %> </p>
-    <%= form_with model: @orderitem, class: 'create-orderitem' do |f| %>
+    <%= form_with model: @orderitem, class: 'create-orderitem', url: product_order_items_path(@product) do |f| %>
       <div>
       <%= f.label :quantity %>
       <%= f.select :quantity, [1, 2, 3] %>
       </div>
 
     <%#= select_tag(:quantity, options_for_select([[1],[2], [3], [4], [5], [6], [7], [8], [9], [10]])) %>
-      <%= f.submit "Add to cart", class: "btn btn-primary"%>
+      <%= f.submit "Add to cart", class: "btn btn-primary" %>
     <% end %>
     <section>
       <p class="font-weight-bolder">Description:</p>
