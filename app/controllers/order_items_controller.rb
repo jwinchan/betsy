@@ -1,6 +1,5 @@
 class OrderItemsController < ApplicationController
   def create
-    raise
     chosen_product = Product.find_by(id: :product_id)
     if chosen_product.nil?
       flash[:error] = "Product not found"

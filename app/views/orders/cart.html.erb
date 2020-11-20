@@ -3,4 +3,6 @@
 <% @cart.orderitems.each do |item| %>
   <li><%= link_to item.product.name, product_path(item.product.id) %></li>
 <% end %>
-</ul>>
+</ul>
+
+<%= button_to "Proceed to Checkout", class: "btn btn-primary" %>
