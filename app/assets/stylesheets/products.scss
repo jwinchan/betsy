@@ -1,3 +1,19 @@
 // Place all the styles related to the Products controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: https://sass-lang.com/
+
+.circle {
+  height: 150px;
+  width: 150px;
+  border-radius: 50px;
+  background-color: #4a4e69;
+  color: #9a8c98;
+}
+
+img {
+  width: 80%;
+}
+
+div.product-right > * {
+  margin: 30px 0px;
+}
