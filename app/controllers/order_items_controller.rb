@@ -17,7 +17,8 @@ class OrderItemsController < ApplicationController
       @order_item.product_id = chosen_product.id
       @order_item.quantity = params[:quantity].to_i
       @order_item.price = chosen_product.price
-      if @order_item.save
+      chosen_product.stock -= params[:quantity].to_i
+      if @order_item.save && chosen_product.stock >= 0 && chosen_product.save
         flash[:success] = "Successfully added this item to your cart!"
         redirect_back(fallback_location: root_path)
         return 
@@ -27,9 +28,10 @@ class OrderItemsController < ApplicationController
         return
       end
     else
-      @order_item.quantity = params[:quantity].to_i
+      @order_item.quantity += params[:quantity].to_i
       @order_item.price *= @order_item.quantity
-      if @order_item.save
+      chosen_product.stock -= params[:quantity].to_i
+      if @order_item.save && chosen_product.stock >= 0 && chosen_product.save
         flash[:success] = "Successfully updated this item in your cart!"
         redirect_back(fallback_location: root_path)
         return 
