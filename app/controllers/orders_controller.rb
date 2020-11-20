@@ -1,13 +1,6 @@
 class OrdersController < ApplicationController
-  before_action :order_cart, only: [:create, :destroy]
 
   def cart
-    @cart = Order.find_by(id: session[:order_id])
-    if @cart.nil?
-      @cart = Order.create
-    end
-
-    session[:order_id] = @cart.id
   end
 
   def show
