@@ -12,7 +12,7 @@ Rails.application.routes.draw do
   
   #login and logout routes
   get "/auth/github", as: "github_login"
-  get "/auth/:provider/callback", to: "users#create"
+  get "/auth/:provider/callback", to: "users#create", as: "omniauth_callback"
   delete "/logout", to: "users#destroy", as: "logout"
 
   # Customized actions

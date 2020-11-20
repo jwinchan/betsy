@@ -67,8 +67,8 @@ class ProductsController < ApplicationController
       redirect_to products_path
       return
     elsif session[:user_id] == @product.user_id
-      @product.destroy
       @product.update_attribute(:retired, false)
+      @product.destroy
       flash[:success] = "Successfully destroyed #{ @product.name }"
       # need to clarify which path to redirect
       redirect_back(fallback_location: root_path)
@@ -76,7 +76,7 @@ class ProductsController < ApplicationController
     else
       flash[:error] = "Only the product Seller can delete the product."
       # need to clarify which path to redirect
-      redirect_to products_path
+      redirect_to root_path
       return
     end
   end
