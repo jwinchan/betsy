@@ -5,14 +5,14 @@ class User < ApplicationRecord
 
 
   def total_revenue
-    return total_revenue = self.orderitems.sum { |order_item| order_item.price }
+    return total_revenue = self.orderitems.where(order_status: ["pending", "paid", "completed"]).sum { |order_item| order_item.price }
   end
 
   
   def total_revenue_by_status(status)
     total_revenue_status = 0
     self.orderitems.each do |order_item|
-      if Order.find_by(id: order_item.order_id).order_status == status
+      if order_item.order_status == status
         total_revenue_status += order_item.price
       end
     end  
@@ -21,13 +21,13 @@ class User < ApplicationRecord
 
   # Does this mean how many Orders? Or how many quantity of total order_items?
   def total_orders
-    return self.orderitems.count
+    return self.orderitems.where(order_status: ["pending", "paid", "completed"]).count
   end
 
   def total_orders_by_status(status)
     total_orders_status = 0
     self.orderitems.each do |order_item|
-      if Order.find_by(id: order_item.order_id).order_status == status
+      if order_item.order_status == status
         total_orders_status += 1
       end
     end  

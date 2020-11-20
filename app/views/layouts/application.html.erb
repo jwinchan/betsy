@@ -42,6 +42,14 @@
           <% end %>
         </ul>
       </nav>
+
+      <section class="alert_container">
+        <% flash.each do |name, message| %>
+          <div%>
+            <span><%= message %></span>
+          </div>
+        <% end %>
+      </section>
     </header>
 
     <% if flash[:result_text] or flash[:messages] %>
