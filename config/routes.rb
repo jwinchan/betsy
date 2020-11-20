@@ -4,7 +4,10 @@ Rails.application.routes.draw do
   root to: 'products#index'
 
   resources :users, except: [:new, :index]
-  resources :products
+  resources :products do 
+    resources :order_items, only: [:create]
+  end
+
   resources :orders
   resources :order_items
   

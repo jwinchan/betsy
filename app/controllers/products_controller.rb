@@ -114,7 +114,7 @@ class ProductsController < ApplicationController
   private
 
   def find_product
-    @product = Product.find_by_id(params[:id])
+    @product = Product.find_by(id: params[:id])
   end
 
   def product_params

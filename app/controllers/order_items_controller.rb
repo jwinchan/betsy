@@ -1,29 +1,46 @@
 class OrderItemsController < ApplicationController
   def create
-    chosen_product = Product.find_by(id: :product_id)
+    chosen_product = Product.find_by(id: params[:product_id])
     if chosen_product.nil?
       flash[:error] = "Product not found"
       redirect_to products_path
       return
     end
     
-    # current shopping cart
-    current_cart = order_cart
-    if current_cart.products.include?(chosen_product)
-      @order_item = current_cart.order_items.find_by(product_id: chosen_product.id)
-      @order_item.quantity += 1 #we can add more than one quantity at a time
-      # we can access the price from product, may not need "price" in order_item
-      @order_item.price *= @order_item.quantity
-    else
+    # current shopping cart & order_card return order_id
+    current_cart = order_cart 
+
+    @order_item = Orderitem.where(order_id: current_cart, product_id: params[:product_id]).first
+    if @order_item.nil?
       @order_item = Orderitem.new
       @order_item.order_id = current_cart
       @order_item.product_id = chosen_product.id
-      @order_item.quantity = 1 #here as well, we should read the quantity from the form
+      @order_item.quantity = params[:quantity].to_i
       @order_item.price = chosen_product.price
+      chosen_product.stock -= params[:quantity].to_i
+      if @order_item.save && chosen_product.stock >= 0 && chosen_product.save
+        flash[:success] = "Successfully added this item to your cart!"
+        redirect_back(fallback_location: root_path)
+        return 
+      else
+        flash[:error] = "Something went wrong, please try again!"
+        redirect_back(fallback_location: root_path)
+        return
+      end
+    else
+      @order_item.quantity += params[:quantity].to_i
+      @order_item.price *= @order_item.quantity
+      chosen_product.stock -= params[:quantity].to_i
+      if @order_item.save && chosen_product.stock >= 0 && chosen_product.save
+        flash[:success] = "Successfully updated this item in your cart!"
+        redirect_back(fallback_location: root_path)
+        return 
+      else
+        flash[:error] = "Something went wrong, please try again!"
+        redirect_back(fallback_location: root_path)
+        return
+      end
     end
-    
-    @order_item.save
-    redirect_to cart_path(current_cart)
   end
 
   def shipped
