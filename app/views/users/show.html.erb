@@ -96,7 +96,7 @@
                 <th><%= link_to Product.find_by(id: order_item.product_id).name, product_path(order_item.product_id) %></th>
                 <th><%= order_item.quantity %></th>
                 <th>$ <%= order_item.price %></th>
-                <th><%= Time.parse("#{Order.find_by(id: order_item.order_id).created_at}") %></th>
+                <th><%= Time.parse("#{Order.find_by(id: order_item.order_id).updated_at}") %></th>
                 <th>
                     <% if order_item.shipped %>
                         Shipped
