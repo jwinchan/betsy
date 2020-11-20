@@ -17,5 +17,7 @@ Rails.application.routes.draw do
 
   # Customized actions
   patch 'products/:id/retired', to: 'products#retired', as: 'retired_product'
+  patch 'order_items/:id/shipped', to: 'order_items#shipped', as: 'shipped_order_item'
+  patch 'order_items/:id/cancelled', to: 'order_items#cancelled', as: 'cancelled_order_item'
 
 end
