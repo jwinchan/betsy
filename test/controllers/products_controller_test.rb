@@ -167,26 +167,28 @@ end
  
 
   describe "destroy" do
-    it "can destroy product when the user is the owner" do
+    it "can delete a product when the logged-in user is also the product merchant" do
       # Arrange
-      # Need to check session[:user_id] == user.id
+      # Affect by categories, need to check again when category is added!
+      valid_user = users(:ada)
       valid_product = products(:confidence)
-      p valid_product.user_id
-      p "#########"
-      p session[:user_id]  # this one is nil now, need log in process
+      
+      # Create session[:user_id]
+      OmniAuth.config.mock_auth[:github] = OmniAuth::AuthHash.new(mock_auth_hash(valid_user))
+      get omniauth_callback_path(:github)
       
       # Act-Assert
       expect {
         delete product_path(valid_product)
       }.must_differ "Product.count", -1
       
+      expect(session[:user_id]).must_equal valid_user.id
       expect(valid_product.user_id).must_equal valid_user.id
-      # Check later, to redirect to the final path
+      expect(valid_product.retired).must_equal false
       must_respond_with :redirect
-      # add retired == false
     end
 
-    it "cannot destroy product without user login" do
+    it "cannot delete product without user login" do
       # Arrange
       valid_product = products(:confidence)
 
@@ -199,24 +201,27 @@ end
       must_respond_with :redirect
     end
 
-    it "cannot delete product when the user is not the owner" do
+    it "cannot delete product when the logged-in user is not the product merchant" do
       # Arrange
-      # Need to check session[:user_id] != user.id
-      user = User.create(id: 3, provider: "github", uid: 1234509, email: "test@adadevelopersacademy.org", name: "test")
-      invalid_user = users(:ada)
-      invalid_user.id = user.id 
+      # Affect by categories, need to check again when category is added!
+      invalid_user = users(:grace)
       valid_product = products(:confidence)
+      
+      # Create session[:user_id]
+      OmniAuth.config.mock_auth[:github] = OmniAuth::AuthHash.new(mock_auth_hash(invalid_user))
+      get omniauth_callback_path(:github)
 
       # Act-Assert
       expect {
         delete product_path(valid_product)
       }.wont_change "Product.count"
 
-      # Check later, to redirect to the final path
-      must_respond_with :redirect
+      expect(session[:user_id]).must_equal invalid_user.id
+      expect(valid_product.user_id).wont_equal invalid_user.id
+      must_redirect_to root_path
     end
 
-    it "cannot destroy a product if it's invalid" do
+    it "cannot delete a product if it's invalid and will redirect to 404" do
       # Arrange
       # Give a user/guest
       invalid_product = -1
@@ -231,20 +236,99 @@ end
   end
 
   describe "retired" do
-    it "can retire a product when the user is the owner" do
+    it "can retire a product when the logged-in user is also the product merchant" do
+      # Arrange
+      # Affect by categories, need to check again when category is added!
+      valid_user = users(:ada)
+      valid_product = products(:confidence)
+      valid_product.retired = false
+      valid_product.save
       
+      # Create session[:user_id]
+      OmniAuth.config.mock_auth[:github] = OmniAuth::AuthHash.new(mock_auth_hash(valid_user))
+      get omniauth_callback_path(:github)
+      
+      # Act-Assert
+      expect {
+        patch retired_product_path(valid_product)
+      }.wont_change 'Product.count'
+
+      expect(session[:user_id]).must_equal valid_user.id
+      expect(valid_product.user_id).must_equal valid_user.id
+
+      valid_product.reload
+      expect(valid_product.retired).must_equal true
+      must_respond_with :redirect   
+    end
+
+    it "can unretire a product when the logged-in user is also the product merchant" do
+      # Arrange
+      # Affect by categories, need to check again when category is added!
+      valid_user = users(:ada)
+      valid_product = products(:confidence)
+      valid_product.retired = true
+      valid_product.save
+      
+      # Create session[:user_id]
+      OmniAuth.config.mock_auth[:github] = OmniAuth::AuthHash.new(mock_auth_hash(valid_user))
+      get omniauth_callback_path(:github)
+      
+      # Act-Assert
+      expect {
+        patch retired_product_path(valid_product)
+      }.wont_change 'Product.count'
+
+      expect(session[:user_id]).must_equal valid_user.id
+      expect(valid_product.user_id).must_equal valid_user.id
+      
+      valid_product.reload
+      expect(valid_product.retired).must_equal false
+      must_respond_with :redirect   
     end
 
     it "cannot retire a product without user login" do
-      
+      # Arrange
+      valid_product = products(:confidence)
+      retired_status = valid_product.retired
+
+      # Act-Assert
+      expect {
+        patch retired_product_path(valid_product)
+      }.wont_change "Product.count"
+
+      valid_product.reload
+      expect(session[:user_id]).must_be_nil
+      expect(valid_product.retired).must_equal retired_status
+      must_redirect_to root_path 
     end
 
     it "cannot retire product when the user is not the owner" do
+      # Arrange
+      # Affect by categories, need to check again when category is added!
+      invalid_user = users(:grace)
+      valid_product = products(:confidence)
+      retired_status = valid_product.retired
       
+      # Create session[:user_id]
+      OmniAuth.config.mock_auth[:github] = OmniAuth::AuthHash.new(mock_auth_hash(invalid_user))
+      get omniauth_callback_path(:github)
+
+      # Act-Assert
+      expect {
+        patch retired_product_path(valid_product)
+      }.wont_change "Product.count"
+
+      valid_product.reload
+      expect(session[:user_id]).must_equal invalid_user.id
+      expect(valid_product.user_id).wont_equal invalid_user.id
+      expect(valid_product.retired).must_equal retired_status
+      must_respond_with :redirect
     end
 
     it "cannot retire a product if it's invalid" do
-      patch retired_product_path(-1)
+      expect {
+        patch retired_product_path(-1)
+      }.wont_change "Product.count"
 
       must_respond_with :not_found
     end

@@ -6,3 +6,4 @@ confidence:
   user_id: 1
   description: You will have confidence
   photo_url: https://en.wikipedia.org/wiki/Confidence 
+  retired: false

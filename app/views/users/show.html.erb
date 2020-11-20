@@ -4,10 +4,14 @@
         <tr>
             <th>User ID</th>
             <th>User Email</th>
+            <th>Description</th>
+            <th>Edit</th>
         </tr>
         <tr>
             <th><%= @user.id %></th>
             <th><%= @user.email %></th>
+            <th><%= @user.description %></th>
+            <th><%= button_to "Edit", edit_user_path(@user), method: :get, class: "btn btn-primary" %></th>
         </tr>
     </table>
 </article>
@@ -22,8 +26,11 @@
             <th>Stock</th>
             <th>Description</th>
             <th>Photo</th>
+            <th>Edit</th>
+            <th>Hide the product</th>
+            <th>Delete</th>
         </tr>
-        <% @user.products.each do |product| %>
+        <% @user.products.order(id: :asc).each do |product| %>
             <tr>
                 <th><%= product.id %></th>
                 <th><%= product.name %></th>
@@ -31,13 +38,20 @@
                 <th><%= product.stock %></th>
                 <th><%= product.description %></th>
                 <th><%= product.photo_url %></th>
+                <th><%= button_to "Edit", edit_product_path(product), method: :get, class: "btn btn-primary" %></th>
+                <th><% if product.retired %> 
+                    <%= button_to "Unretired", retired_product_path(product), method: :patch, data: {confirm: "Are you sure?"}, class: "btn btn-primary", rel: "nofollow" %>
+                <% else %>
+                    <%= button_to "Retired", retired_product_path(product), method: :patch, data: {confirm: "Are you sure?"}, class: "btn btn-primary", rel: "nofollow" %>
+                <% end %></th>  
+                <th><%= button_to "Delete", product_path(product), method: :delete, data: {confirm: "Are you sure?"}, class: "btn btn-danger", rel: "nofollow" %></th>
             </tr>
         <% end %>
     </table>
 </article>
 
 <article class="user-votes__container">
-    <h3 class="user-votes__header">Your order fulfillments</h3>
+    <h3 class="user-votes__header">Your Order Fulfillments</h3>
     <h4 class="user-votes__header">Summary</h4>
     <table class="table">
         <tr>
@@ -45,23 +59,20 @@
             <th>Pending</th>
             <th>Paid</th>
             <th>Completed</th>
-            <th>Cancelled</th>
             <th>Total</th>
         </tr>
         <tr>
             <th>Total Revenue</th>
-            <th><%= @user.total_revenue_by_status("pending") %></th>
-            <th><%= @user.total_revenue_by_status("paid") %></th>
-            <th><%= @user.total_revenue_by_status("completed") %></th>
-            <th><%= @user.total_revenue_by_status("cancelled") %></th>
-            <th><%= @user.total_revenue %></th>
+            <th>$ <%= @user.total_revenue_by_status("pending") %></th>
+            <th>$ <%= @user.total_revenue_by_status("paid") %></th>
+            <th>$ <%= @user.total_revenue_by_status("completed") %></th>
+            <th>$ <%= @user.total_revenue %></th>
         </tr>
         <tr>
             <th>Total Number of Orders</th>
             <th><%= @user.total_orders_by_status("pending")  %></th>
             <th><%= @user.total_orders_by_status("paid")  %></th>
             <th><%= @user.total_orders_by_status("completed")  %></th>
-            <th><%= @user.total_orders_by_status("cancelled")  %></th>
             <th><%= @user.total_orders %></th> 
         </tr>  
     </table>
@@ -76,16 +87,34 @@
             <th>Subtotal Price</th>
             <th>Order Date</th>
             <th>Shipped?</th>
+            <th>Cancel Order</th>
         </tr>
-        <% @user.orderitems.each do |orderitem| %>
+        <% @user.orderitems.order(id: :asc).each do |order_item| %>
             <tr>
-                <th><%= link_to orderitem.order_id, order_path(orderitem.order_id) %></th>
-                <th><%= Order.find_by(id: orderitem.order_id).order_status %></th>
-                <th><%= link_to Product.find_by(id: orderitem.product_id).name, product_path(orderitem.product_id) %></th>
-                <th><%= orderitem.quantity %></th>
-                <th><%= orderitem.price %></th>
-                <th><%= Time.parse("#{Order.find_by(id: orderitem.order_id).created_at}") %></th>
-                <th>Haven't had a shipped column for order item</th>  
+                <th><%= link_to order_item.order_id, order_path(order_item.order_id) %></th>
+                <th><%= order_item.order_status.capitalize %></th>
+                <th><%= link_to Product.find_by(id: order_item.product_id).name, product_path(order_item.product_id) %></th>
+                <th><%= order_item.quantity %></th>
+                <th>$ <%= order_item.price %></th>
+                <th><%= Time.parse("#{Order.find_by(id: order_item.order_id).created_at}") %></th>
+                <th>
+                    <% if order_item.shipped %>
+                        Shipped
+                    <% elsif order_item.cancelled %>
+                        Order Cancelled
+                    <% else %>
+                        <%= button_to "Shipped", shipped_order_item_path(order_item), method: :patch, class: "btn btn-primary", rel: "nofollow" %>
+                    <% end %>
+                </th>
+                <th>
+                    <% if order_item.cancelled %>
+                        Cancelled
+                    <% elsif order_item.shipped %>  
+                        Order Completed  
+                    <% else %>
+                        <%= button_to "Cancel", cancelled_order_item_path(order_item), method: :patch, data: {confirm: "Are you sure?"}, class: "btn btn-danger", rel: "nofollow" %>
+                    <% end %>    
+                </th> 
             </tr>
         <% end %>    
     </table>

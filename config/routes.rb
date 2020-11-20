@@ -10,11 +10,13 @@ Rails.application.routes.draw do
   
   #login and logout routes
   get "/auth/github", as: "github_login"
-  get "/auth/:provider/callback", to: "users#create"
+  get "/auth/:provider/callback", to: "users#create", as: "omniauth_callback"
   delete "/logout", to: "users#destroy", as: "logout"
 
   # Customized actions
   get "/cart", to: "orders#cart", as: "cart"
   patch 'products/:id/retired', to: 'products#retired', as: 'retired_product'
+  patch 'order_items/:id/shipped', to: 'order_items#shipped', as: 'shipped_order_item'
+  patch 'order_items/:id/cancelled', to: 'order_items#cancelled', as: 'cancelled_order_item'
 
 end
