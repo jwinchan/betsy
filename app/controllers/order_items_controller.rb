@@ -1,4 +1,17 @@
 class OrderItemsController < ApplicationController
+  def destroy
+    # item_name = @order_item.product.name
+
+    if @order_item.nil?
+      flash[:error] = "Could not remove  Order."
+      redirect_to cart_path
+    else
+      @order_item.destroy
+      flash[:success] = "Order Item #{item_name} was successfully deleted."
+      redirect_to cart_path
+    end
+  end
+ 
   def create
     chosen_product = Product.find_by(id: params[:product_id])
     if chosen_product.nil?
@@ -13,11 +26,9 @@ class OrderItemsController < ApplicationController
     @order_item = Orderitem.where(order_id: current_cart, product_id: params[:product_id]).first
     if @order_item.nil?
       @order_item = Orderitem.new
-      @order_item.order_id = current_cart
-      @order_item.product_id = chosen_product.id
-      @order_item.quantity = params[:quantity].to_i
-      @order_item.price = chosen_product.price
-      if @order_item.save
+      @order_item.update(order_id: current_cart, product_id: chosen_product.id, quantity: params[:quantity].to_i, price: (chosen_product.price * params[:quantity].to_i))
+
+      if @order_item.save && chosen_product.stock >= 0 && chosen_product.save
         flash[:success] = "Successfully added this item to your cart!"
         redirect_back(fallback_location: root_path)
         return 
@@ -27,9 +38,10 @@ class OrderItemsController < ApplicationController
         return
       end
     else
-      @order_item.quantity = params[:quantity].to_i
-      @order_item.price *= @order_item.quantity
-      if @order_item.save
+      @order_item.quantity += params[:quantity].to_i
+      @order_item.price += chosen_product.price * params[:quantity].to_i
+      
+      if @order_item.save && chosen_product.stock >= 0 && chosen_product.save
         flash[:success] = "Successfully updated this item in your cart!"
         redirect_back(fallback_location: root_path)
         return 

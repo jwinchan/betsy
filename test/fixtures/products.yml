@@ -7,6 +7,7 @@ confidence:
   description: You will have confidence
   photo_url: https://en.wikipedia.org/wiki/Confidence 
   retired: false
+<<<<<<< HEAD
 python: 
   id: 2
   name: Become a data scientist
@@ -16,3 +17,14 @@ python:
   description: Next big data master is you
   photo_url: https://www.python.org/
   retired: false
+=======
+python:
+  id: 2
+  name: data analysis
+  stock: 1000 
+  price: 10
+  user_id: 1
+  description: Get big data power
+  photo_url: https://en.wikipedia.org/wiki/Confidence 
+  retired: false
+>>>>>>> 14e87155e2dda42f394d05abdbf629e3b91c199c
