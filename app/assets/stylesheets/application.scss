@@ -23,6 +23,7 @@ $dark-grey: #4a4e69;
 $secondary-color: #c9ada7;
 $gold: #f2e9e4;
 $navy: #22223b;
+$pink: #fe6d73;
 
 $default-border: 2px solid;
 
@@ -53,6 +54,13 @@ a:hover {
   background-color: $primary-grey;
   color: white;
   border-color: $primary-grey;
+}
+
+.btn-danger {
+  background-color: $pink;
+  color: white;
+  border-color: $pink
+
 }
 
 .btn:hover {

@@ -3,30 +3,38 @@ class OrderItemsController < ApplicationController
   before_action :chosen_product, only: [:create, :update]
 
   def create
-    @cart = Orderitem.where(order_id: order_cart)
-    if @cart.include?(chosen_product)
-      @order_item = @cart.order_items.find_by(product_id: chosen_product.id)
-      @order_item.quantity += 1 #we can add more than one quantity at a time
-      # we can access the price from product, may not need "price" in order_item
-      @order_item.price *= @order_item.quantity
-      flash[:success] = "Successfully added the quantity to this item in your cart!"
-    else
+    @order_item = Orderitem.where(order_id: order_cart, product_id: params[:product_id]).first
+    if @order_item.nil?
       @order_item = Orderitem.new
-      @order_item.order_id = session[:order_id]
-      @order_item.product_id = chosen_product.id
-      @order_item.quantity = 1 #here as well, we should read the quantity from the form
-      @order_item.price = chosen_product.price
-      flash[:success] = "Successfully added this item to your cart!"
+      @order_item.update(order_id: order_cart, product_id: chosen_product.id, quantity: params[:quantity].to_i, price: (chosen_product.price * params[:quantity].to_i))
+
+      if @order_item.save && chosen_product.stock >= 0 && chosen_product.save
+        flash[:success] = "Successfully added this item to your cart!"
+        redirect_back(fallback_location: root_path)
+        return 
+      else
+        flash[:error] = "Something went wrong, please try again!"
+        redirect_back(fallback_location: root_path)
+        return
+      end
+    else
+      @order_item.quantity += params[:quantity].to_i
+      @order_item.price += chosen_product.price * params[:quantity].to_i
+      
+      if @order_item.save && chosen_product.stock >= 0 && chosen_product.save
+        flash[:success] = "Successfully updated this item in your cart!"
+        redirect_back(fallback_location: root_path)
+        return 
+      else
+        flash[:error] = "Something went wrong, please try again!"
+        redirect_back(fallback_location: root_path)
+        return
+      end
     end
-    
-    @order_item.save
-    redirect_to cart_path
   end
 
   def update
-    current_cart = order_cart
-    @cart = Orderitem.where(order_id: current_cart)
-    @order_item = @cart.order_items.find_by(product_id: chosen_product.id)
+    @order_item = @cart.orderitems.find_by(orderitem_id: chosen_product.id)
 
     if @order_item.nil?
       flash[:error] = "Could not find this product"
@@ -101,11 +109,11 @@ class OrderItemsController < ApplicationController
     item_name = @order_item.product.name
 
     if @order_item.nil?
-      flash[:error] = "Could not remove #{item_name} Order."
+      flash[:error] = "Could not remove Order."
       redirect_to cart_path
     else
       @order_item.destroy
-      flash[:success] = "Order Item #{item_name} was successfully deleted."
+      flash[:success] = "Order Item was successfully deleted."
       redirect_to cart_path
     end
   end
