@@ -8,7 +8,6 @@ class User < ApplicationRecord
     return total_revenue = self.orderitems.where(order_status: ["pending", "paid", "completed"]).sum { |order_item| order_item.price }
   end
 
-  
   def total_revenue_by_status(status)
     return total_revenue_status = self.orderitems.where(order_status: status).sum { |order_item| order_item.price }
   end

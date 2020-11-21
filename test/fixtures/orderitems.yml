@@ -16,3 +16,21 @@ orderitem2:
   order_status: "paid"
   shipped: false
   cancelled: false  
+orderitem3:
+  id: 3
+  order_id: 1
+  product_id: 2
+  quantity: 40
+  price: 40_000
+  order_status: "pending"
+  shipped: false
+  cancelled: false
+orderitem4:
+  id: 4
+  order_id: 2
+  product_id: 2
+  quantity: 40
+  price: 40_000
+  order_status: "cancelled"
+  shipped: false
+  cancelled: false
