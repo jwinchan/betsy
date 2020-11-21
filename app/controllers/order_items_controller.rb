@@ -2,13 +2,13 @@ class OrderItemsController < ApplicationController
   before_action :find_order_item, only: [:shipped, :cancelled, :update, :destroy]
   before_action :chosen_product, only: [:create, :update]
 
-  def create
+  def create # create shopping cart on product pages
     @order_item = Orderitem.where(order_id: order_cart, product_id: params[:product_id]).first
     if @order_item.nil?
       @order_item = Orderitem.new
       @order_item.update(order_id: order_cart, product_id: chosen_product.id, quantity: params[:quantity].to_i, price: (chosen_product.price * params[:quantity].to_i))
 
-      if @order_item.save && chosen_product.stock >= 0 && chosen_product.save
+      if @order_item.save && chosen_product.stock >= 0 
         flash[:success] = "Successfully added this item to your cart!"
         redirect_back(fallback_location: root_path)
         return 
@@ -21,7 +21,7 @@ class OrderItemsController < ApplicationController
       @order_item.quantity += params[:quantity].to_i
       @order_item.price += chosen_product.price * params[:quantity].to_i
       
-      if @order_item.save && chosen_product.stock >= 0 && chosen_product.save
+      if @order_item.save && chosen_product.stock >= 0 
         flash[:success] = "Successfully updated this item in your cart!"
         redirect_back(fallback_location: root_path)
         return 
