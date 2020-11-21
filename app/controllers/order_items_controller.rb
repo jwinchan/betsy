@@ -1,4 +1,5 @@
 class OrderItemsController < ApplicationController
+<<<<<<< HEAD
   def destroy
     # item_name = @order_item.product.name
 
@@ -22,11 +23,16 @@ class OrderItemsController < ApplicationController
     
     # current shopping cart & order_card return order_id
     current_cart = order_cart 
+=======
+  before_action :find_order_item, only: [:shipped, :cancelled, :update, :destroy]
+  before_action :chosen_product, only: [:create, :update]
+>>>>>>> 8ccff3a6feab1de4bf91b43e909bdcf0ca8c4423
 
-    @order_item = Orderitem.where(order_id: current_cart, product_id: params[:product_id]).first
+  def create
+    @order_item = Orderitem.where(order_id: order_cart, product_id: params[:product_id]).first
     if @order_item.nil?
       @order_item = Orderitem.new
-      @order_item.update(order_id: current_cart, product_id: chosen_product.id, quantity: params[:quantity].to_i, price: (chosen_product.price * params[:quantity].to_i))
+      @order_item.update(order_id: order_cart, product_id: chosen_product.id, quantity: params[:quantity].to_i, price: (chosen_product.price * params[:quantity].to_i))
 
       if @order_item.save && chosen_product.stock >= 0 && chosen_product.save
         flash[:success] = "Successfully added this item to your cart!"
@@ -53,9 +59,23 @@ class OrderItemsController < ApplicationController
     end
   end
 
-  def shipped
-    @order_item = Orderitem.find_by(id: params[:id])
+  def update
+    @order_item = @cart.orderitems.find_by(orderitem_id: chosen_product.id)
 
+    if @order_item.nil?
+      flash[:error] = "Could not find this product"
+    else
+      @order_item.update(
+          order_id: session[:order_id],
+          product_id: chosen_prodect.id,
+          quantity: params[:quantity].to_i,
+          price: (chosen_product.price * params[:quantity].to_i)
+      )
+      redirect_to cart_path
+    end
+  end
+
+  def shipped
     if @order_item.nil? 
       render :file => "#{Rails.root}/public/404.html", layout: false, status: :not_found
       return
@@ -84,8 +104,6 @@ class OrderItemsController < ApplicationController
   end
 
   def cancelled
-    @order_item = Orderitem.find_by(id: params[:id])
-
     if @order_item.nil? 
       render :file => "#{Rails.root}/public/404.html", layout: false, status: :not_found
       return
@@ -112,8 +130,37 @@ class OrderItemsController < ApplicationController
       return 
     end
   end
+
+  def destroy
+    item_name = @order_item.product.name
+
+    if @order_item.nil?
+      flash[:error] = "Could not remove Order."
+      redirect_to cart_path
+    else
+      @order_item.destroy
+      flash[:success] = "Order Item was successfully deleted."
+      redirect_to cart_path
+    end
+  end
     
   private
+
+  def find_order_item
+    @order_item = Orderitem.find_by(id: params[:id])
+  end
+
+  def chosen_product
+    chosen_product = Product.find_by(id: params[:product_id])
+    if chosen_product.nil?
+      flash[:error] = "Product not found"
+      redirect_to products_path
+      return
+    else
+      return chosen_product
+    end
+  end
+
   def order_item_params 
     params.require(:order_item).permit(:quantity, :price, :product_id, :order_id, :order_status, :shipped, :cancelled)
   end
