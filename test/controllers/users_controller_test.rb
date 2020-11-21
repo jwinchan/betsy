@@ -3,45 +3,58 @@ require "test_helper"
 describe UsersController do
 
   describe "show" do
-    it "responds with success when showing user its own info" do
+    it "responds with success for a logged-in user for their own page" do
       # Arrange
-      user = User.create()
-      p session[:user_id]
-      # need login_data
-
-      # Act
-      get "/users/#{ valid_user.id }"
-
-      # Assert
-      expect(valid_user).wont_be_nil
+      valid_user = users(:ada)
+      
+      # Create session[:user_id]
+      OmniAuth.config.mock_auth[:github] = OmniAuth::AuthHash.new(mock_auth_hash(valid_user))
+      get omniauth_callback_path(:github)
+      
+      # Act-Assert
+      get user_path(valid_user)
+      
       expect(session[:user_id]).must_equal valid_user.id
       must_respond_with :success
     end
 
-    it "responds with 404 with an invalid passenger id" do
+    it "responds with redirect when guest wants to see users' info" do
       # Arrange
-      invalid_user_id = -1
+      valid_user_page = users(:ada)
 
-      # Act
-      get "/users/#{ invalid_user_id }"
-
-      # Assert
-      must_respond_with :not_found
+      # Act-Assert
+      get user_path(valid_user_page)
+      
+      expect(session[:user_id]).must_be_nil
+      must_redirect_to root_path
     end
 
     it "responds with redirect when user wants to see other users' info" do
       # Arrange
-      skip
-      # need login_data
-      user = users(grace)
-      session[:user_id] = user.id
-      invalid_view = users(:ada)
-
-      # Act 
-      get "/users/#{ invalid_view.id }"
+      valid_user_page = users(:grace)
+      invalid_user = users(:ada)
       
+      # Create session[:user_id]
+      OmniAuth.config.mock_auth[:github] = OmniAuth::AuthHash.new(mock_auth_hash(invalid_user))
+      get omniauth_callback_path(:github)
+      
+      # Act-Assert
+      get user_path(valid_user_page)
+      
+      expect(session[:user_id]).must_equal invalid_user.id
+      expect(valid_user_page.id).wont_equal invalid_user.id
+      must_redirect_to root_path
+    end
+
+    it "responds with 404 with an invalid user id" do
+      # Arrange
+      invalid_user_page = -1
+
+      # Act
+      get user_path(invalid_user_page)
+
       # Assert
-      must_redirect_to user_path(user.id)
+      must_respond_with :not_found
     end
   end
 
