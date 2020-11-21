@@ -169,7 +169,6 @@ end
   describe "destroy" do
     it "can delete a product when the logged-in user is also the product merchant" do
       # Arrange
-      # Affect by categories, need to check again when category is added!
       valid_user = users(:ada)
       valid_product = products(:confidence)
       
@@ -184,7 +183,7 @@ end
       
       expect(session[:user_id]).must_equal valid_user.id
       expect(valid_product.user_id).must_equal valid_user.id
-      expect(valid_product.retired).must_equal false
+      expect(valid_product.retired).must_equal true
       must_respond_with :redirect
     end
 
@@ -203,7 +202,6 @@ end
 
     it "cannot delete product when the logged-in user is not the product merchant" do
       # Arrange
-      # Affect by categories, need to check again when category is added!
       invalid_user = users(:grace)
       valid_product = products(:confidence)
       
@@ -223,7 +221,6 @@ end
 
     it "cannot delete a product if it's invalid and will redirect to 404" do
       # Arrange
-      # Give a user/guest
       invalid_product = -1
       
       # Act-Assert
