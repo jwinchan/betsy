@@ -183,7 +183,6 @@ end
       
       expect(session[:user_id]).must_equal valid_user.id
       expect(valid_product.user_id).must_equal valid_user.id
-      expect(valid_product.retired).must_equal true
       must_respond_with :redirect
     end
 
