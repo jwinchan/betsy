@@ -13,11 +13,8 @@ class OrderItemsController < ApplicationController
     @order_item = Orderitem.where(order_id: current_cart, product_id: params[:product_id]).first
     if @order_item.nil?
       @order_item = Orderitem.new
-      @order_item.order_id = current_cart
-      @order_item.product_id = chosen_product.id
-      @order_item.quantity = params[:quantity].to_i
-      @order_item.price = chosen_product.price
-      chosen_product.stock -= params[:quantity].to_i
+      @order_item.update(order_id: current_cart, product_id: chosen_product.id, quantity: params[:quantity].to_i, price: (chosen_product.price * params[:quantity].to_i))
+
       if @order_item.save && chosen_product.stock >= 0 && chosen_product.save
         flash[:success] = "Successfully added this item to your cart!"
         redirect_back(fallback_location: root_path)
@@ -29,8 +26,8 @@ class OrderItemsController < ApplicationController
       end
     else
       @order_item.quantity += params[:quantity].to_i
-      @order_item.price *= @order_item.quantity
-      chosen_product.stock -= params[:quantity].to_i
+      @order_item.price += chosen_product.price * params[:quantity].to_i
+      
       if @order_item.save && chosen_product.stock >= 0 && chosen_product.save
         flash[:success] = "Successfully updated this item in your cart!"
         redirect_back(fallback_location: root_path)
