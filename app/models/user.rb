@@ -3,6 +3,8 @@ class User < ApplicationRecord
   has_many :orderitems, through: :products
   has_many :categories, through: :products
 
+  validates :uid, uniqueness: {scope: :provider}
+
 
   def total_revenue
     return total_revenue = self.orderitems.where(order_status: ["pending", "paid", "completed"]).sum { |order_item| order_item.price }
@@ -23,8 +25,8 @@ class User < ApplicationRecord
 
   def self.build_from_github(auth_hash)
     user = User.new
-    user.uid = auth_hash[:uid]
-    user.provider = "github"
+    user.uid = auth_hash["uid"]
+    user.provider = auth_hash["provider"]
     user.name = auth_hash["info"]["nickname"]
     user.email = auth_hash["info"]["email"]
 

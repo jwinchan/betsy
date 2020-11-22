@@ -16,8 +16,10 @@
   <%= select_tag(:category, options_for_select([["All"],["Software development"], ["Sports"], ["Music"], ["Acting"], ["Art"], ["Writing"]])) %>
   <div class="d-flex flex-wrap justify-content-between">
     <% @products.each do |product| %>
-      <%= link_to product_path(product.id) do %>
-        <%= image_tag "#{product.photo_url}", alt: "filler image" %>
+      <% unless product.retired %>
+        <%= link_to product_path(product.id) do %>
+          <%= image_tag "#{product.photo_url}", alt: "filler image" %>
+        <% end %>
       <% end %>
     <% end %>
   </div>

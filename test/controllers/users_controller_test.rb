@@ -2,6 +2,46 @@ require "test_helper"
 
 describe UsersController do
 
+  describe "login" do
+    it "can log in" do
+      user = perform_login(users(:ada))
+
+      must_respond_with :redirect
+    end
+
+    it "can log in a new user" do
+      new_user = User.new(uid: "1111", name: "Test", provider: "github", email: "email@gmail.com")
+
+      expect{
+      logged_in_user = perform_login(new_user)
+      }.must_change "User.count", 1
+
+      must_respond_with :redirect
+
+    end
+  end
+
+  describe "logout" do
+    it "can logout an existing user" do
+      perform_login
+
+      expect(session[:user_id]).wont_be_nil
+
+      delete logout_path
+
+      expect(session[:user_id]).must_be_nil
+      must_redirect_to root_path
+    end
+
+    it "cannot logout a guest" do
+      delete logout_path
+
+      expect(session[:user_id]).must_be_nil
+      must_redirect_to root_path
+    end
+  end
+
+
   describe "show" do
     it "responds with success for a logged-in user for their own page" do
       # Arrange
@@ -61,7 +101,7 @@ describe UsersController do
 
   describe "edit" do
     #need to figure out how to test edit since it's only visible to the session[:user_id]
-    it "responds with success when getting the edit page for an existing, valid user" do
+    it "responds with success when getting the edit page for an existing user while logged in as that user" do
       skip
       # Arrange
       user = users(:ada)
@@ -71,7 +111,30 @@ describe UsersController do
 
       # Assert
       must_respond_with :success
+    end
 
+    it "responds with redirect when getting the edit page for an existing user while logged in as different user" do
+      skip
+      # Arrange
+      user = users(:ada)
+      # Ensure there is an existing user saved
+      # Act
+      get edit_user_path(user.id)
+
+      # Assert
+      must_respond_with :success
+    end
+
+    it "responds with redirect when getting the edit page for an existing user while not logged in" do
+      skip
+      # Arrange
+      user = users(:ada)
+      # Ensure there is an existing user saved
+      # Act
+      get edit_user_path(user.id)
+
+      # Assert
+      must_respond_with :success
     end
 
     it "responds with redirect when getting the edit page for a non-existing user" do
@@ -81,7 +144,6 @@ describe UsersController do
 
       # Assert
       must_respond_with :redirect
-
     end
   end
 
