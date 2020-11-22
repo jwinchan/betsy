@@ -1,24 +1,183 @@
 require "test_helper"
 
 describe OrderItemsController do
+  let (:valid_order_item) {
+    {
+      order_id: session[:order_id],
+      product_id: products(:confidence).id,
+      quantity: 5
+    }
+  }
+
+  let (:invalid_order_quantity) {
+    {
+      order_id: session[:order_id],
+      product_id: products(:confidence).id,
+      quantity: 200
+    }
+  } 
+
+  let (:invalid_order_quantity_negative) {
+    {
+      order_id: session[:order_id],
+      product_id: products(:confidence).id,
+      quantity: -6
+    }
+  }
+    
   describe "create" do
-    it "can add an existing product to shopping cart" do
+    it "can add an existing product with the quantity under product stock quantity but greater than 0 to Orderitems table from Product page" do
       # Arrange
-      order_cart # method from application controller
-      valid_product = products(:confidence)
+      get cart_path  
+      id = products(:confidence).id
+
+      # Act & Assert
+      expect {
+        post product_order_items_path(id), params: valid_order_item
+      }.must_differ 'Orderitem.count', 1
+
+      order_item = Orderitem.last.reload
+      expect(order_item.order_id).must_equal session[:order_id]
+      expect(order_item.product_id).must_equal id
+      expect(order_item.quantity).must_equal 5
+      expect(order_item.price).must_equal (5 * products(:confidence).price)
+      expect(order_item.quantity).must_be :<=, products(:confidence).stock
+
+      expect(order_item.order_status).must_equal "pending"
+      expect(order_item.shipped).must_equal false
+      expect(order_item.cancelled).must_equal false
+      must_respond_with :redirect
+    end
+
+    it "cannot add an existing product with the quantity greater than product stock quantity from Product page" do
+      # Arrange
+      get cart_path  
+      # confidence's stock quantity is 100
+      id = products(:confidence).user_id
+
+      # Act & Assert
+      expect {
+        post product_order_items_path(id), params: invalid_order_quantity
+      }.wont_change 'Orderitem.count'
+
+      expect(session[:order_id]).wont_be_nil
+      order_item = Orderitem.find_by(order_id: session[:order_id], product_id: id)
+      expect(order_item).must_be_nil
+      must_respond_with :redirect
+    end
+
+    it "cannot add an existing product with the quantity <= 0 from Product page" do
+      # Arrange
+      get cart_path  
+      id = products(:confidence).user_id
+
+      # Act & Assert
+      expect {
+        post product_order_items_path(id), params: invalid_order_quantity_negative
+      }.wont_change 'Orderitem.count'
+
+      expect(session[:order_id]).wont_be_nil
+      order_item = Orderitem.find_by(order_id: session[:order_id], product_id: id)
+      expect(order_item).must_be_nil
+      must_respond_with :redirect
+    end
+
+    it "cannot add an non-existing product to Orderitems table from Product page" do
+      # Arrange
+      get cart_path  
+ 
+      # Act & Assert
+      expect {
+        post product_order_items_path(-1)
+      }.wont_change 'Orderitem.count'
+
+      expect(session[:order_id]).wont_be_nil
+      must_respond_with :redirect
+    end
+
+    it "can edit an existing product with the quantity under product stock quantity but greater than 0 to Orderitems table from Product page" do
+      # Arrange
+      get cart_path  
+      id = products(:confidence).id
 
       # Act
-      post product_order_items_path(valid_product)
+      # add a new item to Orderitems table
+      expect {
+        post product_order_items_path(id), params: valid_order_item
+      }.must_differ 'Orderitem.count', 1
 
       # Assert
-      expect(session[:order_id]).must_equal true
+      # edit that item from Product page
+      expect {
+        post product_order_items_path(id), params: valid_order_item
+      }.wont_change 'Orderitem.count'
 
+      order_item = Orderitem.find_by(order_id: session[:order_id], product_id: id)
 
+      expect(order_item.quantity).must_equal 10
+      expect(order_item.price).must_equal (10 * products(:confidence).price)
+      expect(order_item.quantity).must_be :<=, products(:confidence).stock
+
+      expect(order_item.order_status).must_equal "pending"
+      expect(order_item.shipped).must_equal false
+      expect(order_item.cancelled).must_equal false
+      must_respond_with :redirect
+    end
+
+    it "cannot edit an existing product with the quantity greater than product stock quantity from Product page" do
+      # Arrange
+      get cart_path  
+      # confidence's stock quantity is 100
+      id = products(:confidence).user_id
+
+      # Act & Assert
+      # add a new item to Orderitems table
+      expect {
+        post product_order_items_path(id), params: valid_order_item
+      }.must_differ 'Orderitem.count', 1
+
+      # Assert
+      # edit that item from Product page
+      expect {
+        post product_order_items_path(id), params: invalid_order_quantity
+      }.wont_change 'Orderitem.count'
+
+      order_item = Orderitem.find_by(order_id: session[:order_id], product_id: id)
+
+      expect(order_item.quantity).must_equal 5
+      expect(order_item.price).must_equal (5 * products(:confidence).price)
+      expect(order_item.quantity).must_be :<=, products(:confidence).stock
+      must_respond_with :redirect
+    end
+
+    it "cannot edit an existing product with the quantity <= 0 from Product page" do
+      # Arrange
+      get cart_path  
+      id = products(:confidence).user_id
+
+      # Act & Assert
+      # add a new item to Orderitems table
+      expect {
+        post product_order_items_path(id), params: valid_order_item
+      }.must_differ 'Orderitem.count', 1
+
+      # Assert
+      # edit that item from Product page
+      expect {
+        post product_order_items_path(id), params: invalid_order_quantity_negative
+      }.wont_change 'Orderitem.count'
+
+      order_item = Orderitem.find_by(order_id: session[:order_id], product_id: id)
+
+      expect(order_item.quantity).must_equal 5
+      expect(order_item.price).must_equal (5 * products(:confidence).price)
+      expect(order_item.quantity).must_be :<=, products(:confidence).stock
+      must_respond_with :redirect
     end
   end
 
-  xdescribe "shipped" do
-    it "can mark an order item as shipped when the logged-in user is also the product merchant" do
+  describe "shipped" do
+    it "can mark a paid order item as shipped when the logged-in user is also the product merchant" do
       # Arrange
       valid_user = users(:ada)
       # user1 is product1's merchant
@@ -47,7 +206,7 @@ describe OrderItemsController do
       must_respond_with :redirect   
     end
 
-    it "cannot unmark a shipped order item when the logged-in user is also the product merchant" do
+    it "cannot unmark a shipped order item even the logged-in user is the product merchant" do
       # Arrange
       valid_user = users(:ada)
       # user1 is product1's merchant
@@ -163,8 +322,8 @@ describe OrderItemsController do
     end
   end
   
-  xdescribe "cancelled" do
-    it "can mark an order item as cancelled when the logged-in user is also the product merchant" do
+  describe "cancelled" do
+    it "can mark a paid order item as cancelled when the logged-in user is also the product merchant" do
       # Arrange
       valid_user = users(:ada)
       # user1 is product1's merchant
@@ -193,7 +352,7 @@ describe OrderItemsController do
       must_respond_with :redirect   
     end
 
-    it "cannot unmark a cancelled order item when the logged-in user is also the product merchant" do
+    it "cannot unmark a cancelled order item even the logged-in user is the product merchant" do
       # Arrange
       valid_user = users(:ada)
       # user1 is product1's merchant

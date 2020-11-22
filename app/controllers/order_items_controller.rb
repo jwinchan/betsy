@@ -6,19 +6,22 @@ class OrderItemsController < ApplicationController
     @order_item = Orderitem.find_by(order_id: order_cart, product_id: params[:product_id])
 
     if @order_item.nil?
-      @order_item = Orderitem.new(quantity: order_item_params)
-      update_orderitem 
-      qty_limit = chosen_product.stock - @order_item.quantity
+      qty_limit = chosen_product.stock - params[:quantity].to_i
 
       if qty_limit < 0 
         flash[:error] = "You couldn't order more than the stock quantity."
         redirect_back(fallback_location: root_path)
         return
-      elsif @order_item.quantity <= 0
+      elsif params[:quantity].to_i <= 0
         flash[:error] = "Purchasing quantity must greater than 0!"
         redirect_back(fallback_location: root_path)
         return
-      elsif @order_item.save 
+      end  
+
+      @order_item = Orderitem.new(quantity: order_item_params)
+      update_orderitem 
+      
+      if @order_item.save 
         flash[:success] = "Successfully added this item to your cart!"
         redirect_back(fallback_location: root_path)
         return 
