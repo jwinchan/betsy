@@ -33,16 +33,16 @@
         <% @user.products.order(id: :asc).each do |product| %>
             <tr>
                 <th><%= product.id %></th>
-                <th><%= product.name %></th>
+                <th><%= link_to product.name, product_path(product.id) %></th>
                 <th><%= product.price %></th>
                 <th><%= product.stock %></th>
                 <th><%= product.description %></th>
                 <th><%= product.photo_url %></th>
                 <th><%= button_to "Edit", edit_product_path(product), method: :get, class: "btn btn-primary" %></th>
                 <th><% if product.retired %> 
-                    <%= button_to "Unretired", retired_product_path(product), method: :patch, data: {confirm: "Are you sure?"}, class: "btn btn-primary", rel: "nofollow" %>
+                    <%= button_to "Make Active", retired_product_path(product), method: :patch, data: {confirm: "Are you sure?"}, class: "btn btn-primary", rel: "nofollow" %>
                 <% else %>
-                    <%= button_to "Retired", retired_product_path(product), method: :patch, data: {confirm: "Are you sure?"}, class: "btn btn-primary", rel: "nofollow" %>
+                    <%= button_to "Retire", retired_product_path(product), method: :patch, data: {confirm: "Are you sure?"}, class: "btn btn-primary", rel: "nofollow" %>
                 <% end %></th>  
                 <th><%= button_to "Delete", product_path(product), method: :delete, data: {confirm: "Are you sure?"}, class: "btn btn-danger", rel: "nofollow" %></th>
             </tr>
