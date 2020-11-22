@@ -14,10 +14,14 @@
     <% @cart.orderitems.each do |item| %>
       <tr>
         <td><%= link_to item.product.name, product_path(item.product.id) %></td>
-        <td><%= item.quantity %></td>
-<!--        <th><%#= select_tag(:quantity, options_for_select([[1],[2],[3]])) %></th>-->
+<!--        <td><%#= item.quantity %></td>-->
+        <%= form_with model: @orderitem, url: cart_update_path(item.id), method: :patch do |f| %>
+        <td>
+          <%= f.select(:quantity, options_for_select(item.product.create_stock_collection, selected: item.quantity)) %>
+        </td>
         <td>$<%= item.price %></td>
-        <td><%= button_to "Update", order_item_path(item.id), method: :patch, class: "btn btn-primary" %></td>
+        <td><%= f.submit "Update", class: "btn btn-primary" %></td>
+        <% end %>
         <td><%= button_to "Remove", order_item_path(item.id), method: :delete, class: "btn btn-primary" %></td>
       </tr>
     <% end %>

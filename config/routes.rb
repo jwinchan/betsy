@@ -18,6 +18,7 @@ Rails.application.routes.draw do
 
   # Customized actions
   get "/cart", to: "orders#cart", as: "cart"
+  patch '/cart/orderitem/:id', to: 'order_items#update', as: 'cart_update'
   get "/confirmation", to: "orders#confirmation", as: "confirmation"
   patch 'products/:id/retired', to: 'products#retired', as: 'retired_product'
   patch 'order_items/:id/shipped', to: 'order_items#shipped', as: 'shipped_order_item'

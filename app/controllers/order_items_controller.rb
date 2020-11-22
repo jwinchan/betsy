@@ -1,12 +1,16 @@
 class OrderItemsController < ApplicationController
   before_action :find_order_item, only: [:shipped, :cancelled, :update, :destroy]
-  before_action :chosen_product, only: [:create, :update]
+  before_action :chosen_product, only: [:create]
 
   def create
     @order_item = Orderitem.where(order_id: order_cart, product_id: params[:product_id]).first
     if @order_item.nil?
       @order_item = Orderitem.new
-      @order_item.update(order_id: order_cart, product_id: chosen_product.id, quantity: params[:quantity].to_i, price: (chosen_product.price * params[:quantity].to_i))
+      @order_item.update(order_id: order_cart,
+                         product_id: chosen_product.id,
+                         quantity: params[:quantity].to_i,
+                         price: (chosen_product.price * params[:quantity].to_i)
+      )
 
       if @order_item.save && chosen_product.stock >= 0 && chosen_product.save
         flash[:success] = "Successfully added this item to your cart!"
@@ -34,18 +38,30 @@ class OrderItemsController < ApplicationController
   end
 
   def update
-    @order_item = @cart.orderitems.find_by(orderitem_id: chosen_product.id)
-
+    product = Product.find_by(id: @order_item.product_id)
     if @order_item.nil?
       flash[:error] = "Could not find this product"
-    else
-      @order_item.update(
-          order_id: session[:order_id],
-          product_id: chosen_prodect.id,
-          quantity: params[:quantity].to_i,
-          price: (chosen_product.price * params[:quantity].to_i)
-      )
-      redirect_to cart_path
+      redirect_back(fallback_location: root_path)
+      return
+    elsif @order_item
+      @order_item.quantity = params[:quantity].to_i
+      @order_item.price = product.price * params[:quantity].to_i
+    #   @order_item.save
+    #   flash[:success] = 'YES!'
+    #   redirect_to cart_path
+    #   return
+    # else
+    #   flash[:error] = 'Sorry, could not update your order.'
+
+      if @order_item.save && product.stock >= 0 && product.save
+        flash[:success] = "Successfully updated this item in your cart!"
+        redirect_to cart_path
+        return
+      else
+        flash[:error] = "Something went wrong, please try again!"
+        redirect_to cart_path
+        return
+      end
     end
   end
 
