@@ -1,23 +1,28 @@
 <h2><%= @cart.orderitems.count %> item(s) in your cart</h2>
 <article class ="cart-item__container">
   <table class="table">
-    <tr>
-      <th>Item</th>
-      <th>Quantity</th>
-      <th>Price</th>
-      <th>Update Quantity</th>
-      <th>Remove Item</th>
-    </tr>
+    <thead>
+      <tr>
+        <th>Item</th>
+        <th>Quantity</th>
+        <th>Price</th>
+        <th>Update Quantity</th>
+        <th>Remove Item</th>
+      </tr>
+    </thead>
+    <tbody>
     <% @cart.orderitems.each do |item| %>
       <tr>
-        <th><%= link_to item.product.name, product_path(item.product.id) %></th>
-        <th><%= item.quantity %></th>
+        <td><%= link_to item.product.name, product_path(item.product.id) %></td>
+        <td><%= item.quantity %></td>
 <!--        <th><%#= select_tag(:quantity, options_for_select([[1],[2],[3]])) %></th>-->
-        <th>$<%= item.price %></th>
-        <th><%= button_to "Update", order_item_path(item.id), method: :patch, class: "btn btn-primary" %></th>
-        <th><%= button_to "Remove", order_item_path(item.id), method: :delete, class: "btn btn-primary" %></th>
+        <td>$<%= item.price %></td>
+        <td><%= button_to "Update", order_item_path(item.id), method: :patch, class: "btn btn-primary" %></td>
+        <td><%= button_to "Remove", order_item_path(item.id), method: :delete, class: "btn btn-primary" %></td>
       </tr>
     <% end %>
+    </tbody>
+
   </table>
 
 <%= button_to "Proceed to Checkout", new_order_path, class: "btn btn-primary" %>
