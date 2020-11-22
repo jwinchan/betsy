@@ -1,32 +1,6 @@
 class OrderItemsController < ApplicationController
-<<<<<<< HEAD
-  def destroy
-    # item_name = @order_item.product.name
-
-    if @order_item.nil?
-      flash[:error] = "Could not remove  Order."
-      redirect_to cart_path
-    else
-      @order_item.destroy
-      flash[:success] = "Order Item #{item_name} was successfully deleted."
-      redirect_to cart_path
-    end
-  end
- 
-  def create
-    chosen_product = Product.find_by(id: params[:product_id])
-    if chosen_product.nil?
-      flash[:error] = "Product not found"
-      redirect_to products_path
-      return
-    end
-    
-    # current shopping cart & order_card return order_id
-    current_cart = order_cart 
-=======
   before_action :find_order_item, only: [:shipped, :cancelled, :update, :destroy]
   before_action :chosen_product, only: [:create, :update]
->>>>>>> 8ccff3a6feab1de4bf91b43e909bdcf0ca8c4423
 
   def create
     @order_item = Orderitem.where(order_id: order_cart, product_id: params[:product_id]).first
