@@ -40,7 +40,7 @@
                 <th><%= product.photo_url %></th>
                 <th><%= button_to "Edit", edit_product_path(product), method: :get, class: "btn btn-primary" %></th>
                 <th><% if product.retired %> 
-                    <%= button_to "Unretire", retired_product_path(product), method: :patch, data: {confirm: "Are you sure?"}, class: "btn btn-primary", rel: "nofollow" %>
+                    <%= button_to "Make Active", retired_product_path(product), method: :patch, data: {confirm: "Are you sure?"}, class: "btn btn-primary", rel: "nofollow" %>
                 <% else %>
                     <%= button_to "Retire", retired_product_path(product), method: :patch, data: {confirm: "Are you sure?"}, class: "btn btn-primary", rel: "nofollow" %>
                 <% end %></th>  
