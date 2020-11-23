@@ -1,0 +1,12 @@
+id1:
+  id: 1
+  product_id: 1
+  category_id: 2
+id2:
+  id: 2
+  product_id: 2
+  category_id: 1
+id3:
+  id: 3
+  product_id: 2
+  category_id: 2
