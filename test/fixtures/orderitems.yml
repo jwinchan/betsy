@@ -33,4 +33,40 @@ orderitem4:
   price: 40_000
   order_status: "cancelled"
   shipped: false
+  cancelled: true
+orderitem5:
+  id: 5
+  order_id: 3
+  product_id: 1
+  quantity: 2
+  price: 200
+  order_status: "completed"
+  shipped: true
+  cancelled: false  
+orderitem6:
+  id: 6
+  order_id: 4
+  product_id: 1
+  quantity: 1
+  price: 100
+  order_status: "pending"
+  shipped: false
   cancelled: false
+orderitem7:
+  id: 7
+  order_id: 5
+  product_id: 1
+  quantity: 3
+  price: 300
+  order_status: "paid"
+  shipped: false
+  cancelled: false  
+orderitem8:
+  id: 8
+  order_id: 6
+  product_id: 1
+  quantity: 2
+  price: 200
+  order_status: "completed"
+  shipped: true
+  cancelled: false  
