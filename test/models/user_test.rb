@@ -241,7 +241,6 @@ describe User do
         expect(count).must_equal 0
       end  
     end
-
     describe "self.build_from_github" do
     end
   end
