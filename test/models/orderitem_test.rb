@@ -1,7 +1,7 @@
 require "test_helper"
 
 describe Orderitem do
-  describe "relaiton" do
+  describe "relation" do
   end
 
   describe "validates" do
