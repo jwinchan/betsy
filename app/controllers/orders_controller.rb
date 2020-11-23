@@ -1,21 +1,20 @@
 class OrdersController < ApplicationController
-
   def cart
   end
-
-  def order_show
+  
+  def show
     @order = Order.find_by(id: params[:id])
     
-    # For invoce
+    # For confirmed order
     if @order.nil?  
       render :file => "#{Rails.root}/public/404.html",  layout: false, status: :not_found
       return  
     elsif @order.products.where(user_id: session[:user_id]).empty?
-      flash[:success] = "You cannot see other users' order."
-      # need to clarify which path to redirect
-      redirect_to products_path
+      flash[:success] = "You don't have product sold in this Order."
+      redirect_to root_path
       return 
     else
+      flash[:success] = "Successfully load the Order fulfillment."
       redirect_to order_path(@order.id)
       return
     end

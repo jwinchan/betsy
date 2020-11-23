@@ -1,0 +1,20 @@
+<h2>Order ID: <%= @order.id %></h2>
+<h4>User Information</h4>
+<article class ="cart-item__container">
+  <table class="table">
+    <tr>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Mailing Adress</th>
+      <th>Last 4 Didgits of Credit Card</th>
+      <th>Credit Card Exp Date</th>
+    </tr>
+    <tr>
+      <th><%= @order.name %></th>
+      <th><%= @order.email %></th>
+      <th><%= @order.mailing_address %></th>
+      <th><%= @order.cc_number %></th>
+      <th><%= @order.cc_exp_date %></th>
+    </tr>
+  </table>
+</article>  
