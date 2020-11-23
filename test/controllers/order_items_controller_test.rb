@@ -21,13 +21,11 @@ describe OrderItemsController do
       # Arrange
       get cart_path  
       id = products(:yoga).id
-      p products(:yoga)
-      p valid_order_item
 
       # Act & Assert
-      # expect {
+      expect {
         post product_order_items_path(id), params: valid_order_item
-      # }.must_differ 'Orderitem.count', 1
+      }.must_differ 'Orderitem.count', 1
 
       order_item = Orderitem.last.reload
 
@@ -107,7 +105,7 @@ describe OrderItemsController do
       # Arrange
       get cart_path  
       # confidence's stock quantity is 100
-      id = products(:confidence).user_id
+      id = products(:yoga).id
 
       # Act & Assert
       # add a new item to Orderitems table
