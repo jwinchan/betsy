@@ -1,4 +1,6 @@
-sport:
-  name: sports
-music:
-  name: music  
+cs:
+  id: 1
+  name: computer science
+mental:
+  id: 2
+  name: mental
