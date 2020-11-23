@@ -1,5 +1,7 @@
 class OrdersController < ApplicationController
-
+  def cart
+  end
+  
   def show
     @order = Order.find_by(id: params[:id])
     
