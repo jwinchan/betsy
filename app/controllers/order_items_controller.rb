@@ -1,6 +1,6 @@
 class OrderItemsController < ApplicationController
   before_action :find_order_item, only: [:shipped, :cancelled, :update, :destroy]
-  before_action :chosen_product, only: [:create, :update]
+  before_action :chosen_product, only: [:create]
 
   def create # create/update shopping cart on product pages
     @order_item = Orderitem.find_by(order_id: order_cart, product_id: params[:product_id])
@@ -47,17 +47,44 @@ class OrderItemsController < ApplicationController
     end
   end
 
-  def update # update shopping cart on shopping cart page
-    @order_item = @cart.orderitems.find_by(orderitem_id: chosen_product.id)
+  def update
+    product = Product.find_by(id: @order_item.product_id)
 
     if @order_item.nil?
       flash[:error] = "Could not find this product"
-    else
-      update_orderitem
-      redirect_to cart_path
+      redirect_back(fallback_location: root_path)
       return
-    end
-  end
+    elsif @order_item
+      @order_item.quantity = params[:quantity].to_i
+      @order_item.price = product.price * params[:quantity].to_i
+
+    #   @order_item.save
+    #   flash[:success] = 'YES!'
+    #     redirect_to cart_path
+    #     return
+    #   #else
+    #   flash[:error] = 'Sorry, could not update your order.'
+        if @order_item.save && product.stock >= 0
+          flash[:success] = "Successfully updated this item in your cart!"
+          redirect_to cart_path
+          return
+        else
+          flash[:error] = "Something went wrong, please try again!"
+          redirect_to cart_path
+          return
+        end
+
+#   def update # update shopping cart on shopping cart page
+#     @order_item = @cart.orderitems.find_by(orderitem_id: chosen_product.id)
+
+#     if @order_item.nil?
+#       flash[:error] = "Could not find this product"
+#     else
+#       update_orderitem
+#       redirect_to cart_path
+#       return
+#     end
+#   end
 
   def destroy
     item_name = @order_item.product.name
@@ -138,9 +165,10 @@ class OrderItemsController < ApplicationController
 
   def find_order_item
     @order_item = Orderitem.find_by(id: params[:id])
+  #  add error handling
   end
 
-  def chosen_product
+  def chosen_product #rename all instances to find_chosen_product
     chosen_product = Product.find_by(id: params[:product_id])
     if chosen_product.nil?
       flash[:error] = "Product not found"

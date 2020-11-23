@@ -8,8 +8,8 @@ class ApplicationController < ActionController::Base
     @cart = Order.find_by(id: session[:order_id])
     if @cart.nil?
       @cart = Order.create
+      # session[:order_id] = @cart.id
     end
-
     session[:order_id] = @cart.id
   end
 

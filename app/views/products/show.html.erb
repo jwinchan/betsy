@@ -7,10 +7,8 @@
     <p> $<%= @product.price %> </p>
     <%= form_with model: @orderitem, class: 'create-orderitem', url: product_order_items_path(@product) do |f| %>
       <div>
-      <%= f.label :quantity %>
-        <% currently_instock = [] %>
-        <% @product.stock.times { |value| currently_instock << [value + 1, value + 1] } %>
-        <%= f.select :quantity, currently_instock %>
+        <%= f.label :quantity %>
+        <%= f.select :quantity, @product.create_stock_collection, selected: :quantity %>
       </div>
       <%= f.submit "Add to cart", class: "btn btn-primary" %>
     <% end %>
