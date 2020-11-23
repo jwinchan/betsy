@@ -10,4 +10,10 @@ grace:
   uid: 13371337
   email: grace@hooper.net
   name: graceful_hopps
+color:
+  id: 3
+  provider: github
+  uid: 987654
+  email: colorful@sky.net
+  name: colorful_sky
 
