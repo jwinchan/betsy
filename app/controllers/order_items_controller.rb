@@ -12,10 +12,6 @@ class OrderItemsController < ApplicationController
         flash[:error] = "You couldn't order more than the stock quantity."
         redirect_back(fallback_location: root_path)
         return
-      elsif params[:quantity].to_i <= 0
-        flash[:error] = "Purchasing quantity must greater than 0!"
-        redirect_back(fallback_location: root_path)
-        return
       end  
 
       @order_item = Orderitem.new(quantity: order_item_params)
@@ -37,10 +33,6 @@ class OrderItemsController < ApplicationController
 
       if qty_limit < 0 
         flash[:error] = "You couldn't order more than the stock quantity."
-        redirect_back(fallback_location: root_path)
-        return
-      elsif @order_item.quantity <= 0
-        flash[:error] = "Purchasing quantity must greater than 0!"
         redirect_back(fallback_location: root_path)
         return
       elsif @order_item.save 

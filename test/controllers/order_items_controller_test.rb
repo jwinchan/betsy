@@ -16,14 +16,6 @@ describe OrderItemsController do
       quantity: 200
     }
   } 
-
-  let (:invalid_order_quantity_negative) {
-    {
-      order_id: session[:order_id],
-      product_id: products(:confidence).id,
-      quantity: -6
-    }
-  }
     
   describe "create" do
     it "can add an existing product with the quantity under product stock quantity but greater than 0 to Orderitems table from Product page" do
@@ -58,22 +50,6 @@ describe OrderItemsController do
       # Act & Assert
       expect {
         post product_order_items_path(id), params: invalid_order_quantity
-      }.wont_change 'Orderitem.count'
-
-      expect(session[:order_id]).wont_be_nil
-      order_item = Orderitem.find_by(order_id: session[:order_id], product_id: id)
-      expect(order_item).must_be_nil
-      must_respond_with :redirect
-    end
-
-    it "cannot add an existing product with the quantity <= 0 from Product page" do
-      # Arrange
-      get cart_path  
-      id = products(:confidence).user_id
-
-      # Act & Assert
-      expect {
-        post product_order_items_path(id), params: invalid_order_quantity_negative
       }.wont_change 'Orderitem.count'
 
       expect(session[:order_id]).wont_be_nil
@@ -140,31 +116,6 @@ describe OrderItemsController do
       # edit that item from Product page
       expect {
         post product_order_items_path(id), params: invalid_order_quantity
-      }.wont_change 'Orderitem.count'
-
-      order_item = Orderitem.find_by(order_id: session[:order_id], product_id: id)
-
-      expect(order_item.quantity).must_equal 5
-      expect(order_item.price).must_equal (5 * products(:confidence).price)
-      expect(order_item.quantity).must_be :<=, products(:confidence).stock
-      must_respond_with :redirect
-    end
-
-    it "cannot edit an existing product with the quantity <= 0 from Product page" do
-      # Arrange
-      get cart_path  
-      id = products(:confidence).user_id
-
-      # Act & Assert
-      # add a new item to Orderitems table
-      expect {
-        post product_order_items_path(id), params: valid_order_item
-      }.must_differ 'Orderitem.count', 1
-
-      # Assert
-      # edit that item from Product page
-      expect {
-        post product_order_items_path(id), params: invalid_order_quantity_negative
       }.wont_change 'Orderitem.count'
 
       order_item = Orderitem.find_by(order_id: session[:order_id], product_id: id)
