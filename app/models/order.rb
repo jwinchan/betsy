@@ -2,6 +2,7 @@ class Order < ApplicationRecord
   has_many :orderitems
   has_many :products, through: :orderitems
 
+  validate :orderitem_num?
   validates :name, presence: true, on: :create,
   validates :email, presence: true, 
                     format: { with: URI::MailTo::EMAIL_REGEXP, message: "must be a valid email"},
@@ -17,8 +18,14 @@ class Order < ApplicationRecord
                           cc_exp_date_valid?  
   validates :billing_zip_code, presence: true, on: :create,
 
+  def orderitem_num?
+    if orderitems.size <= 0 
+      errors.add(:cc_number, "orderitems in an order must greater than 0")
+    end
+  end
+  
   def cc_num_valid?
-    if cc_number.present? && cc_number.to_s.length < 13 && cc_number.to_s.length > 19
+    if cc_number.present? && (cc_number.to_s.length < 13 || cc_number.to_s.length > 19)
       errors.add(:cc_number, "length must between 13 to 19")
     end
   end
