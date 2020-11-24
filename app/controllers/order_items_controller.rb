@@ -67,6 +67,8 @@ class OrderItemsController < ApplicationController
         redirect_to cart_path
         return
       end
+    end
+  end
 
   def destroy
     item_name = @order_item.product.name
