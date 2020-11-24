@@ -46,6 +46,10 @@ class Order < ApplicationRecord
     self.valid?(:complete)
   end
 
+  def total
+    orderitems.sum(&:price)  #{ |order_item| order_item.price }
+  end
+
   def last_digits
     return self.cc_number.to_s[-4..-1]
   end

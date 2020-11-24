@@ -13,7 +13,7 @@ describe OrdersController do
       expect(session[:user_id]).must_equal valid_user.id
       expect(valid_order.products.where(user_id: valid_user.id)).
       wont_be_empty
-      must_redirect_to order_path
+      must_respond_with :success
     end
 
     it "redirects to root_path when a guest wants to see other users' order" do
