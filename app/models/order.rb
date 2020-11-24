@@ -45,4 +45,8 @@ class Order < ApplicationRecord
   def valid_check
     self.valid?(:complete)
   end
+
+  def total
+    orderitems.sum(&:price)  #{ |order_item| order_item.price }
+  end
 end

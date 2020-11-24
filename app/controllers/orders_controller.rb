@@ -15,7 +15,7 @@ class OrdersController < ApplicationController
       return 
     else
       flash[:success] = "Successfully load the Order fulfillment."
-      redirect_to order_path(@order.id)
+      redirect_to root_path
       return
     end
   end
@@ -48,8 +48,8 @@ class OrdersController < ApplicationController
     end
   end
 
-  def confirm
-    @order = Order.find_by(id: @cart.id)
+  def confirmation
+    @order = Order.find_by(id: params[:id])
   end
 
 
@@ -61,13 +61,13 @@ class OrdersController < ApplicationController
   def update_order
 
     @order.update(
-        name: params[:name],
-        email:params[:email],
-        mailing_address: params[:mailing_address],
-        cc_name:params[:name_on_credit_card],
-        cc_number:params[:credit_card_number],
-        cc_exp_date:params[:credit_card_expiration ],
-        billing_zip_code:params[:billing_zipcode]
+        name: params[:order][:name],
+        email:params[:order][:email],
+        mailing_address: params[:order][:mailing_address],
+        cc_name:params[:order][:name_on_credit_card],
+        cc_number:params[:order][:credit_card_number],
+        cc_exp_date:params[:order][:credit_card_expiration ],
+        billing_zip_code:params[:order][:billing_zipcode]
     )
   end
 end

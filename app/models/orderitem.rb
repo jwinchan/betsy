@@ -6,7 +6,5 @@ class Orderitem < ApplicationRecord
   validates :quantity, presence: true, numericality: { greater_than: 0, only_integer: true }
 
 
-
-
 end
 
