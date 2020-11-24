@@ -9,4 +9,8 @@ class Product < ApplicationRecord
     currently_instock.times { |num| stock_collection << num + 1 }
     return stock_collection
   end
+
+  def category_on_user_show
+    return collection = self.categories.map { |cat| cat.name }
+  end
 end

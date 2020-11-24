@@ -69,6 +69,9 @@ CSV.foreach(PRODUCT_FILE, :headers => true) do |row|
   product.photo_url = row['photo_url']
   product.retired = row['retired']
   successful = product.save
+
+  product.categories << Category.all.sample(3)
+
   if !successful
     product_failures << product
     puts "Failed to save product: #{product.inspect}"

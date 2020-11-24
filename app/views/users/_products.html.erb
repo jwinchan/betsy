@@ -3,6 +3,7 @@
     <table class="table">
         <tr>
             <th>Product ID</th>
+            <th>Product Categories</th>
             <th>Product Name</th>
             <th>Product Image</th>
             <th>Product Price</th>
@@ -15,20 +16,27 @@
         </tr>
         <% @user.products.order(id: :asc).each do |product| %>
             <tr>
-                <th><%= product.id %></th>
-                <th><%= link_to product.name, product_path(product.id) %></th>
-                <th><%= image_tag product.photo_url, alt: "product photo", class: "product-photo" %></th>
-                <th><%= product.price %></th>
-                <th><%= product.stock %></th>
-                <th><%= product.description %></th>
-                <th><%= product.photo_url %></th>
-                <th><%= button_to "Edit", edit_product_path(product), method: :get, class: "btn btn-primary" %></th>
-                <th><% if product.retired %> 
+                <td><%= product.id %></td>
+                <td>
+                    <ul>
+                    <% product.category_on_user_show.sort.each do |cat| %>
+                        <li><%= cat %></li>
+                    <% end %>  
+                    </ul>  
+                </td>
+                <td><%= link_to product.name, product_path(product.id) %></td>
+                <td><%= image_tag product.photo_url, alt: "product photo", class: "product-photo" %></td>
+                <td><%= product.price %></td>
+                <td><%= product.stock %></td>
+                <td><%= product.description %></td>
+                <td><%= product.photo_url %></td>
+                <td><%= button_to "Edit", edit_product_path(product), method: :get, class: "btn btn-primary" %></td>
+                <td><% if product.retired %> 
                     <%= button_to "Make Active", retired_product_path(product), method: :patch, data: {confirm: "Are you sure?"}, class: "btn btn-primary", rel: "nofollow" %>
                 <% else %>
                     <%= button_to "Retire", retired_product_path(product), method: :patch, data: {confirm: "Are you sure?"}, class: "btn btn-primary", rel: "nofollow" %>
-                <% end %></th>  
-                <th><%= button_to "Delete", product_path(product), method: :delete, data: {confirm: "Are you sure?"}, class: "btn btn-danger", rel: "nofollow" %></th>
+                <% end %></td>  
+                <td><%= button_to "Delete", product_path(product), method: :delete, data: {confirm: "Are you sure?"}, class: "btn btn-danger", rel: "nofollow" %></td>
             </tr>
         <% end %>
     </table>
