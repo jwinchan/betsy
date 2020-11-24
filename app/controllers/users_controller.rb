@@ -1,6 +1,22 @@
 class UsersController < ApplicationController
   before_action :find_user, only: [:show, :edit, :update]
 
+  def show_products
+    @user = User.find_by(id: session[:user_id])
+    if @user.nil?
+      render_404
+      return
+    end
+  end
+
+  def show_fulfillments
+    @user = User.find_by(id: session[:user_id])
+    if @user.nil?
+      render_404
+      return
+    end
+  end
+
   def show
     if @user.nil?
       render_404

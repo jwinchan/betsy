@@ -129,10 +129,27 @@ main {
   padding: 2rem;
 }
 
+.product-photo {
+  width: 2.5rem;
+}
+
+.user-show-primary-wizard {
+  width: 6rem;
+}
+
 .user-show-wizard {
-  width: 5rem;
+  width: 4.5rem;
 }
 
 .user-show-icon {
   width: 2.5rem;
+}
+
+.user-split-pages {
+  display: flex;
+  justify-content: center;
+}
+
+.btn-distance {
+  margin: 2rem;
 }
