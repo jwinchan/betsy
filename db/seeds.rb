@@ -55,8 +55,6 @@ CSV.foreach(USER_FILE, :headers => true) do |row|
   end
 end
 
-
-
 PRODUCT_FILE = Rails.root.join('db', 'seed_data', 'products_seeds.csv')
 puts "Loading raw product data from #{PRODUCT_FILE}"
 
@@ -78,6 +76,8 @@ CSV.foreach(PRODUCT_FILE, :headers => true) do |row|
     puts "Created product: #{product.inspect}"
   end
 end
+
+
 
 puts "Created #{count} categories."
 
