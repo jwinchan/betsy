@@ -4,12 +4,8 @@ describe OrdersController do
   describe "show" do
     it "redirects to order page for a logged-in user having sold products in an Order" do
       # Arrange
-      valid_user = users(:ada)
+      valid_user = perform_login(users(:ada))
       valid_order = orders(:order1)
-      
-      # Create session[:user_id]
-      OmniAuth.config.mock_auth[:github] = OmniAuth::AuthHash.new(mock_auth_hash(valid_user))
-      get omniauth_callback_path(:github)
       
       # Act-Assert
       get order_path(valid_order)
@@ -35,12 +31,8 @@ describe OrdersController do
 
     it "redirects to root_path when an user wants to see other users' order" do
       # Arrange
-      invalid_user = users(:grace)
+      invalid_user = perform_login(users(:color))
       valid_order = orders(:order1)
-      
-      # Create session[:user_id]
-      OmniAuth.config.mock_auth[:github] = OmniAuth::AuthHash.new(mock_auth_hash(invalid_user))
-      get omniauth_callback_path(:github)
       
       # Act-Assert
       get order_path(valid_order)
