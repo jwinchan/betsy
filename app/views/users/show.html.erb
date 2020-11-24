@@ -1,58 +1,7 @@
-<article class="user-votes__container">
-    <h3 class="user-votes__header">User: <%= @user.name %></h3>
-    <table class="table">
-        <tr>
-            <th>User ID</th>
-            <th>User Email</th>
-            <th>Description</th>
-            <th>Edit</th>
-        </tr>
-        <tr>
-            <th><%= @user.id %></th>
-            <th><%= @user.email %></th>
-            <th><%= @user.description %></th>
-            <th><%= button_to "Edit", edit_user_path(@user), method: :get, class: "btn btn-primary" %></th>
-        </tr>
-    </table>
-</article>
+<%= render partial: "userinfo" %>
 
 <article class="user-votes__container">
-    <h3 class="user-votes__header">Your Product</h3>
-    <table class="table">
-        <tr>
-            <th>Product ID</th>
-            <th>Product Name</th>
-            <th>Product Price</th>
-            <th>Stock</th>
-            <th>Description</th>
-            <th>Photo</th>
-            <th>Edit</th>
-            <th>Hide the product</th>
-            <th>Delete</th>
-        </tr>
-        <% @user.products.order(id: :asc).each do |product| %>
-            <tr>
-                <th><%= product.id %></th>
-                <th><%= link_to product.name, product_path(product.id) %></th>
-                <th><%= product.price %></th>
-                <th><%= product.stock %></th>
-                <th><%= product.description %></th>
-                <th><%= product.photo_url %></th>
-                <th><%= button_to "Edit", edit_product_path(product), method: :get, class: "btn btn-primary" %></th>
-                <th><% if product.retired %> 
-                    <%= button_to "Make Active", retired_product_path(product), method: :patch, data: {confirm: "Are you sure?"}, class: "btn btn-primary", rel: "nofollow" %>
-                <% else %>
-                    <%= button_to "Retire", retired_product_path(product), method: :patch, data: {confirm: "Are you sure?"}, class: "btn btn-primary", rel: "nofollow" %>
-                <% end %></th>  
-                <th><%= button_to "Delete", product_path(product), method: :delete, data: {confirm: "Are you sure?"}, class: "btn btn-danger", rel: "nofollow" %></th>
-            </tr>
-        <% end %>
-    </table>
-</article>
-
-<article class="user-votes__container">
-    <h3 class="user-votes__header">Your Order Fulfillments</h3>
-    <h4 class="user-votes__header">Summary</h4>
+    <h3 class="user-votes__header"><%= image_tag("rich_wizard.png", alt: "Rich wizard", class: "user-show-wizard") %> Revenue Summary</h3>
     <table class="table">
         <tr>
             <th>Order Status</th>
@@ -76,49 +25,14 @@
             <th><%= @user.total_orders %></th> 
         </tr>  
     </table>
-    <br/>
-    <h4 class="user-votes__header">Order Fulfillments List</h4>
-    <table class="table">
-        <tr>
-            <th>Order ID</th>
-            <th>Order Status</th>
-            <th>Order Item</th>
-            <th>Quantity</th>
-            <th>Subtotal Price</th>
-            <th>Order Date</th>
-            <th>Shipped?</th>
-            <th>Cancel Order</th>
-        </tr>
-        <% @user.orderitems.order(id: :asc).each do |order_item| %>
-            <tr>
-                <th><%= link_to order_item.order_id, order_path(order_item.order_id) %></th>
-                <th><%= order_item.order_status.capitalize %></th>
-                <th><%= link_to Product.find_by(id: order_item.product_id).name, product_path(order_item.product_id) %></th>
-                <th><%= order_item.quantity %></th>
-                <th>$ <%= order_item.price %></th>
-                <th><%= Time.parse("#{Order.find_by(id: order_item.order_id).updated_at}") %></th>
-                <th>
-                    <% if order_item.shipped %>
-                        Shipped
-                    <% elsif order_item.cancelled %>
-                        Order Cancelled
-                    <% else %>
-                        <%= button_to "Shipped", shipped_order_item_path(order_item), method: :patch, class: "btn btn-primary", rel: "nofollow" %>
-                    <% end %>
-                </th>
-                <th>
-                    <% if order_item.cancelled %>
-                        Cancelled
-                    <% elsif order_item.shipped %>  
-                        Order Completed  
-                    <% else %>
-                        <%= button_to "Cancel", cancelled_order_item_path(order_item), method: :patch, data: {confirm: "Are you sure?"}, class: "btn btn-danger", rel: "nofollow" %>
-                    <% end %>    
-                </th> 
-            </tr>
-        <% end %>    
-    </table>
 </article>
+
+<article class="user-split-pages">
+    <%= button_to "Your products", show_products_user_path(@user), method: :get, class: "btn btn-primary btn-distance" %>
+    <%= button_to "Your Order Fulfillments", show_fulfillments_user_path(@user), method: :get, class: "btn btn-primary btn-distance" %>
+</article>
+
+
 
 
 

@@ -22,6 +22,10 @@ class User < ApplicationRecord
     return self.orderitems.where(order_status: status).count
   end
 
+  def filter_by_status(status)
+    return self.orderitems.where(order_status: status).order(id: :asc)
+  end
+
   def self.build_from_github(auth_hash)
     user = User.new
     user.uid = auth_hash["uid"]

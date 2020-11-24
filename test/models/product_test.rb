@@ -37,13 +37,10 @@ describe Product do
 
       it "can have many orderitems" do
         # Arrange & Act
-        product1 = products(:confidence)
-        
-        orderitem1 = orderitems(:orderitem1)
-        orderitem2 = orderitems(:orderitem2)
+        product1 = products(:confidence) # 6 orderitems in orderitem.yml
 
         # Assert
-        expect(product1.orderitems.count).must_equal 2
+        expect(product1.orderitems.count).must_equal 6
       end
     end
 

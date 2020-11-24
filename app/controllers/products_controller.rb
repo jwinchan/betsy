@@ -58,7 +58,7 @@ class ProductsController < ApplicationController
 
   def destroy
     if @product.nil? 
-      render :file => "#{Rails.root}/public/404.html",  layout: false, status: :not_found
+      render_404
       return
     end
     
