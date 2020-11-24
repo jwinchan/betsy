@@ -45,12 +45,8 @@ describe UsersController do
   describe "show" do
     it "responds with success for a logged-in user for their own page" do
       # Arrange
-      valid_user = users(:ada)
-      
-      # Create session[:user_id]
-      OmniAuth.config.mock_auth[:github] = OmniAuth::AuthHash.new(mock_auth_hash(valid_user))
-      get omniauth_callback_path(:github)
-      
+      valid_user = perform_login(users(:ada))
+  
       # Act-Assert
       get user_path(valid_user)
       
@@ -72,11 +68,7 @@ describe UsersController do
     it "responds with redirect when user wants to see other users' info" do
       # Arrange
       valid_user_page = users(:grace)
-      invalid_user = users(:ada)
-      
-      # Create session[:user_id]
-      OmniAuth.config.mock_auth[:github] = OmniAuth::AuthHash.new(mock_auth_hash(invalid_user))
-      get omniauth_callback_path(:github)
+      invalid_user = perform_login(users(:ada))
       
       # Act-Assert
       get user_path(valid_user_page)
