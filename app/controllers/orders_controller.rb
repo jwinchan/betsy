@@ -44,8 +44,8 @@ class OrdersController < ApplicationController
     end
   end
 
-  def confirm
-    @order = Order.find_by(id: @cart.id)
+  def confirmation
+    @order = Order.find_by(id: params[:id])
   end
 
 
