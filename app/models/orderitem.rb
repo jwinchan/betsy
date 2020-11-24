@@ -4,4 +4,9 @@ class Orderitem < ApplicationRecord
   has_one :user, through: :product
 
   validates :quantity, presence: true, numericality: { greater_than: 0, only_integer: true }
+
+
+
+
 end
+

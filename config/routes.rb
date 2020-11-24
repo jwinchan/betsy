@@ -17,11 +17,14 @@ Rails.application.routes.draw do
   delete "/logout", to: "users#destroy", as: "logout"
 
   # Customized actions
+
   get "/cart", to: "orders#cart", as: "cart"
   patch '/cart/order_item/:id', to: 'order_items#update', as: 'cart_update'
-  get "/confirmation", to: "orders#confirmation", as: "confirmation"
-  patch 'products/:id/retired', to: 'products#retired', as: 'retired_product'
-  patch 'order_items/:id/shipped', to: 'order_items#shipped', as: 'shipped_order_item'
-  patch 'order_items/:id/cancelled', to: 'order_items#cancelled', as: 'cancelled_order_item'
+  get "/orders/:id/payment", to: 'orders#payment', as: 'payment'
+  patch '/orders/:id/complete', to: 'orders#complete', as: 'complete'
+  get "/orders/:id/confirmation", to: "orders#confirmation", as: "confirmation"
+  patch '/products/:id/retired', to: 'products#retired', as: 'retired_product'
+  patch '/order_items/:id/shipped', to: 'order_items#shipped', as: 'shipped_order_item'
+  patch '/order_items/:id/cancelled', to: 'order_items#cancelled', as: 'cancelled_order_item'
 
 end

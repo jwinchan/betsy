@@ -1,0 +1,48 @@
+<section>
+
+  <% if @order.errors.any? %>
+    <ul class="errors">
+      <% @order.errors.each do |column, message| %>
+        <li>
+          <strong><%= column.capitalize %></strong> <%= message %>
+        </li>
+      <% end %>
+    </ul>
+  <% end %>
+
+  <%= form_with model: @order,url: complete_path(@order), method: :patch, class: 'order-form' do |f| %>
+
+    <p>Please provide the following information to save your order:</p>
+    <div>
+      <%= f.label :name %>
+      <%= f.text_field :name %>
+    </div>
+    <div>
+      <%= f.label :email %>
+      <%= f.text_field :email %>
+    </div>
+    <div>
+      <%= f.label :mailing_address %>
+      <%= f.text_field :mailing_address %>
+    </div>
+    <div>
+      <%= f.label :name_on_credit_card %>
+      <%= f.text_field :name_on_credit_card %>
+    </div>
+    <div>
+      <%= f.label :credit_card_number %>
+      <%= f.text_field :credit_card_number %>
+    </div>
+    <div>
+      <%= f.label :credit_card_expiration%>
+      <%= f.text_field :credit_card_expiration %>
+    </div>
+    <div>
+      <%= f.label :billing_zipcode %>
+      <%= f.text_field :billing_zipcode %>
+    </div>
+
+    <%= f.submit "Confirm Order", class: "order-button" %>
+  <% end %>
+
+</section>
