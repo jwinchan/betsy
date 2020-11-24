@@ -1,5 +1,5 @@
 <article class="user-votes__container">
-    <h3 class="user-votes__header">User: <%= @user.name %></h3>
+    <h3 class="user-votes__header"><%= image_tag("wizard.png", alt: "wizard icon", class: "user-show-wizard") %> Wizard: <%= @user.name %></h3>
     <table class="table">
         <tr>
             <th>User ID</th>
@@ -51,7 +51,7 @@
 </article>
 
 <article class="user-votes__container">
-    <h3 class="user-votes__header">Your Order Fulfillments</h3>
+    <h3 class="user-votes__header"><%= image_tag("rich_wizard.png", alt: "Rich wizard", class: "user-show-wizard") %> Your Order Fulfillments</h3>
     <h4 class="user-votes__header">Summary</h4>
     <table class="table">
         <tr>
@@ -77,48 +77,13 @@
         </tr>  
     </table>
     <br/>
-    <h4 class="user-votes__header">Order Fulfillments List</h4>
-    <table class="table">
-        <tr>
-            <th>Order ID</th>
-            <th>Order Status</th>
-            <th>Order Item</th>
-            <th>Quantity</th>
-            <th>Subtotal Price</th>
-            <th>Order Date</th>
-            <th>Shipped?</th>
-            <th>Cancel Order</th>
-        </tr>
-        <% @user.orderitems.order(id: :asc).each do |order_item| %>
-            <tr>
-                <th><%= link_to order_item.order_id, order_path(order_item.order_id) %></th>
-                <th><%= order_item.order_status.capitalize %></th>
-                <th><%= link_to Product.find_by(id: order_item.product_id).name, product_path(order_item.product_id) %></th>
-                <th><%= order_item.quantity %></th>
-                <th>$ <%= order_item.price %></th>
-                <th><%= Time.parse("#{Order.find_by(id: order_item.order_id).updated_at}") %></th>
-                <th>
-                    <% if order_item.shipped %>
-                        Shipped
-                    <% elsif order_item.cancelled %>
-                        Order Cancelled
-                    <% else %>
-                        <%= button_to "Shipped", shipped_order_item_path(order_item), method: :patch, class: "btn btn-primary", rel: "nofollow" %>
-                    <% end %>
-                </th>
-                <th>
-                    <% if order_item.cancelled %>
-                        Cancelled
-                    <% elsif order_item.shipped %>  
-                        Order Completed  
-                    <% else %>
-                        <%= button_to "Cancel", cancelled_order_item_path(order_item), method: :patch, data: {confirm: "Are you sure?"}, class: "btn btn-danger", rel: "nofollow" %>
-                    <% end %>    
-                </th> 
-            </tr>
-        <% end %>    
-    </table>
+    <h4 class="user-votes__header"><%= image_tag("rich_wizard.png", alt: "Rich wizard", class: "user-show-wizard") %> Order Fulfillments List</h4>
+    <%= render partial: "table", locals: { action_name: "paid"} %>
+    <%= render partial: "table", locals: { action_name: "pending"} %>
+    <%= render partial: "table", locals: { action_name: "completed"} %>
+    <%= render partial: "table", locals: { action_name: "cancelled"} %>
 </article>
+
 
 
 

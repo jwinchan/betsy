@@ -1,0 +1,41 @@
+<h4 class="user-votes__header"><%= image_tag("bubbling-potion.png", alt: "Bubbling potion", class: "user-show-icon") %> <%= action_name.capitalize %></h4>
+<table class="table">
+    <tr>
+        <th>Order ID</th>
+        <th>Order Status</th>
+        <th>Order Item</th>
+        <th>Quantity</th>
+        <th>Subtotal Price</th>
+        <th>Order Date</th>
+        <th>Shipped?</th>
+        <th>Cancel Order</th>
+    </tr>
+    <% @user.orderitems.where(order_status: "#{action_name}").order(id: :asc).each do |order_item| %>
+        <tr>
+            <th><%= link_to order_item.order_id, order_path(order_item.order_id) %></th>
+            <th><%= order_item.order_status.capitalize %></th>
+            <th><%= link_to Product.find_by(id: order_item.product_id).name, product_path(order_item.product_id) %></th>
+            <th><%= order_item.quantity %></th>
+            <th>$ <%= order_item.price %></th>
+            <th><%= Time.parse("#{Order.find_by(id: order_item.order_id).updated_at}") %></th>
+            <th>
+                <% if order_item.shipped %>
+                    Yes
+                <% elsif order_item.cancelled %>
+                    Order Cancelled
+                <% else %>
+                    <%= button_to "Shipped", shipped_order_item_path(order_item), method: :patch, class: "btn btn-primary", rel: "nofollow" %>
+                <% end %>
+            </th>
+            <th>
+                <% if order_item.cancelled %>
+                    Cancelled
+                <% elsif order_item.shipped %>  
+                    Order Completed  
+                <% else %>
+                    <%= button_to "Cancel", cancelled_order_item_path(order_item), method: :patch, data: {confirm: "Are you sure?"}, class: "btn btn-danger", rel: "nofollow" %>
+                <% end %>    
+            </th> 
+        </tr>
+    <% end %>    
+</table>
