@@ -13,10 +13,6 @@ class OrdersController < ApplicationController
       flash[:success] = "You don't have product sold in this Order."
       redirect_to root_path
       return 
-    else
-      flash[:success] = "Successfully load the Order fulfillment."
-      redirect_to order_path(@order.id)
-      return
     end
   end
 
@@ -34,17 +30,17 @@ class OrdersController < ApplicationController
 
     update_order
     if @order.valid_check
-       @order.save
-        flash[:success] = "Your order was created."
-        @order.mark_as_paid
-        @order.update_stock
-        redirect_to confirmation_path(@order.id)
-        session[:order_id] = nil
-        return
+      @order.save
+      flash[:success] = "Your order was created."
+      @order.mark_as_paid
+      @order.update_stock
+      redirect_to confirmation_path(@order.id)
+      session[:order_id] = nil
+      return
     else
-        flash.now[:error] = "Your order was not created."
-        render :payment
-        return
+      flash.now[:error] = "Your order was not created."
+      render :payment
+      return
     end
   end
 
@@ -59,15 +55,14 @@ class OrdersController < ApplicationController
   end
 
   def update_order
-
     @order.update(
-        name: params[:name],
-        email:params[:email],
-        mailing_address: params[:mailing_address],
-        cc_name:params[:name_on_credit_card],
-        cc_number:params[:credit_card_number],
-        cc_exp_date:params[:credit_card_expiration ],
-        billing_zip_code:params[:billing_zipcode]
+        name: params[:order][:name],
+        email: params[:order][:email],
+        mailing_address: params[:order][:mailing_address],
+        cc_name: params[:order][:name_on_credit_card],
+        cc_number: params[:order][:credit_card_number],
+        cc_exp_date: params[:order][:credit_card_expiration],
+        billing_zip_code: params[:order][:billing_zipcode]
     )
   end
 end
