@@ -34,7 +34,6 @@ class OrdersController < ApplicationController
 
     update_order
     if @order.valid_check
-      binding.pry
        @order.save
         flash[:success] = "Your order was created."
         @order.mark_as_paid
