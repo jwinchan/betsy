@@ -9,11 +9,11 @@ class Order < ApplicationRecord
   validates :mailing_address, presence: true, on: :complete
   validates :cc_name, presence: true, on: :complete
   validates :cc_number, presence: true,
-            #numericality: { only_integer: true },
+                        numericality: { only_integer: true },
                         on: :complete
   validates :cc_exp_date, presence: true, on: :complete
   validates :billing_zip_code, presence: true, on: :complete
-  #validate :cc_num_valid?, :cc_exp_date_valid?
+  validate :cc_num_valid?, :cc_exp_date_valid?
 
   
   def cc_num_valid?
@@ -23,7 +23,7 @@ class Order < ApplicationRecord
   end
 
   def cc_exp_date_valid?
-    if cc_exp_date.present? && Datetime.parse(cc_exp_date) < Date.today
+    if cc_exp_date.present? && Time.parse(cc_exp_date) < Date.today
       errors.add(:cc_exp_date, "can't be in the past")
     end
   end
@@ -44,5 +44,9 @@ class Order < ApplicationRecord
 
   def valid_check
     self.valid?(:complete)
+  end
+
+  def last_digits
+    return self.cc_number.to_s[-4..-1]
   end
 end
