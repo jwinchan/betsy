@@ -2,7 +2,6 @@ class Order < ApplicationRecord
   has_many :orderitems
   has_many :products, through: :orderitems
 
-  # Use "request" for order confirmed temporarily
   validates :name, presence: true, on: :request
   validates :email, presence: true, 
                     format: { with: URI::MailTo::EMAIL_REGEXP, message: "must be a valid email"},
