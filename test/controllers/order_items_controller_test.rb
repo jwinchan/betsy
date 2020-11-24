@@ -417,5 +417,56 @@ describe OrderItemsController do
 
       must_respond_with :not_found
     end
-  end  
+  end
+
+  describe "update" do
+    let (:order_item_params) {
+      {
+          order_id: 1,
+          quantity: 5
+      }
+    }
+    it 'should find a valid order_item' do
+      item = orderitems(:orderitem1)
+
+      patch cart_update_path(item.id)
+
+      exist = Orderitem.find_by(id: item.id)
+      expect(exist).must_equal item
+    end
+
+    it 'should find valid product' do
+      product = Product.create
+      product.name = 'test_product'
+      order_item = Orderitem.create
+
+      order_item.product_id = product.id
+
+      expect {
+        patch cart_update(1)
+      }
+
+    end
+
+    it 'should redirect if order_item is nil' do
+      expect {
+        patch cart_update_path(-1)
+      }.wont_change "Orderitem.count"
+
+      must_respond_with :redirect
+      non_exist = Orderitem.find_by(id: -1)
+      expect(non_exist).must_be_nil
+    end
+
+    it 'should save update to order item' do
+      item = orderitems(:orderitem1)
+      expect(item.quantity).must_equal 1
+
+      patch cart_update_path(item.id), params: order_item_params
+
+      must_respond_with :redirect
+      expect(item.reload.quantity).must_equal 5
+      must_respond_with :redirect
+    end
+  end
 end

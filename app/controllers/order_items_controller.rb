@@ -48,25 +48,24 @@ class OrderItemsController < ApplicationController
   end
 
   def update
-    product = Product.find_by(id: @order_item.product_id)
-
     if @order_item.nil?
       flash[:error] = "Could not find this product"
       redirect_back(fallback_location: root_path)
       return
-    elsif @order_item
-      @order_item.quantity = params[:quantity].to_i
-      @order_item.price = product.price * params[:quantity].to_i
+    end
 
-      if @order_item.save && product.stock >= 0
-        flash[:success] = "Successfully updated this item in your cart!"
-        redirect_to cart_path
-        return
-      else
-        flash[:error] = "Something went wrong, please try again!"
-        redirect_to cart_path
-        return
-      end
+    product = Product.find_by(id: @order_item.product_id)
+    @order_item.quantity = params[:quantity].to_i
+    @order_item.price = product.price * params[:quantity].to_i
+
+    if @order_item.save && product.stock >= 0
+      flash[:success] = "Successfully updated this item in your cart!"
+      redirect_to cart_path
+      return
+    else
+      flash[:error] = "Something went wrong, please try again!"
+      redirect_to cart_path
+      return
     end
   end
 
