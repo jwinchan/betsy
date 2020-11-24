@@ -37,4 +37,4 @@
       <p><%= f.submit "Update", class: "btn btn-primary" %></p>
     <% end %>
   <% end %>
-<%= button_to "Proceed to Checkout", new_order_path, class: "btn btn-primary" %>
+<%= button_to "Proceed to Checkout", payment_path(@cart.id), method: :get, class: "btn btn-primary" %>
