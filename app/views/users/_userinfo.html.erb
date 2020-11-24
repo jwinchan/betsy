@@ -1,0 +1,17 @@
+<article class="user-votes__container">
+    <h3 class="user-votes__header"><%= image_tag("wizard.png", alt: "wizard icon", class: "user-show-primary-wizard") %> Wizard: <%= @user.name %></h3>
+    <table class="table">
+        <tr>
+            <th>User ID</th>
+            <th>User Email</th>
+            <th>Description</th>
+            <th>Edit</th>
+        </tr>
+        <tr>
+            <th><%= @user.id %></th>
+            <th><%= @user.email %></th>
+            <th><%= @user.description %></th>
+            <th><%= button_to "Edit", edit_user_path(@user), method: :get, class: "btn btn-primary" %></th>
+        </tr>
+    </table>
+</article>
