@@ -10,6 +10,7 @@ Rails.application.routes.draw do
 
   resources :products do 
     resources :order_items, only: [:create]
+    resources :reviews
   end
 
   resources :orders, except: [:index, :update, :edit, :destroy]
