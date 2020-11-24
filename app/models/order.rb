@@ -2,17 +2,18 @@ class Order < ApplicationRecord
   has_many :orderitems
   has_many :products, through: :orderitems
 
-  validates :name, presence: true, on: :create
+  # Use "request" for order confirmed temporarily
+  validates :name, presence: true, on: :request
   validates :email, presence: true, 
                     format: { with: URI::MailTo::EMAIL_REGEXP, message: "must be a valid email"},
-                    on: :create
-  validates :mailing_address, presence: true, on: :create
-  validates :cc_name, presence: true, on: :create
+                    on: :request
+  validates :mailing_address, presence: true, on: :request
+  validates :cc_name, presence: true, on: :request
   validates :cc_number, presence: true,  
                         numericality: { only_integer: true }, 
-                        on: :create
-  validates :cc_exp_date, presence: true, on: :create   
-  validates :billing_zip_code, presence: true, on: :create
+                        on: :request
+  validates :cc_exp_date, presence: true, on: :request   
+  validates :billing_zip_code, presence: true, on: :request
   validate :cc_num_valid?, :cc_exp_date_valid? 
   
   def cc_num_valid?
