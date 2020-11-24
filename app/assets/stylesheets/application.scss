@@ -129,3 +129,46 @@ main {
   padding: 2rem;
 }
 
+.app-footer {
+  max-width: 100%;
+  background-color: $secondary-color;
+  margin-bottom: 0.5rem;
+  padding: 2rem 1rem 0.5rem 1rem;
+  h1 {
+    text-align: center;
+    margin: 25px auto 40px auto;
+    a {
+      color: $gold;
+      padding-right: 25px;
+      margin-right: 15px;
+    }
+  }
+  p {
+    margin-bottom: 5px;
+  }
+}
+  
+.product-photo {
+  width: 2.5rem;
+}
+
+.user-show-primary-wizard {
+  width: 6rem;
+}
+
+.user-show-wizard {
+  width: 4.5rem;
+}
+
+.user-show-icon {
+  width: 2.5rem;
+}
+
+.user-split-pages {
+  display: flex;
+  justify-content: center;
+}
+
+.btn-distance {
+  margin: 2rem;
+}

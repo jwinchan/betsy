@@ -1,40 +1,37 @@
 <h2><%= @cart.orderitems.count %> item(s) in your cart</h2>
-<article class ="cart-item__container">
-  <table class="table">
-    <thead>
-      <tr>
-        <th>Item</th>
-        <th>Quantity</th>
-        <th>Price</th>
-        <th>Update Quantity</th>
-        <th>Remove Item</th>
-      </tr>
-    </thead>
-    <tbody>
-    <% @cart.orderitems.each do |item| %>
-      <tr>
-        <td><%= link_to item.product.name, product_path(item.product.id) %></td>
-<!--        <td><%#= item.quantity %></td>-->
-        <%= form_with scope: @orderitem, url: cart_update_path(item.id), method: :patch do |f| %>
-        <td>
-          <%= f.select(:quantity, options_for_select(item.product.create_stock_collection, selected: item.quantity)) %>
-        </td>
-        <td>$<%= item.price %></td>
-        <td><%= f.submit "Update", class: "btn btn-primary" %></td>
-        <% end %>
-        <td><%= button_to "Remove", order_item_path(item.id), method: :delete, class: "btn btn-primary" %></td>
-      </tr>
-    <% end %>
-    </tbody>
 
-  </table>
-</article>
-  <% @cart.orderitems.each do |item| %>
-      <p><%= link_to item.product.name, product_path(item.product.id) %></p>
+  <div class="container">
+    <div class = "row">
+      <div class="col-4"><h5>Item</h5></div>
+      <div class="col"><h5>Quantity</h5></div>
+      <div class="col"><h5>Price</h5></div>
+      <div class="col"><h5>Update Quantity</h5></div>
+      <div class="col"><h5>Remove Item</h5></div>
+    </div>
+  </div>
+
+  <% @cart.orderitems.order(id: :asc).each do |item| %>
+  <div class="container">
     <%= form_with model: @orderitem, url: cart_update_path(item.id), method: :patch do |f| %>
-      <%= f.select(:quantity, options_for_select(item.product.create_stock_collection, selected: item.quantity)) %>
-      <p>$<%= item.price %></p>
-      <p><%= f.submit "Update", class: "btn btn-primary" %></p>
+
+        <div class="row">
+          <div class="col-4">
+            <%= link_to item.product.name, product_path(item.product.id) %>
+          </div>
+          <div class="col">
+            <%= f.select(:quantity, options_for_select(item.product.create_stock_collection, selected: item.quantity)) %>
+          </div>
+          <div class="col">
+            $<%= item.price %>
+          </div>
+          <div class = "col">
+            <%= f.submit "Update", class: "btn btn-primary" %>
+          </div>
     <% end %>
+      <div class = "col"><%= button_to "Remove", order_item_path(item.id), method: :delete, class: "btn btn-primary" %></div>
   <% end %>
+  </div>
+
 <%= button_to "Proceed to Checkout", payment_path(@cart.id), method: :get, class: "btn btn-primary" %>
+  
+

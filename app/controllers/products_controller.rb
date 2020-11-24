@@ -58,7 +58,7 @@ class ProductsController < ApplicationController
 
   def destroy
     if @product.nil? 
-      render :file => "#{Rails.root}/public/404.html",  layout: false, status: :not_found
+      render_404
       return
     end
     
@@ -118,6 +118,6 @@ class ProductsController < ApplicationController
   end
 
   def product_params
-    return params.require(:product).permit(:name, :stock, :price, :description, :photo_url, :user_id)
+    return params.require(:product).permit(:name, :stock, :price, :description, :photo_url, :user_id, category_ids: [])
   end
 end

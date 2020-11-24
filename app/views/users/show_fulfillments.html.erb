@@ -1,0 +1,12 @@
+<%= render partial: "userinfo" %>
+<article class="user-split-pages">
+    <%= button_to "Merchant Dashboard", user_path(@user), method: :get, class: "btn btn-primary btn-distance" %>
+    <%= button_to "Your products", show_products_user_path(@user), method: :get, class: "btn btn-primary btn-distance" %>
+</article>
+<article>
+    <h3 class="user-votes__header"><%= image_tag("rich_wizard.png", alt: "Rich wizard", class: "user-show-wizard") %> Your Order Fulfillments</h3>
+    <%= render partial: "fulfillments", locals: { action_name: "paid"} %>
+    <%= render partial: "fulfillments", locals: { action_name: "pending"} %>
+    <%= render partial: "fulfillments", locals: { action_name: "completed"} %>
+    <%= render partial: "fulfillments", locals: { action_name: "cancelled"} %>
+</article>

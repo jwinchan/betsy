@@ -194,8 +194,8 @@ describe User do
         count = user1.total_orders_by_status("pending")
 
         # Assert
-        expect(user1.orderitems.where(order_status: "pending").count).must_equal 2
-        expect(count).must_equal 2
+        user_pending_orderitem = user1.orderitems.where(order_status: "pending").count
+        expect(count).must_equal user_pending_orderitem
       end 
 
       it "sums up the number of order for paid status" do
@@ -209,8 +209,8 @@ describe User do
         count = user1.total_orders_by_status("paid")
 
         # Assert
-        expect(user1.orderitems.where(order_status: "paid").count).must_equal 2
-        expect(count).must_equal 2
+        user_paid_orderitem = user1.orderitems.where(order_status: "paid").count
+        expect(count).must_equal user_paid_orderitem
       end 
 
       it "sums up the number of order for completed status" do
@@ -224,8 +224,8 @@ describe User do
         count = user1.total_orders_by_status("completed")
 
         # Assert
-        expect(user1.orderitems.where(order_status: "completed").count).must_equal 2
-        expect(count).must_equal 2
+        user_completed_orderitem = user1.orderitems.where(order_status: "completed").count
+        expect(count).must_equal user_completed_orderitem
       end 
       
       it "will return 0 if no order item in one of the status" do
@@ -237,10 +237,76 @@ describe User do
         count = user2.total_orders_by_status("paid")
 
         # Assert
-        expect(user2.orderitems.where(order_status: "paid").count).must_equal 0
+        user_paid_orderitem = user2.orderitems.where(order_status: "paid").count
+        expect(count).must_equal user_paid_orderitem
         expect(count).must_equal 0
       end  
     end
+
+    describe "filter_by_status" do
+      it "shows the orders by pending status" do
+        # Arrange & Act
+        user1 = users(:ada)
+        # order items under pending for user1
+        orderitem1 = orderitems(:orderitem1) # pending
+        orderitem6 = orderitems(:orderitem6) # pending
+
+        # Act
+        count = user1.filter_by_status("pending")
+
+        # Assert
+        user_pending_orderitem = user1.orderitems.where(order_status: "pending")
+        expect(count).must_equal user_pending_orderitem
+        expect(count.count).must_equal 2
+      end 
+
+      it "shows the orders by paid status" do
+        # Arrange & Act
+        user1 = users(:ada)
+        # order items under pending for user1
+        orderitem2 = orderitems(:orderitem2) # paid
+        orderitem7 = orderitems(:orderitem7) # paid
+
+        # Act
+        count = user1.filter_by_status("paid")
+
+        # Assert
+        user_paid_orderitem = user1.orderitems.where(order_status: "paid")
+        expect(count).must_equal user_paid_orderitem
+        expect(count.count).must_equal 2
+      end 
+
+      it "shows the orders by completed status" do
+        # Arrange & Act
+        user1 = users(:ada)
+        # order items under pending for user1
+        orderitem5 = orderitems(:orderitem5) # completed
+        orderitem8 = orderitems(:orderitem8) # completed
+
+        # Act
+        count = user1.filter_by_status("completed")
+
+        # Assert
+        user_completed_orderitem = user1.orderitems.where(order_status: "completed")
+        expect(count).must_equal user_completed_orderitem
+        expect(count.count).must_equal 2
+      end 
+      
+      it "will return 0 if no order item in one of the status" do
+        # Arrange & Act
+        # user2 doesn't have order item under paid status
+        user2 = users(:grace) 
+
+        # Act
+        count = user2.filter_by_status("paid")
+
+        # Assert
+        user_paid_orderitem = user2.orderitems.where(order_status: "paid")
+        expect(count).must_equal user_paid_orderitem
+        expect(count.count).must_equal 0
+      end  
+    end
+
     describe "self.build_from_github" do
     end
   end

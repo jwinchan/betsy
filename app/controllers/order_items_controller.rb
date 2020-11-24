@@ -48,59 +48,24 @@ class OrderItemsController < ApplicationController
   end
 
   def update
-    product = Product.find_by(id: @order_item.product_id)
-
     if @order_item.nil?
       flash[:error] = "Could not find this product"
-#       return
-#     else
-#       @order_item.quantity += params[:quantity].to_i
-#       @order_item.price += chosen_product.price * params[:quantity].to_i
-      
-#       if @order_item.save && chosen_product.stock >= 0 && chosen_product.save
-#         flash[:success] = "Successfully updated this item in your cart!"
-#         redirect_back(fallback_location: root_path)
-#         return 
-#       else
-#         flash[:error] = "Something went wrong, please try again!"
-#         redirect_back(fallback_location: root_path)
-#         return
-#       end
       redirect_back(fallback_location: root_path)
       return
-    elsif @order_item
-      @order_item.quantity = params[:quantity].to_i
-      @order_item.price = product.price * params[:quantity].to_i
-
-    #   @order_item.save
-    #   flash[:success] = 'YES!'
-    #     redirect_to cart_path
-    #     return
-    #   #else
-    #   flash[:error] = 'Sorry, could not update your order.'
-        if @order_item.save && product.stock >= 0
-          flash[:success] = "Successfully updated this item in your cart!"
-          redirect_to cart_path
-          return
-        else
-          flash[:error] = "Something went wrong, please try again!"
-          redirect_to cart_path
-          return
-        end
     end
-  end      
-
-#   def update # update shopping cart on shopping cart page
-#     @order_item = @cart.orderitems.find_by(orderitem_id: chosen_product.id)
-
-#     if @order_item.nil?
-#       flash[:error] = "Could not find this product"
-#     else
-#       update_orderitem
-#       redirect_to cart_path
-#       return
-#     end
-#   end
+    product = Product.find_by(id: @order_item.product_id)
+    @order_item.quantity = params[:quantity].to_i
+    @order_item.price = product.price * params[:quantity].to_i
+    if @order_item.save && product.stock >= 0
+      flash[:success] = "Successfully updated this item in your cart!"
+      redirect_to cart_path
+      return
+    else
+      flash[:error] = "Something went wrong, please try again!"
+      redirect_to cart_path
+      return
+    end
+  end
 
   def destroy
     item_name = @order_item.product.name

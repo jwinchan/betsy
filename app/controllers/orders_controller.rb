@@ -7,7 +7,7 @@ class OrdersController < ApplicationController
     
     # For confirmed order
     if @order.nil?  
-      render :file => "#{Rails.root}/public/404.html",  layout: false, status: :not_found
+      render_404
       return  
     elsif @order.products.where(user_id: session[:user_id]).empty?
       flash[:success] = "You don't have product sold in this Order."

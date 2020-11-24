@@ -14,6 +14,7 @@ class Order < ApplicationRecord
   validates :cc_exp_date, presence: true, on: :complete
   validates :billing_zip_code, presence: true, on: :complete
   #validate :cc_num_valid?, :cc_exp_date_valid?
+
   
   def cc_num_valid?
     if cc_number.present? && (cc_number.to_s.length < 13 || cc_number.to_s.length > 19)
@@ -43,6 +44,5 @@ class Order < ApplicationRecord
 
   def valid_check
     self.valid?(:complete)
-    binding.pry
   end
 end

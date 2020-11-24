@@ -16,3 +16,12 @@ python:
   description: Next big data master is you
   photo_url: https://www.python.org/
   retired: false
+yoga: 
+  id: 3
+  name: relex your body
+  stock: 150 
+  price: 200
+  user_id: 2
+  description: Feel your body
+  photo_url: https://en.wikipedia.org/wiki/Yoga
+  retired: false
