@@ -169,12 +169,8 @@ end
   describe "destroy" do
     it "can delete a product when the logged-in user is also the product merchant" do
       # Arrange
-      valid_user = users(:ada)
+      valid_user = perform_login(users(:ada))
       valid_product = products(:confidence)
-      
-      # Create session[:user_id]
-      OmniAuth.config.mock_auth[:github] = OmniAuth::AuthHash.new(mock_auth_hash(valid_user))
-      get omniauth_callback_path(:github)
       
       # Act-Assert
       expect {
@@ -201,12 +197,8 @@ end
 
     it "cannot delete product when the logged-in user is not the product merchant" do
       # Arrange
-      invalid_user = users(:grace)
+      invalid_user = perform_login(users(:grace))
       valid_product = products(:confidence)
-      
-      # Create session[:user_id]
-      OmniAuth.config.mock_auth[:github] = OmniAuth::AuthHash.new(mock_auth_hash(invalid_user))
-      get omniauth_callback_path(:github)
 
       # Act-Assert
       expect {
@@ -235,14 +227,10 @@ end
     it "can retire a product when the logged-in user is also the product merchant" do
       # Arrange
       # Affect by categories, need to check again when category is added!
-      valid_user = users(:ada)
+      valid_user = perform_login(users(:ada))
       valid_product = products(:confidence)
       valid_product.retired = false
       valid_product.save
-      
-      # Create session[:user_id]
-      OmniAuth.config.mock_auth[:github] = OmniAuth::AuthHash.new(mock_auth_hash(valid_user))
-      get omniauth_callback_path(:github)
       
       # Act-Assert
       expect {
@@ -260,14 +248,10 @@ end
     it "can unretire a product when the logged-in user is also the product merchant" do
       # Arrange
       # Affect by categories, need to check again when category is added!
-      valid_user = users(:ada)
+      valid_user = perform_login(users(:ada))
       valid_product = products(:confidence)
       valid_product.retired = true
       valid_product.save
-      
-      # Create session[:user_id]
-      OmniAuth.config.mock_auth[:github] = OmniAuth::AuthHash.new(mock_auth_hash(valid_user))
-      get omniauth_callback_path(:github)
       
       # Act-Assert
       expect {
@@ -301,13 +285,9 @@ end
     it "cannot retire product when the user is not the owner" do
       # Arrange
       # Affect by categories, need to check again when category is added!
-      invalid_user = users(:grace)
+      invalid_user = perform_login(users(:grace))
       valid_product = products(:confidence)
       retired_status = valid_product.retired
-      
-      # Create session[:user_id]
-      OmniAuth.config.mock_auth[:github] = OmniAuth::AuthHash.new(mock_auth_hash(invalid_user))
-      get omniauth_callback_path(:github)
 
       # Act-Assert
       expect {
