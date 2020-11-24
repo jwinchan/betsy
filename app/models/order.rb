@@ -1,6 +1,6 @@
 class Order < ApplicationRecord
-  has_many :orderitems, on: :create
-  has_many :products, through: :orderitems, on: :create
+  has_many :orderitems
+  has_many :products, through: :orderitems
 
   validates :name, presence: true, on: :create
   validates :email, presence: true, 
@@ -10,12 +10,10 @@ class Order < ApplicationRecord
   validates :cc_name, presence: true, on: :create
   validates :cc_number, presence: true,  
                         numericality: { only_integer: true }, 
-                        on: :create,
-                        cc_num_valid?
-  validates :cc_exp_date, presence: true, 
-                          on: :create,  
-                          cc_exp_date_valid?  
+                        on: :create
+  validates :cc_exp_date, presence: true, on: :create   
   validates :billing_zip_code, presence: true, on: :create
+  validate :cc_num_valid?, :cc_exp_date_valid? 
   
   def cc_num_valid?
     if cc_number.present? && (cc_number.to_s.length < 13 || cc_number.to_s.length > 19)

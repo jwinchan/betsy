@@ -87,6 +87,8 @@ class OrderItemsController < ApplicationController
           redirect_to cart_path
           return
         end
+    end
+  end      
 
 #   def update # update shopping cart on shopping cart page
 #     @order_item = @cart.orderitems.find_by(orderitem_id: chosen_product.id)
