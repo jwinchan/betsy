@@ -10,7 +10,7 @@
         <th>Shipped?</th>
         <th>Cancel Order</th>
     </tr>
-    <% @user.orderitems.where(order_status: "#{action_name}").order(id: :asc).each do |order_item| %>
+    <% @user.filter_by_status(action_name).each do |order_item| %>
         <tr>
             <th><%= link_to order_item.order_id, order_path(order_item.order_id) %></th>
             <th><%= order_item.order_status.capitalize %></th>
