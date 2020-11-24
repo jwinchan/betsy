@@ -6,6 +6,35 @@ require "csv"
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+#
+categories = [
+    {
+        name: "Software development"
+    },
+    {
+        name: "Sports"
+    },
+    {
+        name: "Music"
+    },
+    {
+        name: "Acting"
+    },
+    {
+        name: "Art"
+    },
+    {
+        name: "Writing"
+    }
+]
+
+count = 0
+categories.each do |category|
+  if Category.create(category)
+    count += 1
+  end
+end
+
 USER_FILE = Rails.root.join('db', 'seed_data', 'users_seeds.csv')
 puts "Loading raw product data from #{USER_FILE}"
 
@@ -49,6 +78,8 @@ CSV.foreach(PRODUCT_FILE, :headers => true) do |row|
     puts "Created product: #{product.inspect}"
   end
 end
+
+puts "Created #{count} categories."
 
 puts "Added #{User.count} user records"
 puts "#{user_failures.length} users failed to save"
