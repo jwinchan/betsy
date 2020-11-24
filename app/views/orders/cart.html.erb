@@ -8,12 +8,8 @@
       <div class="col"><h5>Update Quantity</h5></div>
       <div class="col"><h5>Remove Item</h5></div>
     </div>
-  </div>
-
-  <% @cart.orderitems.order(id: :asc).each do |item| %>
-  <div class="container">
-    <%= form_with model: @orderitem, url: cart_update_path(item.id), method: :patch do |f| %>
-
+    <% @cart.orderitems.order(id: :asc).each do |item| %>
+      <%= form_with model: @orderitem, url: cart_update_path(item.id), method: :patch do |f| %>
         <div class="row">
           <div class="col-4">
             <%= link_to item.product.name, product_path(item.product.id) %>
@@ -28,9 +24,11 @@
             <%= f.submit "Update", class: "btn btn-primary" %>
           </div>
         </div>
+      <% end %>
+        <div class = "col">
+          <%= button_to "Remove", order_item_path(item.id), method: :delete, class: "btn btn-primary" %>
+        </div>
     <% end %>
-      <div class = "col"><%= button_to "Remove", order_item_path(item.id), method: :delete, class: "btn btn-primary" %></div>
-  <% end %>
   </div>
 
 <%= button_to "Proceed to Checkout", payment_path(@cart.id), method: :get, class: "btn btn-primary" %>
