@@ -32,24 +32,25 @@ class OrdersController < ApplicationController
   def complete
     @order = Order.find_by(id: @cart.id)
 
-      update_order
-      if @order.save
+    update_order
+    if @order.valid_check
+      binding.pry
+       @order.save
         flash[:success] = "Your order was created."
         @order.mark_as_paid
         @order.update_stock
         redirect_to confirmation_path(@order.id)
         session[:order_id] = nil
         return
-      else
-        flash[:error] = "Your order was not created."
-        redirect_to cart_path
+    else
+        flash.now[:error] = "Your order was not created."
+        render :payment
         return
-      end
-
+    end
   end
 
   def confirm
-
+    @order = Order.find_by(id: @cart.id)
   end
 
 
