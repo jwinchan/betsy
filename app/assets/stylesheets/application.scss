@@ -192,6 +192,15 @@ main {
   margin-left: 2rem;
 }
 
+.cart-checkout {
+  margin: 5rem;
+  justify-content: center;
+  display: flex;
+}
+.cart-line {
+  padding: .5rem;
+}
+
 .pr-grid {
   display: grid;
   grid-template-columns: 2fr 3fr 3fr 2fr;
