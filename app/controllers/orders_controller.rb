@@ -51,7 +51,7 @@ class OrdersController < ApplicationController
 
   private
   def order_params
-    return params.require(:order).permit(:order_item_id, :name, :email, :mailing_address, :cc_name, :cc_number, :cc_exp_date, :billing_zip_code)
+    return params.require(:order).permit(:order_item_id, :name, :email, :mailing_address, :cc_name, :cc_number, :cc_cvv, :cc_exp_date, :billing_zip_code)
   end
 
   def update_order
@@ -61,6 +61,7 @@ class OrdersController < ApplicationController
         mailing_address: params[:order][:mailing_address],
         cc_name: params[:order][:name_on_credit_card],
         cc_number: params[:order][:credit_card_number],
+        cc_cvv: params[:order][:credit_card_cvv],
         cc_exp_date: params[:order][:credit_card_expiration],
         billing_zip_code: params[:order][:billing_zipcode]
     )
