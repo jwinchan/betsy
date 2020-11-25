@@ -1,10 +1,15 @@
-<section class="d-flex flex-wrap">
-  <div class="col-8">
-    <%= image_tag "#{@product.photo_url}", alt: "filler" %>
+<section class="pr-grid">
+  <div class="pr-img">
+    <%= image_tag "#{@product.photo_url}", alt: "filler", class: "pr-size" %>
   </div>
-  <div class="d-flex flex-column col-4 product-right">
-    <h1> <%= @product.name %> </h1>
-    <p> <%= format_money(@product.price) %> </p>
+  <div class="pr-description">
+    <h2> <%= @product.name %> </h2>
+    <h5>Price: <%= format_money(@product.price) %> </h5>
+    <% if @product.reviews.count == 0 %>
+      <h5> Average Rating: Waiting for you to add a Review! </h5>
+    <% else %>
+      <h5> Average Rating: <%= @product.ave_rating %> </h5>
+    <% end %>  
     <%= form_with model: @orderitem, class: 'create-orderitem', url: product_order_items_path(@product) do |f| %>
       <div>
         <%= f.label :quantity %>
@@ -13,8 +18,8 @@
       <%= f.submit "Add to cart", class: "btn btn-primary" %>
     <% end %>
     <section>
-      <p class="font-weight-bolder">Description:</p>
-      <p> <%=  @product.description %> </p>
+      <h5 class="pr-under">Description:</h5>
+      <h6> <%=  @product.description %> </h6>
     </section>
   </div>
 </section>

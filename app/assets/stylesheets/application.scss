@@ -27,6 +27,27 @@ $pink: #fe6d73;
 
 $default-border: 2px solid;
 
+body, html {
+  overflow: auto;
+  height: 100%;
+}
+.main-container {
+  min-height: 100vh;
+  display: block;
+  position: relative;
+  padding-bottom: 100px; /* height of the footer */
+  margin-bottom: -50px;
+}
+footer {
+  position: absolute;
+  bottom: 0;
+  right: 0; 
+  text-align: center;
+  color: #363636;
+  width: 100%;
+}
+
+
 body, h1, h2, h3, h4, h5, h6 {
   font-family: $primary-font
 }
@@ -170,7 +191,36 @@ main {
 .app-footer__user-nav-container .nav-item {
   margin-left: 2rem;
 }
-  
+
+.pr-grid {
+  display: grid;
+  grid-template-columns: 2fr 3fr 3fr 2fr;
+}
+
+.pr-img {
+  grid-column: 2 /3;
+}
+
+.pr-description {
+  grid-column: 3 /4;
+}
+.pr-description > h2 {
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+}
+
+.pr-description  h5 {
+  padding-bottom: 2rem;
+}
+.pr-under {
+  padding-top: 3rem;
+  padding-bottom: .5rem;
+}
+
+.pr-size {
+  width: 25vw;
+}
+
 .product-photo {
   width: 2.5rem;
 }
@@ -195,3 +245,4 @@ main {
 .btn-distance {
   margin: 2rem;
 }
+

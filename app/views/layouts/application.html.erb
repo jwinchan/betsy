@@ -11,65 +11,66 @@
   </head>
 
   <body>
-    <header class="app-header__header">
-      <h1>
-        <%= link_to "Mama Jeti's Apothecary", root_path %>
-        <small>Why learn a new skill when you can drink it?</small>
-      </h1>
-      <nav class="app-header__nav">
-        <ul class="nav app-header__site-nav-container">
-          <li class="nav-item app-header__nav_item">
-            <%= link_to "View All Products", root_path, class: "nav-link" %>
-          </li>
-          <li class="nav-item app-header__nav_item">
-            <%= link_to "Shopping Cart: #{@cart.orderitems.count}", cart_path, class: "nav-link" %>
-          </li>
-          <% if session[:user_id] %>
-          <li class="nav-item app-header__nav_item">
-            <%= link_to "Add New Product", new_product_path, class: "nav-link" %>
-          </li>
-          <li class="nav-item app-header__nav_item">
-            <%= link_to "Merchant Dashboard", user_path(session[:user_id]), class: "nav-link" %>
-          </li>
-          <% end %>
-          <% if session[:user_id] %>
+    <div class="main-container">
+      <header class="app-header__header">
+        <h1>
+          <%= link_to "Mama Jeti's Apothecary", root_path %>
+          <small>Why learn a new skill when you can drink it?</small>
+        </h1>
+        <nav class="app-header__nav">
+          <ul class="nav app-header__site-nav-container">
             <li class="nav-item app-header__nav_item">
-              <%= link_to "Log Out", logout_path, method: :delete, class: "btn btn-primary" %>
+              <%= link_to "View All Products", root_path, class: "nav-link" %>
             </li>
-          <% else %>
             <li class="nav-item app-header__nav_item">
-              <%= link_to "Login with GitHub", github_login_path, class: "btn btn-primary" %>
+              <%= link_to "Shopping Cart: #{@cart.orderitems.count}", cart_path, class: "nav-link" %>
             </li>
-          <% end %>
-        </ul>
-      </nav>
-    </header>
+            <% if session[:user_id] %>
+              <li class="nav-item app-header__nav_item">
+                <%= link_to "Add New Product", new_product_path, class: "nav-link" %>
+              </li>
+              <li class="nav-item app-header__nav_item">
+                <%= link_to "Merchant Dashboard", user_path(session[:user_id]), class: "nav-link" %>
+              </li>
+            <% end %>
+             <% if session[:user_id] %>
+              <li class="nav-item app-header__nav_item">
+                <%= link_to "Log Out", logout_path, method: :delete, class: "btn btn-primary" %>
+              </li>
+             <% else %>
+              <li class="nav-item app-header__nav_item">
+                <%= link_to "Login with GitHub", github_login_path, class: "btn btn-primary" %>
+              </li>
+            <% end %>
+          </ul>
+        </nav>
+      </header>
 
-    <section class="alert_container">
-      <% flash.each do |name, message| %>
-        <div>
-          <span><%= message %></span>
-        </div>
-      <% end %>
-    </section>
+      <section class="alert_container">
+        <% flash.each do |name, message| %>
+          <div>
+            <span><%= message %></span>
+          </div>
+        <% end %>
+      </section>
 
+      <main>
+        <%= yield %>
+      </main>
 
-    <main>
-      <%= yield %>
-    </main>
-
-    <footer class="app-footer__footer">
-      <nav class="app-footer__nav">
-        <ul class="nav app-footer__site-nav-container">
-          <li class="nav-item app-footer__nav_item">
-            <%= link_to "About Us", root_path, class: "nav-link" %>
-          </li>
-          <li class="nav-item app-header__nav_item">
-            <%= link_to "Contact Us", root_path, class: "nav-link" %>
-          </li>
-        </ul>
-      </nav>
-      <h6>&copy; 2020 Mama Jeti</h6>
-    </footer>
+      <footer class="app-footer__footer">
+        <nav class="app-footer__nav">
+          <ul class="nav app-footer__site-nav-container">
+            <li class="nav-item app-footer__nav_item">
+              <%= link_to "About Us", root_path, class: "nav-link" %>
+            </li>
+            <li class="nav-item app-header__nav_item">
+              <%= link_to "Contact Us", root_path, class: "nav-link" %>
+            </li>
+          </ul>
+        </nav>
+        <h6>&copy; 2020 Mama Jeti</h6>
+      </footer>
+    </div>  
   </body>
 </html>
