@@ -6,11 +6,18 @@
     <h1> <%= @product.name %> </h1>
     <p> <%= format_money(@product.price) %> </p>
     <%= form_with model: @orderitem, class: 'create-orderitem', url: product_order_items_path(@product) do |f| %>
-      <div>
-        <%= f.label :quantity %>
-        <%= f.select :quantity, @product.create_stock_collection, selected: :quantity %>
-      </div>
+      <% if @product.stock == 0 %>
+        <div>
+          <p>Currently out of stock!</p>
+          <%= f.submit "Add to cart", class: "btn btn-secondary", disabled: true %>
+        </div>
+      <% else %>
+        <div>
+          <%= f.label :quantity %>
+          <%= f.select :quantity, @product.create_stock_collection, selected: :quantity %>
+        </div>
       <%= f.submit "Add to cart", class: "btn btn-primary" %>
+      <% end %>
     <% end %>
     <section>
       <p class="font-weight-bolder">Description:</p>
