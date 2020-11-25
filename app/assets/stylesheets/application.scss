@@ -27,6 +27,27 @@ $pink: #fe6d73;
 
 $default-border: 2px solid;
 
+body, html {
+  overflow: auto;
+  height: 100%;
+}
+.main-container {
+  min-height: 100vh;
+  display: block;
+  position: relative;
+  padding-bottom: 100px; /* height of the footer */
+  margin-bottom: -50px;
+}
+footer {
+  position: absolute;
+  bottom: 0;
+  right: 0; 
+  text-align: center;
+  color: #363636;
+  width: 100%;
+}
+
+
 body, h1, h2, h3, h4, h5, h6 {
   font-family: $primary-font
 }
