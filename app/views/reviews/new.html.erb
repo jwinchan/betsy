@@ -11,6 +11,7 @@
 <h2>Add a new review</h2>
 
 <section>
+  <h4>Product: <%= @product.name %></h4>
   <%= form_with model: @review, url: product_reviews_path(product_id: @product), method: :post do |f| %>
     <div class="form-group">
       <%= f.label :rating %>
