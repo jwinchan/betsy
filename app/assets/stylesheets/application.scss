@@ -27,7 +27,7 @@ $pink: #fe6d73;
 
 $default-border: 2px solid;
 
-body, h1, h2, h3, h4, h5 {
+body, h1, h2, h3, h4, h5, h6 {
   font-family: $primary-font
 }
 
@@ -127,20 +127,41 @@ main {
   padding: 2rem;
 }
 
-.app-footer {
+.app-footer__footer {
   max-width: 100%;
   background-color: $secondary-color;
-  margin-bottom: 0.5rem;
-  padding: 2rem 1rem 0.5rem 1rem;
+  padding: 0.5rem 0.5rem 0.5rem 0.5rem;
   h6 {
     text-align: center;
     margin: 25px auto 25px auto;
     color: $gold;
   }
-  p {
-    margin-bottom: 5px;
-  }
 }
+
+
+.app-footer__nav {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  justify-content: center;
+}
+
+.app-footer__nav_item {
+  margin-top: 1rem;
+}
+
+.app-footer__nav_item .nav-link {
+  color: $dark-grey;
+}
+
+.app-footer__site-nav-container .app-footer__nav_item {
+  margin-right: 2rem;
+}
+
+.app-footer__user-nav-container .nav-item {
+  margin-left: 2rem;
+}
+
   
 .product-photo {
   width: 2.5rem;
