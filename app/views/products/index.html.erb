@@ -1,16 +1,16 @@
-<section class="popular">
-  <h1 class="">Popular Skills</h1>
-  <div class="d-flex justify-content-around">
-    <% ["Software development", "Sports", "Music", "Acting", "Art", "Writing"].each do |category| %>
-      <section>
-        <div class="circle d-flex justify-content-center align-items-center">placeholder?</div>
-        <div>
-          <p class="d-flex justify-content-center"><%= category %><span> &rarr; </span></p>
-        </div>
-      </section>
-    <% end %>
-  </div>
-</section>
+<!--<section class="popular">-->
+<!--  <h1>Popular Skills</h1>-->
+<!--  <div class="d-flex justify-content-around">-->
+    <%# ["Software development", "Sports", "Music", "Acting", "Art", "Writing"].each do |category| %>
+<!--      <section>-->
+<!--        <div class="circle d-flex justify-content-center align-items-center">placeholder?</div>-->
+<!--        <div>-->
+<!--          <p class="d-flex justify-content-center"><%#= category %><span> &rarr; </span></p>-->
+<!--        </div>-->
+<!--      </section>-->
+    <%# end %>
+<!--  </div>-->
+<!--</section>-->
 <section>
   <h2>Currently Viewing: <%= "All Products" %></h2>
   <%= select_tag(:category, options_for_select([["All"],["Software development"], ["Sports"], ["Music"], ["Acting"], ["Art"], ["Writing"]])) %>
@@ -18,7 +18,7 @@
     <% @products.each do |product| %>
       <% unless product.retired %>
         <div class="card" style="width: 18rem;">
-          <img class="card-img-top" src="https://i.pinimg.com/564x/1a/bb/d4/1abbd47b5ccea3eda7d8acb092ab011b.jpg" alt="filler image">
+          <%= image_tag product.photo_url, class: "card-img-top", alt: "filler image" %>
           <div class="card-body">
             <h5 class="card-title"><%= link_to product.name, product_path(product.id) %></h5>
             <p class="card-text"><%= product.description %></p>
