@@ -1,19 +1,6 @@
 class ReviewsController < ApplicationController
   before_action :find_review
 
-  def index
-    # don't know if we need it or not
-    @reviews = Review.all
-  end
-
-  def show
-    if @review.nil?
-      flash.now[:error] = "The review you are looking for is not found"
-      redirect_to product_path(@review.product_id)
-      return
-    end
-  end
-
   def new
     @review = Review.new
     @product = Product.find_by(id: params[:product_id])
@@ -46,13 +33,6 @@ class ReviewsController < ApplicationController
   end
 
   def edit
-    @product = Product.find_by(id: params[:product_id])
-    if @product.nil?
-      flash.now[:error] = "Couldn't find this product"
-      redirect_to root_path
-      return
-    end
-    
     if @review.nil?
       flash.now[:error] = "The review you are looking for is not found"
       redirect_to product_path(@review.product_id)
@@ -61,13 +41,6 @@ class ReviewsController < ApplicationController
   end
 
   def update
-    @product = Product.find_by(id: params[:product_id])
-    if @product.nil?
-      flash.now[:error] = "Couldn't find this product"
-      redirect_to root_path
-      return
-    end
-
     if @review.nil?
       flash.now[:error] = "The review you are looking for is not found"
       redirect_to product_path(@review.product_id)

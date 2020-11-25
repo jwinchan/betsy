@@ -37,8 +37,8 @@
       </tr>
       <tr>
         <div>
-          <%= button_to "Edit Review", edit_product_review_path(product_id: @product, id: review), method: :get, class: "nav-link" %>
-          <%= button_to "Delete Review", product_review_path(product_id: @product, id: review), method: :delete, data: {confirm: "Are you sure?"}, class: "btn btn-danger", rel: "nofollow" %>
+          <%= button_to "Edit Review", edit_review_path(review), method: :get, class: "nav-link" %>
+          <%= button_to "Delete Review", review_path(review), method: :delete, data: {confirm: "Are you sure?"}, class: "btn btn-danger", rel: "nofollow" %>
         </div>
       </tr>
     <% end %>
