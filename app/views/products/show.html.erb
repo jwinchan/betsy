@@ -4,7 +4,7 @@
   </div>
   <div class="d-flex flex-column col-4 product-right">
     <h1> <%= @product.name %> </h1>
-    <p> $<%= @product.price %> </p>
+    <p> <%= format_money(@product.price) %> </p>
     <%= form_with model: @orderitem, class: 'create-orderitem', url: product_order_items_path(@product) do |f| %>
       <div>
         <%= f.label :quantity %>
@@ -18,7 +18,6 @@
     </section>
   </div>
 </section>
-
 <section>
   <h2>Product Review:<%= button_to "Add New Review", new_product_review_path(@product), method: :get, class: "btn btn-primary" %></h2>
   <table class="table">

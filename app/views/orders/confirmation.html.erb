@@ -34,13 +34,13 @@
     <tr>
       <td><%= item.product.name %></td>
       <td><%= item.quantity %></td>
-      <td>$<%= item.price %></td>
+      <td><%= format_money(item.price) %></td>
     </tr>
     <% end %>
     <tr>
       <td></td>
       <td><h4>Total : </h4></td>
-      <td>$<%=@order.total %></td>
+      <td><%=format_money(@order.total) %></td>
     </tr>
     </tbody>
   </table>
