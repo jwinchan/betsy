@@ -54,4 +54,20 @@ describe OrdersController do
       must_respond_with :not_found
     end
   end
+
+  describe "cart" do
+    it "responds with success when getting the cart page for guest" do
+      get cart_path
+
+      must_respond_with :success
+    end
+
+    it "responds with success when getting the cart page for logged-in user" do
+      perform_login
+
+      get cart_path
+
+      must_respond_with :success
+    end
+  end
 end
