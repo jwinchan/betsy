@@ -2,12 +2,30 @@ require "test_helper"
 
 describe User do
   describe "validations" do
+    before do
+      @user = users(:ada)
+    end
     it 'is valid when all fields are present' do
-      skip
+      expect(@user.valid?).must_equal true
+    end
+
+    it "is invalid when uid is missing" do
+      @user.uid = nil
+      expect(@user.valid?).must_equal false
+    end
+
+    it "is invalid when name is missing" do
+      @user.name = nil
+      expect(@user.valid?).must_equal false
+    end
+
+    it "is invalid when email is missing" do
+      @user.email = nil
+      expect(@user.valid?).must_equal false
     end
   end
 
-  describe "relaitons" do
+  describe "relations" do
     describe "products" do
     end
     
