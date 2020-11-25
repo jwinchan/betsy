@@ -9,22 +9,22 @@ require "csv"
 #
 categories = [
     {
-        name: "Software development"
+        name: "Software Development"
     },
     {
-        name: "Sports"
+        name: "Cognitive"
     },
     {
-        name: "Music"
+        name: "Behavioral"
     },
     {
-        name: "Acting"
+        name: "Athleticism"
     },
     {
-        name: "Art"
+        name: "Artistic"
     },
     {
-        name: "Writing"
+        name: "Magical"
     }
 ]
 
