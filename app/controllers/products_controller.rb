@@ -25,6 +25,11 @@ class ProductsController < ApplicationController
   end
 
   def new
+    if session[:user_id].nil?
+      flash[:error] = "You cannot add a new product without signing in."
+      redirect_to root_path
+      return
+    end
     @product = Product.new
   end
 
@@ -46,7 +51,11 @@ class ProductsController < ApplicationController
       flash[:error] = "Product not found"
       redirect_to products_path
       return
-
+    end
+    if session[:user_id] != @product.user.id
+      flash[:error] = "You cannot edit another user's products."
+      redirect_to root_path
+      return
     end
   end
 

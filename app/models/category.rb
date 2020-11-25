@@ -1,6 +1,8 @@
 class Category < ApplicationRecord
   has_and_belongs_to_many :products 
   has_many :users, through: :products
+  
+  validates :name, presence: true, uniqueness: true
 
   def self.alphabetical
     self.all.order(:name)
@@ -27,3 +29,6 @@ class Category < ApplicationRecord
     joins(:categories_products).where(categories_products: {product_id: products.pluck(:id)}).distinct
   end
 end
+  
+
+

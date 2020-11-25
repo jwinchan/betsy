@@ -73,8 +73,18 @@
       <%= yield %>
     </main>
 
-    <footer class="app-footer">
-      &copy; 2020 Mama Jeti
+    <footer class="app-footer__footer">
+      <nav class="app-footer__nav">
+        <ul class="nav app-footer__site-nav-container">
+          <li class="nav-item app-footer__nav_item">
+            <%= link_to "About Us", root_path, class: "nav-link" %>
+          </li>
+          <li class="nav-item app-header__nav_item">
+            <%= link_to "Contact Us", root_path, class: "nav-link" %>
+          </li>
+        </ul>
+      </nav>
+      <h6>&copy; 2020 Mama Jeti</h6>
     </footer>
   </body>
 </html>

@@ -92,29 +92,25 @@ describe UsersController do
 
 
   describe "edit" do
-    #need to figure out how to test edit since it's only visible to the session[:user_id]
     it "responds with success when getting the edit page for an existing user while logged in as that user" do
-      skip
       # Arrange
-      user = users(:ada)
-      # Ensure there is an existing user saved
+      perform_login
       # Act
-      get edit_user_path(user.id)
+      get edit_user_path(session[:user_id])
 
       # Assert
       must_respond_with :success
     end
 
     it "responds with redirect when getting the edit page for an existing user while logged in as different user" do
-      skip
       # Arrange
-      user = users(:ada)
+      perform_login
       # Ensure there is an existing user saved
       # Act
-      get edit_user_path(user.id)
+      get edit_user_path(45)
 
       # Assert
-      must_respond_with :success
+      must_respond_with :redirect
     end
 
     it "responds with redirect when getting the edit page for an existing user while not logged in" do

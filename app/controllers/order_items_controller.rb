@@ -19,8 +19,8 @@ class OrderItemsController < ApplicationController
       
       if @order_item.save 
         flash[:success] = "Successfully added this item to your cart!"
-        redirect_back(fallback_location: root_path)
-        return 
+        redirect_to cart_path
+        return
       else
         flash[:error] = "Something went wrong, please try again!"
         redirect_back(fallback_location: root_path)
@@ -37,7 +37,7 @@ class OrderItemsController < ApplicationController
         return
       elsif @order_item.save 
         flash[:success] = "Successfully updated this item in your cart!"
-        redirect_back(fallback_location: root_path)
+        redirect_to cart_path
         return 
       else
         flash[:error] = "Something went wrong, please try again!"

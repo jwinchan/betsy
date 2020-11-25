@@ -1,0 +1,29 @@
+<% if @review.errors.any? %>
+  <ul class="errors">
+    <% @review.errors.each do |column, message| %>
+      <li>
+        <strong><%= column.capitalize %></strong> <%= message %>
+      </li>
+    <% end %>
+  </ul>
+<% end %>
+
+<h2>Edit review</h2>
+
+<section>
+  <h4>Review ID: <%= @review.id %></h4>
+  <h4>Product: <%= @review.product.name %></h4>
+  <%= form_with model: @review, url: review_path(@review), method: :patch do |f| %>
+    <div class="form-group">
+      <%= f.label :rating %>
+      <%= f.select :rating, [[1,1], [2,2], [3,3], [4,4], [5,5]]%>
+    </div>
+    <div class="form-group">
+      <%= f.label :description %>
+      <%= f.text_field :description %>
+    </div>
+    <div class="form-group">
+      <%= f.submit "submit_button", class: "btn btn-primary" %>
+    </div>
+  <% end %>
+</section>
