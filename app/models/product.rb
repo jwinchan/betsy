@@ -24,4 +24,8 @@ class Product < ApplicationRecord
   def product_reviews
     return self.reviews.order(id: :desc)
   end
+
+  def spotlight_product
+
+  end
 end
