@@ -39,7 +39,7 @@
 
     <div class="d-flex flex-wrap justify-content-around">
       <% category.find_products(@filter_merchant, @products).each do |product| %>
-        <div class="card" style="width: 18rem;">
+        <div class="card" style="width: 15rem;">
           <%= image_tag product.photo_url, class: "card-img-top", alt: "filler image" %>
           <div class="card-body">
             <h5 class="card-title"><%= link_to product.name, product_path(product.id) %></h5>
