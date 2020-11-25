@@ -234,6 +234,18 @@ main {
   width: 2.5rem;
 }
 
+.about {
+  display: grid;
+  grid-template-columns: 2fr auto 2fr;
+}
+.about-box {
+  grid-column: 2 /3;
+}
+
+.about-box > p{
+  padding: 2rem;
+}
+
 .user-show-primary-wizard {
   width: 6rem;
 }
