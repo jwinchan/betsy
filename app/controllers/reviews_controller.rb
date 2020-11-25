@@ -16,21 +16,43 @@ class ReviewsController < ApplicationController
 
   def new
     @review = Review.new
+    @product = Product.find_by(id: params[:product_id])
+    if @product.nil?
+      flash.now[:error] = "Couldn't find this product"
+      redirect_to root_path
+      return
+    end
   end
 
   def create
+    @product = Product.find_by(id: params[:product_id])
+    if @product.nil?
+      flash.now[:error] = "Couldn't find this product"
+      redirect_to root_path
+      return
+    end
+
     @review = Review.new(review_params)
+    @review.product_id = params[:product_id]
+
     if @review.save
       flash[:success] = "Your review has been successfully added"
       redirect_to product_path(@review.product_id)
     else
       flash[:error] = "Your review has not been added"
-      render :new, status: :bad_request
+      redirect_to product_path(@review.product_id)
       return
     end
   end
 
   def edit
+    @product = Product.find_by(id: params[:product_id])
+    if @product.nil?
+      flash.now[:error] = "Couldn't find this product"
+      redirect_to root_path
+      return
+    end
+    
     if @review.nil?
       flash.now[:error] = "The review you are looking for is not found"
       redirect_to product_path(@review.product_id)
@@ -39,13 +61,20 @@ class ReviewsController < ApplicationController
   end
 
   def update
+    @product = Product.find_by(id: params[:product_id])
+    if @product.nil?
+      flash.now[:error] = "Couldn't find this product"
+      redirect_to root_path
+      return
+    end
+
     if @review.nil?
       flash.now[:error] = "The review you are looking for is not found"
       redirect_to product_path(@review.product_id)
       return
     elsif @review.update(review_params)
       flash[:success] = "Your review has been successfully updated"
-      redirect_to product_review_path(@review)
+      redirect_to product_path(@review.product_id)
       return
     else # save failed
       flash.now[:error] = "Your review has not been updated"
