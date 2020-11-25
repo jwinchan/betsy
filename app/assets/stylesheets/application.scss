@@ -178,7 +178,35 @@ main {
   margin-left: 2rem;
 }
 
-  
+.pr-grid {
+  display: grid;
+  grid-template-columns: 2fr 3fr 3fr 2fr;
+}
+
+.pr-img {
+  grid-column: 2 /3;
+}
+
+.pr-description {
+  grid-column: 3 /4;
+}
+.pr-description > h2 {
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+}
+
+.pr-description  h5 {
+  padding-bottom: 2rem;
+}
+.pr-under {
+  padding-top: 3rem;
+  padding-bottom: .5rem;
+}
+
+.pr-size {
+  width: 25vw;
+}
+
 .product-photo {
   width: 2.5rem;
 }
@@ -203,3 +231,4 @@ main {
 .btn-distance {
   margin: 2rem;
 }
+

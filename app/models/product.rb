@@ -24,4 +24,9 @@ class Product < ApplicationRecord
   def product_reviews
     return self.reviews.order(id: :desc)
   end
+
+  def ave_rating
+    total_rating = self.reviews.sum { |review| review.rating }
+    return (total_rating / self.reviews.count.to_f).round(1)
+  end
 end
