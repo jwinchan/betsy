@@ -89,4 +89,6 @@ group :development do
 end
 
 gem "omniauth" 
-gem "omniauth-github" 
+gem "omniauth-github"
+
+gem "money"

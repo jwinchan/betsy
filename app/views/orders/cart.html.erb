@@ -18,7 +18,7 @@
             <%= f.select(:quantity, options_for_select(item.product.create_stock_collection, selected: item.quantity)) %>
           </div>
           <div class="col">
-            $<%= item.price %>
+            <%= format_money(item.price) %>
           </div>
           <div class = "col">
             <%= f.submit "Update", class: "btn btn-primary" %>

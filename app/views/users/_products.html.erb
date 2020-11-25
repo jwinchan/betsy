@@ -26,7 +26,7 @@
                 </td>
                 <td><%= link_to product.name, product_path(product.id) %></td>
                 <td><%= image_tag product.photo_url, alt: "product photo", class: "product-photo" %></td>
-                <td><%= product.price %></td>
+                <td><%= format_money(product.price) %></td>
                 <td><%= product.stock %></td>
                 <td><%= product.description %></td>
                 <td><%= product.photo_url %></td>

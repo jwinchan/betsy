@@ -12,10 +12,10 @@
         </tr>
         <tr>
             <th>Total Revenue</th>
-            <th>$ <%= @user.total_revenue_by_status("pending") %></th>
-            <th>$ <%= @user.total_revenue_by_status("paid") %></th>
-            <th>$ <%= @user.total_revenue_by_status("completed") %></th>
-            <th>$ <%= @user.total_revenue %></th>
+            <th> <%= format_money(@user.total_revenue_by_status("pending")) %></th>
+            <th> <%= format_money(@user.total_revenue_by_status("paid")) %></th>
+            <th> <%= format_money(@user.total_revenue_by_status("completed")) %></th>
+            <th> <%= format_money(@user.total_revenue) %></th>
         </tr>
         <tr>
             <th>Total Number of Orders</th>
