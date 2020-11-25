@@ -110,6 +110,12 @@ a:hover {
     margin: 10px auto 10px auto;
     a {
       color: $gold;
+      padding-right: 25px;
+      margin-right: 15px;
+      border-right: white 2px solid;
+    }
+    small {
+      color: $dark-grey
     }
   }
 }
