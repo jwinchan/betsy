@@ -18,3 +18,20 @@
     </section>
   </div>
 </section>
+
+<section>
+    <h2>Product Review</h2>
+    <table class="table">
+    <% @product.product_reviews.each do |review| %>
+      <tr>
+        <th>Review ID: <%= review.id %></th>
+      </tr>
+      <tr>
+        <td>Rating: <%= review.rating %> </td>
+      </tr>
+      <tr>
+        <td>Rating: <%= review.description %> </td>
+      </tr>
+    <% end %>
+    </table>
+</section>

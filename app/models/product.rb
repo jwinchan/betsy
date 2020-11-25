@@ -14,4 +14,8 @@ class Product < ApplicationRecord
   def category_on_user_show
     return collection = self.categories.map { |cat| cat.name }
   end
+
+  def product_reviews
+    return self.reviews.order(id: :desc)
+  end
 end

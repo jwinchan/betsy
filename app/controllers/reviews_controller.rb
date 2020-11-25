@@ -6,7 +6,10 @@ class ReviewsController < ApplicationController
   end
 
   def show
-    # we don't need this?
+    if @review.nil?
+      render_404
+      return
+    end
   end
 
   def new
@@ -69,6 +72,6 @@ class ReviewsController < ApplicationController
   end
 
   def review_params
-    return params.require(:review).permit(:rating, :description)
+    return params.require(:review).permit(:product_id, :rating, :description)
   end
 end
