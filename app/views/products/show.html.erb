@@ -11,11 +11,18 @@
       <h5> Average Rating: <%= @product.ave_rating %> </h5>
     <% end %>  
     <%= form_with model: @orderitem, class: 'create-orderitem', url: product_order_items_path(@product) do |f| %>
-      <div>
-        <%= f.label :quantity %>
-        <%= f.select :quantity, @product.create_stock_collection, selected: :quantity %>
-      </div>
+      <% if @product.stock == 0 %>
+        <div>
+          <p>Currently out of stock!</p>
+          <%= f.submit "Add to cart", class: "btn btn-secondary", disabled: true %>
+        </div>
+      <% else %>
+        <div>
+          <%= f.label :quantity %>
+          <%= f.select :quantity, @product.create_stock_collection, selected: :quantity %>
+        </div>
       <%= f.submit "Add to cart", class: "btn btn-primary" %>
+      <% end %>
     <% end %>
     <section>
       <h5 class="pr-under">Description:</h5>

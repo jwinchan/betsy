@@ -1,42 +1,68 @@
 <section>
   <%= form_with model: @product do |f| %>
-    <div class="form-group">
-      <%= f.label :name %>
-      <%= f.text_field :name%>
+    <div class=" form-row">
+      <div class="col-md-4 mb-3">
+        <%= f.label :name %>
+        <%= f.text_field :name, class: "form-control" %>
+      </div>
     </div>
-    <div class="form-group">
-    <%= f.label :stock %>
-      <%= f.text_field :stock %>
+
+    <div class=" form-row">
+      <div class="col-md-4 mb-3">
+        <%= f.label :stock %>
+        <%= f.text_field :stock, class: "form-control" %>
+      </div>
     </div>
-    <div class="form-group">
-      <%= f.label :price %>
-      <%= f.text_field :price %>
+
+    <div class=" form-row">
+      <div class="col-md-4 mb-3">
+        <%= f.label :price %>
+        <%= f.text_field :price, class: "form-control" %>
+      </div>
     </div>
-    <div class="form-group">
-      <%= f.label :photo_url %>
-      <%= f.text_field :photo_url %>
+
+    <div class=" form-row">
+      <div class="col-md-4 mb-3">
+        <%= f.label :photo_url %>
+        <%= f.text_field :photo_url, class: "form-control" %>
+      </div>
     </div>
-    <div class="form-group">
-      <%= f.label :description %>
-      <%= f.text_area :description %>
+
+    <div class=" form-row">
+      <div class="col-md-4 mb-3">
+        <%= f.label :description %>
+        <%= f.text_area :description, class: "form-control" %>
+      </div>
     </div>
-    <div class = "form-group">
+
+
+    <div class=" mb-3">
       <%= f.label :categories %>
       <%= collection_check_boxes(:product, :category_ids, Category.all, :id, :name) do |b|%>
-        <%= b.label(class:"label-checkbox") {b.check_box + b.text} %>
+        <%= b.label(class:"label-checkbox") {b.check_box + b.text }%>
       <% end %>
     </div>
-    <div class="form-group">
-      <%= f.submit action_name, class: "btn btn-primary" %>
+
+
+    <div class="form-row">
+      <div class="col-md-4 mb-3">
+        <%= f.submit action_name, class: "btn btn-primary" %>
+      </div>
     </div>
   <% end %>
+
   <%= form_with model: @category, url: categories_path, method: :post do |f| %>
-    <div class="form-group">
-      <%= f.label :new_category %>
-      <%= f.text_field :name %>
+    <div class="form-row">
+      <div class="col-md-4 mb-3">
+        <%= f.label :new_category %>
+        <%= f.text_field :name, class: "form-control" %>
+      </div>
     </div>
-    <div class="form-group">
-      <%= f.submit "Add New Category", class: "btn btn-primary" %>
+
+    <div class="form-row">
+      <div class="col-md-4 mb-3">
+        <%= f.submit "Add New Category", class: "btn btn-primary" %>
+      </div>
     </div>
   <% end %>
 </section>
