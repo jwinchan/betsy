@@ -56,6 +56,7 @@ class UsersController < ApplicationController
     elsif @user.id != session[:user_id]
       flash[:error] = "You must log in as this user."
       redirect_to root_path
+      return
     end
   end
 
@@ -86,7 +87,7 @@ class UsersController < ApplicationController
   private
 
   def find_user
-    @user = User.find_by(id: session[:user_id])
+    @user = User.find_by(id: params[:id])
   end
 
   def user_params
