@@ -122,6 +122,12 @@ a:hover {
   margin-bottom: 20px;
 }
 
+.card-img-top {
+  width: auto;
+  height: 350px;
+  object-fit:cover;
+}
+
 main {
   padding: 2rem;
 }
@@ -158,7 +164,6 @@ main {
 .app-footer__user-nav-container .nav-item {
   margin-left: 2rem;
 }
-
   
 .product-photo {
   width: 2.5rem;
