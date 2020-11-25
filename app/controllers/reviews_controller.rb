@@ -1,4 +1,5 @@
 class ReviewsController < ApplicationController
+  before_action :find_review
 
   def index
     # don't know if we need it or not
@@ -30,20 +31,18 @@ class ReviewsController < ApplicationController
 
   def edit
     if @review.nil?
-      flash[:error] = "The review you are looking for is not found"
-      redirect_to products_path
+      render_404
       return
     end
   end
 
   def update
     if @review.nil?
-      flash[:error] = "The review you are looking for is not found"
-      redirect_to products_path
+      render_404
       return
     elsif @review.update(review_params)
       flash[:success] = "Your review has been successfully updated"
-      redirect_to product_path # go to the product details page
+      redirect_to product_review_path(@review)
       return
     else # save failed
       flash.now[:error] = "Your review has not been updated"

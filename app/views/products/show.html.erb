@@ -20,7 +20,10 @@
 </section>
 
 <section>
-    <h2>Product Review</h2>
+    <div>
+      <h2>Product Review</h2>
+      <%= button_to "Add New Review", new_product_review_path(@product), method: :get, class: "nav-link" %>
+    </div>  
     <table class="table">
     <% @product.product_reviews.each do |review| %>
       <tr>
@@ -30,7 +33,13 @@
         <td>Rating: <%= review.rating %> </td>
       </tr>
       <tr>
-        <td>Rating: <%= review.description %> </td>
+        <td>Description: <%= review.description %> </td>
+      </tr>
+      <tr>
+        <div>
+          <%= button_to "Edit Review", edit_product_review_path(review.id), method: :get, class: "nav-link" %>
+          <%= button_to "Delete Review", product_review_path(review), method: :delete, data: {confirm: "Are you sure?"}, class: "btn btn-danger", rel: "nofollow" %>
+        </div>
       </tr>
     <% end %>
     </table>
