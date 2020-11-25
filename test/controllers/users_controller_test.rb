@@ -114,7 +114,6 @@ describe UsersController do
     end
 
     it "responds with redirect when getting the edit page for an existing user while not logged in" do
-      skip
       # Arrange
       user = users(:ada)
       # Ensure there is an existing user saved
@@ -122,7 +121,7 @@ describe UsersController do
       get edit_user_path(user.id)
 
       # Assert
-      must_respond_with :success
+      must_respond_with :redirect
     end
 
     it "responds with redirect when getting the edit page for a non-existing user" do
