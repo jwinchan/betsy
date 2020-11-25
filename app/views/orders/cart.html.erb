@@ -10,7 +10,7 @@
     </div>
     <% @cart.orderitems.order(id: :asc).each do |item| %>
       <%= form_with model: @orderitem, url: cart_update_path(item.id), method: :patch do |f| %>
-        <div class="row">
+        <div class="row cart-line">
           <div class="col-4">
             <%= link_to item.product.name, product_path(item.product.id) %>
           </div>
@@ -30,7 +30,8 @@
       </div>
     <% end %>
   </div>
+  <div class="cart-checkout">
+    <%= button_to "Proceed to Checkout", payment_path(@cart.id), method: :get, class: "btn btn-primary" %>
+  </div>  
 
-<%= button_to "Proceed to Checkout", payment_path(@cart.id), method: :get, class: "btn btn-primary" %>
-  
 
