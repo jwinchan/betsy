@@ -13,7 +13,7 @@ Rails.application.routes.draw do
     resources :reviews
   end
 
-
+  resources :categories, only: [:create]
   resources :orders, except: [:index, :update, :edit, :destroy]
   resources :order_items, except: [:index, :new, :edit]
 

@@ -110,8 +110,6 @@ a:hover {
     margin: 25px auto 40px auto;
     a {
       color: $gold;
-      padding-right: 25px;
-      margin-right: 15px;
     }
   }
   p {
@@ -134,14 +132,10 @@ main {
   background-color: $secondary-color;
   margin-bottom: 0.5rem;
   padding: 2rem 1rem 0.5rem 1rem;
-  h1 {
+  h6 {
     text-align: center;
-    margin: 25px auto 40px auto;
-    a {
-      color: $gold;
-      padding-right: 25px;
-      margin-right: 15px;
-    }
+    margin: 25px auto 25px auto;
+    color: $gold;
   }
   p {
     margin-bottom: 5px;

@@ -1,8 +1,7 @@
 class UsersController < ApplicationController
-  before_action :find_user, only: [:show, :edit, :update]
+  before_action :find_user, except: [:create, :destroy]
 
   def show_products
-    @user = User.find_by(id: session[:user_id])
     if @user.nil?
       render_404
       return
@@ -10,7 +9,6 @@ class UsersController < ApplicationController
   end
 
   def show_fulfillments
-    @user = User.find_by(id: session[:user_id])
     if @user.nil?
       render_404
       return
@@ -18,7 +16,7 @@ class UsersController < ApplicationController
   end
 
   def show
-    if @user.nil?
+    if @user.nil?  #probably needs a redirect?
       render_404
       return
     elsif session[:user_id] != @user.id  
@@ -88,7 +86,7 @@ class UsersController < ApplicationController
   private
 
   def find_user
-    @user = User.find_by(id: params[:id])
+    @user = User.find_by(id: session[:user_id])
   end
 
   def user_params
