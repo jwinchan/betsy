@@ -8,7 +8,8 @@ class ReviewsController < ApplicationController
 
   def show
     if @review.nil?
-      render_404
+      flash.now[:error] = "The review you are looking for is not found"
+      redirect_to product_path(@review.product_id)
       return
     end
   end
@@ -21,7 +22,7 @@ class ReviewsController < ApplicationController
     @review = Review.new(review_params)
     if @review.save
       flash[:success] = "Your review has been successfully added"
-      redirect_to product_path(@review.id)
+      redirect_to product_path(@review.product_id)
     else
       flash[:error] = "Your review has not been added"
       render :new, status: :bad_request
@@ -31,14 +32,16 @@ class ReviewsController < ApplicationController
 
   def edit
     if @review.nil?
-      render_404
+      flash.now[:error] = "The review you are looking for is not found"
+      redirect_to product_path(@review.product_id)
       return
     end
   end
 
   def update
     if @review.nil?
-      render_404
+      flash.now[:error] = "The review you are looking for is not found"
+      redirect_to product_path(@review.product_id)
       return
     elsif @review.update(review_params)
       flash[:success] = "Your review has been successfully updated"
@@ -46,14 +49,15 @@ class ReviewsController < ApplicationController
       return
     else # save failed
       flash.now[:error] = "Your review has not been updated"
-      render :edit, status: :bad_request # show the new product form view again
+      render :edit, status: :bad_request 
       return
     end
   end
 
   def destroy
     if @review.nil? 
-      render_404
+      flash.now[:error] = "The review you are looking for is not found"
+      redirect_to product_path(@review.product_id)
       return
     end
    
