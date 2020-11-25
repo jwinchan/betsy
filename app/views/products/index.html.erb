@@ -17,10 +17,22 @@
   <div class="d-flex flex-wrap justify-content-between">
     <% @products.each do |product| %>
       <% unless product.retired %>
-        <%= link_to product_path(product.id) do %>
-          <%= image_tag "#{product.photo_url}", alt: "filler image" %>
-        <% end %>
+        <div class="card" style="width: 18rem;">
+          <img class="card-img-top" src="https://i.pinimg.com/564x/1a/bb/d4/1abbd47b5ccea3eda7d8acb092ab011b.jpg" alt="filler image">
+          <div class="card-body">
+            <h5 class="card-title"><%= link_to product.name, product_path(product.id) %></h5>
+            <p class="card-text"><%= product.description %></p>
+          </div>
+        </div>
       <% end %>
     <% end %>
+    <%# @products.each do |product| %>
+      <%# unless product.retired %>
+        <%#= link_to product_path(product.id) do %>
+          <%#= image_tag "#{product.photo_url}", alt: "filler image" %>
+        <%# end %>
+      <%# end %>
+    <%# end %>
   </div>
 </section>
+
