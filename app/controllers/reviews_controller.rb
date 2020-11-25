@@ -5,8 +5,12 @@ class ReviewsController < ApplicationController
     @review = Review.new
     @product = Product.find_by(id: params[:product_id])
     if @product.nil?
-      flash.now[:error] = "Couldn't find this product"
+      flash[:error] = "Couldn't find this product"
       redirect_to root_path
+      return
+    elsif @product.user_id == session[:user_id]
+      flash[:error] = "You couldn't review your own products"
+      redirect_to product_path(@product)
       return
     end
   end
@@ -16,6 +20,10 @@ class ReviewsController < ApplicationController
     if @product.nil?
       flash.now[:error] = "Couldn't find this product"
       redirect_to root_path
+      return
+    elsif @product.user_id == session[:user_id]
+      flash[:error] = "You couldn't review your own products"
+      redirect_to product_path(@product)
       return
     end
 
