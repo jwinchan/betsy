@@ -3,7 +3,9 @@ class User < ApplicationRecord
   has_many :orderitems, through: :products
   has_many :categories, through: :products
 
-  validates :uid, uniqueness: {scope: :provider}
+  validates :uid, presence:true, uniqueness: {scope: :provider}
+  validates :name, presence:true, uniqueness: true
+  validates :email, presence:true, uniqueness: true
 
 
   def total_revenue
