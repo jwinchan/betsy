@@ -1,4 +1,10 @@
 <section>
+  <h2>Sponsored Product: <%= Product.all.sample.name %></h2>
+
+</section>
+
+
+<section>
   <form action="/products" method="GET">
     <input type="text" name="search_name" >
     <input type="submit" value="Search for Product">
@@ -33,7 +39,7 @@
       <%= category.name %>
     </h2>
 
-    <div class="d-flex flex-wrap justify-content-between">
+    <div class="d-flex flex-wrap justify-content-around">
       <% category.find_products(@filter_merchant, @products).each do |product| %>
         <div class="card" style="width: 18rem;">
           <%= image_tag product.photo_url, class: "card-img-top", alt: "filler image" %>
