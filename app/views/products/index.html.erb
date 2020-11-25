@@ -1,17 +1,47 @@
-<!--<section class="popular">-->
-<!--  <h1>Popular Skills</h1>-->
-<!--  <div class="d-flex justify-content-around">-->
-    <%# ["Software development", "Sports", "Music", "Acting", "Art", "Writing"].each do |category| %>
-<!--      <section>-->
-<!--        <div class="circle d-flex justify-content-center align-items-center">placeholder?</div>-->
-<!--        <div>-->
-<!--          <p class="d-flex justify-content-center"><%#= category %><span> &rarr; </span></p>-->
-<!--        </div>-->
-<!--      </section>-->
-    <%# end %>
-<!--  </div>-->
-<!--</section>-->
 <section>
+  <form action="/products" method="GET">
+    <input type="text" name="search_name" >
+    <input type="submit" value="Search for Product">
+  </form>
+  <form action="/products" method="GET">
+    <label for="filter">Filter Options</label>
+    <select id="filter" name="filter" onchange="this.form.submit()">
+      <option value="">Pick a Filter Option</option>
+      <option value="merchant" <%= "selected" if session[:filter] == "merchant" %>>Filter by Merchant</option>
+      <option value="category" <%= "selected" if session[:filter] == "category" %>>Filter by Category</option>
+    </select>
+    <% if session[:filter] == "merchant" %>
+      <select name="filter_option" onchange="this.form.submit()">
+        <option value="">Pick a Merchant</option>
+        <% @users.each do |user| %>
+          <option value="<%= user.id %>" <%= "selected" if session[:filter_option] == user.id.to_s %> > <%= user.name %></option>
+        <% end %>
+      </select>
+    <% elsif session[:filter] == "category" %>
+      <select name="filter_option" onchange="this.form.submit()" >
+        <option value="">Pick a Category</option>
+        <% @categories_select.each do |category| %>
+          <option value="<%= category.id %>" <%= "selected" if session[:filter_option] == category.id.to_s %> > <%= category.name %></option>
+        <% end %>
+      </select>
+    <% end %>
+  </form>
+  <%= link_to "Clear Filter Options", clear_path %>
+
+  <% @categories.each do |category| %>
+    <h2>
+      <%= category.name %>
+    </h2>
+
+    <div class="d-flex flex-wrap justify-content-between">
+      <% category.find_products(@filter_merchant, @products).each do |product| %>
+        <%= link_to product_path(product.id) do %>
+          <%= image_tag "#{product.photo_url}", alt: "filler image" %>
+        <% end %>
+      <% end %>
+    </div>
+  <% end %>
+</section>
   <h2>Currently Viewing: <%= "All Products" %></h2>
   <%= select_tag(:category, options_for_select([["All"],["Software development"], ["Sports"], ["Music"], ["Acting"], ["Art"], ["Writing"]])) %>
   <div class="d-flex flex-wrap justify-content-between">
@@ -26,13 +56,7 @@
         </div>
       <% end %>
     <% end %>
-    <%# @products.each do |product| %>
-      <%# unless product.retired %>
-        <%#= link_to product_path(product.id) do %>
-          <%#= image_tag "#{product.photo_url}", alt: "filler image" %>
-        <%# end %>
-      <%# end %>
-    <%# end %>
   </div>
-</section>
+
+
 
