@@ -1,16 +1,16 @@
-<section class="popular">
-  <h1 class="">Popular Skills</h1>
-  <div class="d-flex justify-content-around">
-    <% ["Software development", "Sports", "Music", "Acting", "Art", "Writing"].each do |category| %>
-      <section>
-        <div class="circle d-flex justify-content-center align-items-center">placeholder?</div>
-        <div>
-          <p class="d-flex justify-content-center"><%= category %><span> &rarr; </span></p>
-        </div>
-      </section>
-    <% end %>
-  </div>
-</section>
+<!--<section class="popular">-->
+<!--  <h1>Popular Skills</h1>-->
+<!--  <div class="d-flex justify-content-around">-->
+    <%# ["Software development", "Sports", "Music", "Acting", "Art", "Writing"].each do |category| %>
+<!--      <section>-->
+<!--        <div class="circle d-flex justify-content-center align-items-center">placeholder?</div>-->
+<!--        <div>-->
+<!--          <p class="d-flex justify-content-center"><%#= category %><span> &rarr; </span></p>-->
+<!--        </div>-->
+<!--      </section>-->
+    <%# end %>
+<!--  </div>-->
+<!--</section>-->
 <section>
   <h2>Currently Viewing: <%= "All Products" %></h2>
   <%= select_tag(:category, options_for_select([["All"],["Software development"], ["Sports"], ["Music"], ["Acting"], ["Art"], ["Writing"]])) %>

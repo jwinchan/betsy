@@ -1,6 +1,5 @@
-<p>Confirmation page</p>
-<h2>Order ID: <%= @order.id %></h2>
-<h4>User Information</h4>
+<h2>Order Confirmation | Order #<%= @order.id %></h2>
+<h4>Buyer Information</h4>
 <section class ="cart-item__container">
   <table class="table">
     <tr>
@@ -21,7 +20,7 @@
 </section>
 
 <section class ="cart-item__container">
-  <h3>Order Details</h3>
+  <h4>Order Details</h4>
   <table class="table">
    <thead>
     <tr>
@@ -35,13 +34,13 @@
     <tr>
       <td><%= item.product.name %></td>
       <td><%= item.quantity %></td>
-      <td><%= item.price %></td>
+      <td>$<%= item.price %></td>
     </tr>
     <% end %>
     <tr>
       <td></td>
-      <td>Total</td>
-      <td><%=@order.total %></td>
+      <td><h4>Total : </h4></td>
+      <td>$<%=@order.total %></td>
     </tr>
     </tbody>
   </table>
