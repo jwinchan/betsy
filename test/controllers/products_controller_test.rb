@@ -40,13 +40,22 @@ describe ProductsController do
   end
 
   describe "new" do
-    it "responds with success" do
+    it "responds with success when user is logged in" do
+      perform_login
+
       # Act
       get new_product_path
 
       # Assert
       must_respond_with :success
+    end
 
+    it "responds with redirect when user is not logged in" do
+      # Act
+      get new_product_path
+
+      # Assert
+      must_respond_with :redirect
     end
   end
 

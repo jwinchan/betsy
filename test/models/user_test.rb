@@ -1,7 +1,7 @@
 require "test_helper"
 
 describe User do
-  describe "validations" do
+  describe "Validations" do
     before do
       @user = users(:ada)
     end
@@ -19,20 +19,53 @@ describe User do
       expect(@user.valid?).must_equal false
     end
 
+    it "is invalid when name already exists" do
+      skip
+      user_hash = {
+          uid: 1231224,
+          name: @user.name,
+          email: "newemail@gmail.com"
+      }
+      new_user = User.create(user_hash)
+      expect(new_user).must_equal false
+    end
+
     it "is invalid when email is missing" do
       @user.email = nil
       expect(@user.valid?).must_equal false
     end
+
+    it "is invalid when email already exists" do
+      skip
+      user_hash = {
+          uid: 1231224,
+          name: "new name",
+          email: @user.email
+      }
+
+      new_user = User.create(user_hash)
+      expect(new_user).must_equal false
+    end
   end
 
-  describe "relations" do
+  describe "Relationships" do
     describe "products" do
+      it "can have many products" do
+        product1 = products(:confidence)
+        product2 = products(:python)
+      end
     end
     
     describe "orderitems" do
+      it "can have many orderitems through products" do
+
+      end
     end
 
     describe "categories" do
+      it "can have many categories through products" do
+
+      end
     end
   end
 
