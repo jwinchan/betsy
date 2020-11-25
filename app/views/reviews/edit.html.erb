@@ -13,7 +13,7 @@
 <section>
   <h4>Review ID: <%= @review.id %></h4>
   <h4>Product: <%= @review.product.name %></h4>
-  <%= form_with model: @review, url: product_review_path(product_id: @review.product_id, id: @review.id), method: :patch do |f| %>
+  <%= form_with model: @review, url: review_path(@review), method: :patch do |f| %>
     <div class="form-group">
       <%= f.label :rating %>
       <%= f.select :rating, [[1,1], [2,2], [3,3], [4,4], [5,5]]%>
