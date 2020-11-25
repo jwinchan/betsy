@@ -34,8 +34,8 @@
         <td><%= review.id %></td>
         <td><%= review.rating %></td>
         <td><%= review.description %></td>
-        <td><%= button_to "Edit", edit_product_review_path(product_id: @product, id: review), method: :get, class: "btn btn-primary" %></td>
-        <td><%= button_to "Delete", product_review_path(product_id: @product, id: review), method: :delete, data: {confirm: "Are you sure?"}, class: "btn btn-danger", rel: "nofollow" %></td>
+        <td><%= button_to "Edit", edit_review_path(review), method: :get, class: "btn btn-primary" %></td>
+        <td><%= button_to "Delete", review_path(review), method: :delete, data: {confirm: "Are you sure?"}, class: "btn btn-danger", rel: "nofollow" %></td>
       </tr>
     <% end %>
     </table>
