@@ -1,8 +1,19 @@
 class ProductsController < ApplicationController
   before_action :find_product, only: [:show, :edit, :update, :destroy, :retired]
+  before_action :initialize_search, only: [:index]
 
   def index
-    @products = Product.all
+    @products = Product.where(retired: false)
+    @users = User.all
+    @categories_select = Category.alphabetical
+
+    handle_search_name
+    handle_filters
+  end
+
+  def clear
+    clear_session(:search_name, :filter_name, :filter)
+    redirect_to products_path
   end
 
   def show
@@ -40,7 +51,6 @@ class ProductsController < ApplicationController
   end
 
   def update
-
     if @product.nil?
       flash[:error] = "Product not found"
       redirect_to products_path
@@ -119,5 +129,35 @@ class ProductsController < ApplicationController
 
   def product_params
     return params.require(:product).permit(:name, :stock, :price, :description, :photo_url, :user_id, category_ids: [])
+  end
+
+
+  def initialize_search
+    @categories = Category.alphabetical
+    session[:search_name] ||= params[:search_name]
+    if session[:filter] != params[:filter]
+      params[:filter_option] = nil
+    end
+    session[:filter] = params[:filter]
+    params[:filter_option] = nil if params[:filter_option] == ""
+    session[:filter_option] = params[:filter_option]
+  end
+
+  def handle_search_name
+    if session[:search_name]
+      @products = Product.where("name LIKE ?", "%#{session[:search_name]}%")
+      @categories = @categories.restrict_by_products(@products)
+    end
+  end
+
+  def handle_filters
+    @filter_merchant = nil
+    if session[:filter_option] && session[:filter] == "merchant"
+      @filter_merchant = User.find_by(id: session[:filter_option])
+      @products = @products.where(user_id: session[:filter_option])
+      @categories = @categories.restrict_by_products(@products)
+    elsif session[:filter_option] && session[:filter] == "category"
+      @categories = @categories.where(id: session[:filter_option])
+    end
   end
 end
