@@ -10,11 +10,13 @@ Rails.application.routes.draw do
 
   resources :products do 
     resources :order_items, only: [:create]
+    resources :reviews
   end
 
   resources :categories, only: [:create]
   resources :orders, except: [:index, :update, :edit, :destroy]
   resources :order_items, except: [:index, :new, :edit]
+
   
   #login and logout routes
   get "/auth/github", as: "github_login"
