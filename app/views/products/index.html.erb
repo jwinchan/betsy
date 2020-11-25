@@ -35,18 +35,6 @@
 
     <div class="d-flex flex-wrap justify-content-between">
       <% category.find_products(@filter_merchant, @products).each do |product| %>
-        <%= link_to product_path(product.id) do %>
-          <%= image_tag "#{product.photo_url}", alt: "filler image" %>
-        <% end %>
-      <% end %>
-    </div>
-  <% end %>
-</section>
-  <h2>Currently Viewing: <%= "All Products" %></h2>
-  <%= select_tag(:category, options_for_select([["All"],["Software development"], ["Sports"], ["Music"], ["Acting"], ["Art"], ["Writing"]])) %>
-  <div class="d-flex flex-wrap justify-content-between">
-    <% @products.each do |product| %>
-      <% unless product.retired %>
         <div class="card" style="width: 18rem;">
           <%= image_tag product.photo_url, class: "card-img-top", alt: "filler image" %>
           <div class="card-body">
@@ -55,8 +43,11 @@
           </div>
         </div>
       <% end %>
-    <% end %>
-  </div>
+    </div>
+  <% end %>
+</section>
+
+
 
 
 
