@@ -169,20 +169,41 @@ end
       expect(product.name).must_equal updated_product[:product][:name]
     end
 
-      it "will respond with not found  given an invalid id" do
-        updated_product = {
-            product: {
-                name: "Public Speaking",
-                description: "Level 1",
-                price: 45,
-            }
-        }
-        expect {
-          patch product_path(-1), params: updated_product
-        }.wont_change "Product.count"
+    it "will respond with not found  given an invalid id" do
+      updated_product = {
+          product: {
+              name: "Public Speaking",
+              description: "Level 1",
+              price: 45,
+          }
+      }
+      expect {
+        patch product_path(-1), params: updated_product
+      }.wont_change "Product.count"
 
-        must_respond_with :redirect
-      end
+      must_respond_with :redirect
+    end
+
+    it "does not update a product if the form data violates product validations" do
+      product = products(:confidence)
+
+      updated_product = {
+          product: {
+              name: "Public Speaking",
+              description: "Level 1",
+              price: nil,
+          }
+      }
+      # Set up the form data so that it violates product validations
+
+      # Act-Assert
+      expect {
+        patch product_path(product.id), params: updated_product
+      }.wont_change "Product.count"
+
+      must_respond_with :bad_request
+
+    end
   end
  
 
