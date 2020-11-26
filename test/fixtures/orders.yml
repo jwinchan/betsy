@@ -4,8 +4,9 @@ order1:
   email: xxx
   mailing_address: 123 WA
   cc_name: Ada
-  cc_number: 1111
+  cc_number: 9999922221111
   cc_exp_date: May 23, 2022
+  cc_cvv: 123
   billing_zip_code: 98136
 order2: 
   id: 2
