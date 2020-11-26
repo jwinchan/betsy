@@ -68,7 +68,6 @@ class OrderItemsController < ApplicationController
   end
 
   def destroy
-    item_name = @order_item.product.name
 
     if @order_item.nil?
       flash[:error] = "Could not remove Order."

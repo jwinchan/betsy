@@ -437,4 +437,28 @@ describe OrderItemsController do
       must_respond_with :redirect
     end
   end
+
+  describe "destroy" do
+    it 'should redirect if order_item is nil' do
+      expect {
+        delete order_item_path(-1)
+      }.wont_change "Orderitem.count"
+
+      non_exist = Orderitem.find_by(id: -1)
+      expect(non_exist).must_be_nil
+      must_respond_with :redirect
+    end
+
+    it 'should destroy order item' do
+      first_item = Orderitem.find_by(id: 1)
+
+      expect(Orderitem.count).must_equal 8
+
+      expect {
+        delete order_item_path(first_item.id)
+      }.must_change "Orderitem.count", 1
+
+      must_respond_with :redirect
+    end
+  end
 end
