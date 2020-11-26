@@ -56,6 +56,7 @@ describe OrdersController do
   end
 
   describe "cart" do
+    #most testing for cart operation falls under orderitems controller
     it "responds with success when getting the cart page for guest" do
       get cart_path
 
