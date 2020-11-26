@@ -1,0 +1,5 @@
+review1:
+  id: 1
+  rating: 3
+  description: Wonderful potion 
+  product_id: 1

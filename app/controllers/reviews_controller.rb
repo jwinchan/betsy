@@ -43,7 +43,14 @@ class ReviewsController < ApplicationController
   def edit
     if @review.nil?
       flash.now[:error] = "The review you are looking for is not found"
-      redirect_to product_path(@review.product_id)
+      render_404
+      return
+    end
+
+    @product = Product.find_by(id: @review.product_id)
+    if @product.user_id == session[:user_id]
+      flash[:error] = "You couldn't edit the reviews for your own products"
+      redirect_to product_path(@product)
       return
     end
   end
@@ -51,15 +58,22 @@ class ReviewsController < ApplicationController
   def update
     if @review.nil?
       flash.now[:error] = "The review you are looking for is not found"
-      redirect_to product_path(@review.product_id)
+      render_404
+      return
+    end
+
+    @product = Product.find_by(id: @review.product_id)
+    if @product.user_id == session[:user_id]
+      flash[:error] = "You couldn't edit the reviews for your own products"
+      redirect_to product_path(@product)
       return
     elsif @review.update(review_params)
       flash[:success] = "Your review has been successfully updated"
       redirect_to product_path(@review.product_id)
       return
-    else # save failed
+    else 
       flash.now[:error] = "Your review has not been updated"
-      render :edit, status: :bad_request 
+      redirect_to product_path(@product)
       return
     end
   end
@@ -73,7 +87,6 @@ class ReviewsController < ApplicationController
    
     @review.destroy
     flash[:success] = "Successfully destroyed #{ @review.id }"
-    # need to clarify which path to redirect
     redirect_back(fallback_location: root_path)
     return
   end
