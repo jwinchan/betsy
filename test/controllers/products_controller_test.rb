@@ -10,7 +10,7 @@ describe ProductsController do
     it "responds with success when there are many products saved" do
      get products_path
     
-      expect(Product.count).must_equal 1
+      expect(Product.count).must_equal 3
       must_respond_with :success
     end
 
@@ -18,6 +18,8 @@ describe ProductsController do
     it "responds with success when there are no products saved" do
       #ask team about this test! It's kind of weird...
       products(:confidence).destroy
+      products(:python).destroy
+      products(:yoga).destroy
 
       get products_path
 
@@ -33,9 +35,9 @@ describe ProductsController do
       must_respond_with :success
     end
 
-    it 'should respond with 3xx with an invalid product id' do
+    it 'should respond with 4xx with an invalid product id' do
       get product_path(-1)
-      must_respond_with :redirect
+      must_respond_with :not_found
     end
   end
 
@@ -61,15 +63,13 @@ describe ProductsController do
 
   describe "create" do
     it "can create a new product with valid information accurately, and redirect" do
-      #maybe failing because of sessions[:user_id] ?
-      skip
       # Arrange
-      user = users(:ada)
+      perform_login
       # Set up the form data
       product_hash = {
           product: {
               name: 'Artists Potion',
-              user_id: user.id,
+              user_id: 2,
               stock: 2,
               price: 1400,
               description: 'Turns you into Bob Ross',
@@ -98,6 +98,7 @@ describe ProductsController do
     it "does not create a product if the form data violates product validations" do
       # Note: This will not pass until ActiveRecord Validations lesson
       # Arrange
+      perform_login
       # Set up the form data so that it violates product validations
       product_hash = {
           product: {
@@ -119,13 +120,23 @@ describe ProductsController do
 
 
 describe "Edit" do
-  it "must get edit page for existing product" do
+  it "must get edit page for existing product when logged in" do
+    perform_login
     #Act
-    product = Product.create(name: 'Python', description: 'Gain Python skills')
+    product = products(:confidence)
     get edit_product_path(product.id)
 
     # Assert
     must_respond_with :success
+  end
+
+  it "responds with redirect for existing product when not logged in" do
+    #Act
+    product = products(:python)
+    get edit_product_path(product.id)
+
+    # Assert
+    must_respond_with :redirect
   end
 
   it "will respond with not_found when a product does not exist" do
@@ -158,20 +169,41 @@ end
       expect(product.name).must_equal updated_product[:product][:name]
     end
 
-      it "will respond with not found  given an invalid id" do
-        updated_product = {
-            product: {
-                name: "Public Speaking",
-                description: "Level 1",
-                price: 45,
-            }
-        }
-        expect {
-          patch product_path(-1), params: updated_product
-        }.wont_change "Product.count"
+    it "will respond with not found  given an invalid id" do
+      updated_product = {
+          product: {
+              name: "Public Speaking",
+              description: "Level 1",
+              price: 45,
+          }
+      }
+      expect {
+        patch product_path(-1), params: updated_product
+      }.wont_change "Product.count"
 
-        must_respond_with :redirect
-      end
+      must_respond_with :redirect
+    end
+
+    it "does not update a product if the form data violates product validations" do
+      product = products(:confidence)
+
+      updated_product = {
+          product: {
+              name: "Public Speaking",
+              description: "Level 1",
+              price: nil,
+          }
+      }
+      # Set up the form data so that it violates product validations
+
+      # Act-Assert
+      expect {
+        patch product_path(product.id), params: updated_product
+      }.wont_change "Product.count"
+
+      must_respond_with :bad_request
+
+    end
   end
  
 

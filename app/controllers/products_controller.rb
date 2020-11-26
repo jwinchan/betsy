@@ -17,11 +17,10 @@ class ProductsController < ApplicationController
   end
 
   def show
-    #review test with group
-    # if @product.nil?
-    #   head :not_found
-    #   return
-    # end
+    if @product.nil?
+      render_404
+      return
+    end
   end
 
   def new
