@@ -56,6 +56,7 @@ describe OrdersController do
   end
 
   describe "cart" do
+    #most testing for cart operation falls under orderitems controller
     it "responds with success when getting the cart page for guest" do
       get cart_path
 
@@ -69,5 +70,24 @@ describe OrdersController do
 
       must_respond_with :success
     end
+
+    describe "order_cart" do
+      it "creates an order if there's currently no cart in session" do
+
+        expect {
+          get cart_path
+        }.must_change "Order.count", 1
+      end
+
+      it "does not create a new order if there's a cart in session" do
+        get cart_path
+
+        expect {
+          get cart_path
+        }.wont_differ "Order.count"
+      end
+    end
   end
+
+
 end
