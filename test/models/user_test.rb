@@ -20,32 +20,9 @@ describe User do
       expect(@user.valid?).must_equal false
     end
 
-    it "is invalid when name already exists" do
-      skip
-      user_hash = {
-          uid: 1231224,
-          name: @user.name,
-          email: "newemail@gmail.com"
-      }
-      new_user = User.create(user_hash)
-      expect(new_user).must_equal false
-    end
-
     it "is invalid when email is missing" do
       @user.email = nil
       expect(@user.valid?).must_equal false
-    end
-
-    it "is invalid when email already exists" do
-      skip
-      user_hash = {
-          uid: 1231224,
-          name: "new name",
-          email: @user.email
-      }
-
-      new_user = User.create(user_hash)
-      expect(new_user).must_equal false
     end
   end
 
