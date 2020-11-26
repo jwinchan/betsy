@@ -1,10 +1,11 @@
 require "test_helper"
 
 describe User do
+  before do
+    @user = users(:grace)
+  end
+
   describe "Validations" do
-    before do
-      @user = users(:ada)
-    end
     it 'is valid when all fields are present' do
       expect(@user.valid?).must_equal true
     end
@@ -51,20 +52,31 @@ describe User do
   describe "Relationships" do
     describe "products" do
       it "can have many products" do
-        product1 = products(:confidence)
+        product1 = products(:yoga)
         product2 = products(:python)
+
+        expect(@user.products.count).must_equal 2
+        @user.products.each do |product|
+          expect(product).must_be_instance_of Product
+        end
       end
     end
     
     describe "orderitems" do
       it "can have many orderitems through products" do
+        orderitem1 = orderitems(:orderitem3)
+        orderitem2 = orderitems(:orderitem4)
 
+        expect(@user.orderitems.count).must_equal 2
       end
     end
 
     describe "categories" do
       it "can have many categories through products" do
+        category1 = categories(:cs)
+        category2 = categories(:mental)
 
+        expect(@user.categories.count).must_equal 2
       end
     end
   end
