@@ -33,9 +33,9 @@ describe ProductsController do
       must_respond_with :success
     end
 
-    it 'should respond with 3xx with an invalid product id' do
+    it 'should respond with 4xx with an invalid product id' do
       get product_path(-1)
-      must_respond_with :redirect
+      must_respond_with :not_found
     end
   end
 
@@ -61,15 +61,13 @@ describe ProductsController do
 
   describe "create" do
     it "can create a new product with valid information accurately, and redirect" do
-      #maybe failing because of sessions[:user_id] ?
-      skip
       # Arrange
-      user = users(:ada)
+      perform_login
       # Set up the form data
       product_hash = {
           product: {
               name: 'Artists Potion',
-              user_id: user.id,
+              user_id: 2,
               stock: 2,
               price: 1400,
               description: 'Turns you into Bob Ross',
@@ -98,6 +96,7 @@ describe ProductsController do
     it "does not create a product if the form data violates product validations" do
       # Note: This will not pass until ActiveRecord Validations lesson
       # Arrange
+      perform_login
       # Set up the form data so that it violates product validations
       product_hash = {
           product: {
