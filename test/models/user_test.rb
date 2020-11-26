@@ -1,20 +1,83 @@
 require "test_helper"
 
 describe User do
-  describe "validations" do
+  before do
+    @user = users(:grace)
+  end
+
+  describe "Validations" do
     it 'is valid when all fields are present' do
+      expect(@user.valid?).must_equal true
+    end
+
+    it "is invalid when uid is missing" do
+      @user.uid = nil
+      expect(@user.valid?).must_equal false
+    end
+
+    it "is invalid when name is missing" do
+      @user.name = nil
+      expect(@user.valid?).must_equal false
+    end
+
+    it "is invalid when name already exists" do
       skip
+      user_hash = {
+          uid: 1231224,
+          name: @user.name,
+          email: "newemail@gmail.com"
+      }
+      new_user = User.create(user_hash)
+      expect(new_user).must_equal false
+    end
+
+    it "is invalid when email is missing" do
+      @user.email = nil
+      expect(@user.valid?).must_equal false
+    end
+
+    it "is invalid when email already exists" do
+      skip
+      user_hash = {
+          uid: 1231224,
+          name: "new name",
+          email: @user.email
+      }
+
+      new_user = User.create(user_hash)
+      expect(new_user).must_equal false
     end
   end
 
-  describe "relaitons" do
+  describe "Relationships" do
     describe "products" do
+      it "can have many products" do
+        product1 = products(:yoga)
+        product2 = products(:python)
+
+        expect(@user.products.count).must_equal 2
+        @user.products.each do |product|
+          expect(product).must_be_instance_of Product
+        end
+      end
     end
     
     describe "orderitems" do
+      it "can have many orderitems through products" do
+        orderitem1 = orderitems(:orderitem3)
+        orderitem2 = orderitems(:orderitem4)
+
+        expect(@user.orderitems.count).must_equal 2
+      end
     end
 
     describe "categories" do
+      it "can have many categories through products" do
+        category1 = categories(:cs)
+        category2 = categories(:mental)
+
+        expect(@user.categories.count).must_equal 2
+      end
     end
   end
 
