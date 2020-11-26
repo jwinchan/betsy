@@ -81,7 +81,7 @@ class ReviewsController < ApplicationController
   def destroy
     if @review.nil? 
       flash.now[:error] = "The review you are looking for is not found"
-      redirect_to product_path(@review.product_id)
+      render_404
       return
     end
    

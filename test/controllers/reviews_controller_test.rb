@@ -130,7 +130,7 @@ describe ReviewsController do
       must_respond_with :redirect
     end
 
-    it "responds with redirect when a review is not existed" do
+    it "responds with 404 when a review is not existed" do
       # Arrange
       invalid_review = -1
 
@@ -174,7 +174,7 @@ describe ReviewsController do
       must_respond_with :redirect
     end
 
-    it "cannot update a review when the review is not existed" do
+    it "responds with 404 when the review is not existed" do
       # Arrange
       invalid_review = -1
 
@@ -204,5 +204,28 @@ describe ReviewsController do
   end
 
   describe "destroy" do
+    it "can delete a review" do
+      # Arrange
+      review1 = reviews(:review1)
+      
+      # Act-Assert
+      expect {
+        delete review_path(review1)
+      }.must_differ "Review.count", -1
+      
+      must_respond_with :redirect
+    end
+
+    it "responds with 404 when a review is not existed" do
+      # Arrange
+      invalid_review = -1
+      
+      # Act-Assert
+      expect {
+        delete review_path(invalid_review)
+      }.wont_change "Review.count"
+      
+      must_respond_with :not_found
+    end
   end
 end
