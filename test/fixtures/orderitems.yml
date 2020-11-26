@@ -3,7 +3,7 @@ orderitem1:
   order_id: 1
   product_id: 1
   quantity: 1
-  price: 100
+  price: 5
   order_status: "pending"
   shipped: false
   cancelled: false
