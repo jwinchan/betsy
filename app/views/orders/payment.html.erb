@@ -39,7 +39,7 @@
     </div>
     <div>
       <%= f.label :credit_card_expiration%>
-      <%= f.text_field :credit_card_expiration %>
+      <%= f.date_select :credit_card_expiration, discard_day: true %>
     </div>
     <div>
       <%= f.label :billing_zipcode %>

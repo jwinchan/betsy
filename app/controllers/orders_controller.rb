@@ -62,7 +62,7 @@ class OrdersController < ApplicationController
         cc_name: params[:order][:name_on_credit_card],
         cc_number: params[:order][:credit_card_number],
         cc_cvv: params[:order][:credit_card_cvv],
-        cc_exp_date: params[:order][:credit_card_expiration],
+        cc_exp_date: Date.civil(params[:order]["credit_card_expiration(1i)"].to_i,params[:order]["credit_card_expiration(2i)"].to_i,params[:order]["credit_card_expiration(3i)"].to_i),
         billing_zip_code: params[:order][:billing_zipcode]
     )
   end
