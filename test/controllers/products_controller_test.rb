@@ -10,7 +10,7 @@ describe ProductsController do
     it "responds with success when there are many products saved" do
      get products_path
     
-      expect(Product.count).must_equal 1
+      expect(Product.count).must_equal 3
       must_respond_with :success
     end
 
@@ -18,6 +18,8 @@ describe ProductsController do
     it "responds with success when there are no products saved" do
       #ask team about this test! It's kind of weird...
       products(:confidence).destroy
+      products(:python).destroy
+      products(:yoga).destroy
 
       get products_path
 
@@ -118,13 +120,23 @@ describe ProductsController do
 
 
 describe "Edit" do
-  it "must get edit page for existing product" do
+  it "must get edit page for existing product when logged in" do
+    perform_login
     #Act
-    product = Product.create(name: 'Python', description: 'Gain Python skills')
+    product = products(:confidence)
     get edit_product_path(product.id)
 
     # Assert
     must_respond_with :success
+  end
+
+  it "responds with redirect for existing product when not logged in" do
+    #Act
+    product = products(:python)
+    get edit_product_path(product.id)
+
+    # Assert
+    must_respond_with :redirect
   end
 
   it "will respond with not_found when a product does not exist" do
