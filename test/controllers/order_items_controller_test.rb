@@ -29,7 +29,6 @@ describe OrderItemsController do
 
       order_item = Orderitem.last.reload
 
-      p order_item
       expect(order_item.order_id).must_equal session[:order_id]
       expect(order_item.product_id).must_equal id
       expect(order_item.quantity).must_equal 5
